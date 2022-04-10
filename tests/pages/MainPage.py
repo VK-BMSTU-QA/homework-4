@@ -43,5 +43,5 @@ class MainPage(BasePage):
         elem.click()
 
     def fill_input(self, selector, text):
-        text_input = self.main_page.wait_render(selector)
+        text_input = self.wait_render(selector)
         text_input.send_keys(text)

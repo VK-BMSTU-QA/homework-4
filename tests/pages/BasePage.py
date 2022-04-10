@@ -24,7 +24,7 @@ class BasePage(Urls):
 
     def is_exist(self, selector):
         try:
-            self.wait_render(selector, 3)
+            self.wait_visible(selector, 3)
         except TimeoutException:
             return False
         return True

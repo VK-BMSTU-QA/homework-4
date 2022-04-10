@@ -49,10 +49,8 @@ class LoginTest(BaseTest):
 
     
     def test_log_correct(self):
-        login_email_input = self.main_page.wait_render(self.main_page.login_email_input)
-        login_email_input.send_keys(self.correct_login)
-        login_pass_input = self.main_page.wait_render(self.main_page.login_password_input)
-        login_pass_input.send_keys(self.correct_password)
+        self.main_page.fill_input(self.main_page.login_email_input, self.correct_login)
+        self.main_page.fill_input(self.main_page.login_password_input, self.correct_password)
 
         login_btn = self.main_page.wait_render(self.main_page.login_btn)
         login_btn.click()
@@ -78,8 +76,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        email_input = self.main_page.wait_render(self.main_page.reg_email_input)
-        email_input.send_keys('testtest')
+        self.main_page.fill_input(self.main_page.reg_email_input, 'testtest')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -94,8 +91,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        email_input = self.main_page.wait_render(self.main_page.reg_email_input)
-        email_input.send_keys('zxc@mail.ru')
+        self.main_page.fill_input(self.main_page.reg_email_input, 'zxc@mail.ru')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -110,8 +106,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        name_input = self.main_page.wait_render(self.main_page.reg_name_input)
-        name_input.send_keys('a')
+        self.main_page.fill_input(self.main_page.reg_name_input, 'a')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -127,8 +122,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        name_input = self.main_page.wait_render(self.main_page.reg_name_input)
-        name_input.send_keys('aа<>')
+        self.main_page.fill_input(self.main_page.reg_name_input, 'aа<>')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -143,8 +137,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        surname_input = self.main_page.wait_render(self.main_page.reg_surname_input)
-        surname_input.send_keys('a')
+        self.main_page.fill_input(self.main_page.reg_surname_input, 'a')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -160,8 +153,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        surname_input = self.main_page.wait_render(self.main_page.reg_surname_input)
-        surname_input.send_keys('aа<>')
+        self.main_page.fill_input(self.main_page.reg_surname_input, 'aа<>')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -177,8 +169,7 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        password_input = self.main_page.wait_render(self.main_page.reg_password_input)
-        password_input.send_keys('pas')
+        self.main_page.fill_input(self.main_page.reg_password_input, 'pas')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -193,11 +184,8 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        password_input = self.main_page.wait_render(self.main_page.reg_password_input)
-        password_input.send_keys('password')
-
-        repassword_input = self.main_page.wait_render(self.main_page.reg_reppassword_input)
-        repassword_input.send_keys('password1')
+        self.main_page.fill_input(self.main_page.reg_password_input, 'password')
+        self.main_page.fill_input(self.main_page.reg_reppassword_input, 'password1')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -212,20 +200,11 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        email_input = self.main_page.wait_render(self.main_page.reg_email_input)
-        email_input.send_keys(self.reg_mail)
-
-        name_input = self.main_page.wait_render(self.main_page.reg_name_input)
-        name_input.send_keys(self.reg_name)
-
-        surname_input = self.main_page.wait_render(self.main_page.reg_surname_input)
-        surname_input.send_keys(self.reg_surname)
-
-        password_input = self.main_page.wait_render(self.main_page.reg_password_input)
-        password_input.send_keys(self.reg_password)
-
-        repassword_input = self.main_page.wait_render(self.main_page.reg_reppassword_input)
-        repassword_input.send_keys(self.reg_password)
+        self.main_page.fill_input(self.main_page.reg_email_input, self.reg_mail)
+        self.main_page.fill_input(self.main_page.reg_name_input, self.reg_name)
+        self.main_page.fill_input(self.main_page.reg_surname_input, self.reg_surname)
+        self.main_page.fill_input(self.main_page.reg_password_input, self.reg_password)
+        self.main_page.fill_input(self.main_page.reg_reppassword_input, self.reg_password)
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -240,20 +219,11 @@ class LoginTest(BaseTest):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
-        email_input = self.main_page.wait_render(self.main_page.reg_email_input)
-        email_input.send_keys(self.correct_login)
-
-        name_input = self.main_page.wait_render(self.main_page.reg_name_input)
-        name_input.send_keys(self.reg_name)
-
-        surname_input = self.main_page.wait_render(self.main_page.reg_surname_input)
-        surname_input.send_keys(self.reg_surname)
-
-        password_input = self.main_page.wait_render(self.main_page.reg_password_input)
-        password_input.send_keys(self.reg_password)
-
-        repassword_input = self.main_page.wait_render(self.main_page.reg_reppassword_input)
-        repassword_input.send_keys(self.reg_password)
+        self.main_page.fill_input(self.main_page.reg_email_input, self.correct_login)
+        self.main_page.fill_input(self.main_page.reg_name_input, self.reg_name)
+        self.main_page.fill_input(self.main_page.reg_surname_input, self.reg_surname)
+        self.main_page.fill_input(self.main_page.reg_password_input, self.reg_password)
+        self.main_page.fill_input(self.main_page.reg_reppassword_input, self.reg_password)
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
