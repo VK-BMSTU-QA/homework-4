@@ -14,7 +14,7 @@ class BaseTest(unittest.TestCase):
         self.correct_login = os.getenv('LOGIN_EXIST')
         self.correct_password = os.getenv('PASSWORD_EXIST')
 
-        self.reg_mail = os.getenv('REG_EMAIL')
+        self.reg_mail = os.getenv('REG_MAIL')
         self.reg_name = os.getenv('REG_NAME')
         self.reg_surname = os.getenv('REG_SURNAME')
         self.reg_password = os.getenv('REG_PASSWORD')

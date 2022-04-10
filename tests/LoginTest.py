@@ -182,7 +182,7 @@ class LoginTest(BaseTest):
         to_reg_btn.click()
 
         password_input = self.main_page.wait_render(self.main_page.reg_password_input)
-        password_input.send_keys('pass')
+        password_input.send_keys('pas')
 
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
@@ -240,26 +240,7 @@ class LoginTest(BaseTest):
                         )
 
 
-    def test_reg_passwords_missmatch(self):
-        to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
-        to_reg_btn.click()
-
-        password_input = self.main_page.wait_render(self.main_page.reg_password_input)
-        password_input.send_keys('password')
-
-        repassword_input = self.main_page.wait_render(self.main_page.reg_reppassword_input)
-        repassword_input.send_keys('password1')
-
-        reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
-        reg_btn.click()
-
-        repassword_div = self.main_page.wait_render(self.main_page.reg_reppassword_div)
-        is_error = "text-input_wrong" in repassword_div.get_attribute("class")
-        self.assertEqual(is_error, True, 
-                        'Ошибка в регистрации при коррентных данных'
-                        )
-
-    def test_reg_correct(self):
+    def test_reg_used_email(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
 
