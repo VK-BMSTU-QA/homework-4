@@ -9,17 +9,20 @@ class Urls():
     PROFILE_SETTINGS_URL = 'https://volchock.ru/profile/settings'
     NEW_ADVERT_URL = 'https://volchock.ru/newAd'
 
-    def salesmanUrl(self, id: int) -> str:
+    def __init__(self) -> None:
+        pass
+
+    def salesman_url(self, id: int) -> str:
         return f'https://volchock.ru/salesman/{id}'
 
-    def advertUrl(self, id: int) -> str:
+    def advert_url(self, id: int) -> str:
         return f'https://volchock.ru/ad/{id}'
 
-    def searchUrl(self, text: str) -> str:
+    def search_url(self, text: str) -> str:
         return f'https://volchock.ru/search/{text}'
 
-    def categoryUrl(self, text: str) -> str:
+    def category_url(self, text: str) -> str:
         return f'https://volchock.ru/category/{text}'
     
-    def personalChatUrl(self, salesmanId: int, advertId: int) -> str:
+    def personal_chat_url(self, salesmanId: int, advertId: int) -> str:
         return f'https://volchock.ru/profile/chat/{salesmanId}/{advertId}'
