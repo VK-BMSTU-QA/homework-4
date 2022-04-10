@@ -36,6 +36,7 @@ class BaseTest(unittest.TestCase):
     
     def login(self):
         main_page = MainPage(self.driver)
+        main_page.click_login()
         login_email_input = main_page.wait_render(main_page.login_email_input)
         login_email_input.send_keys(self.correct_login)
         login_pass_input = main_page.wait_render(main_page.login_password_input)

@@ -31,3 +31,11 @@ class BasePage(Urls):
         except TimeoutException:
             return False
         return True
+
+    def fill_input(self, selector, text):
+        text_input = self.wait_render(selector)
+        text_input.send_keys(text)
+
+    def wait_click(self, selector):
+        elem = self.wait_render(selector)
+        elem.click()

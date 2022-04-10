@@ -1,6 +1,7 @@
-from unicodedata import category
 from tests.BaseTest import BaseTest
 from tests.pages.MainPage import MainPage
+from urllib.parse import unquote
+
 
 class MainTest(BaseTest):
     def setUp(self):
@@ -29,8 +30,7 @@ class MainTest(BaseTest):
                         'Грид карточек не отображается')
 
     def test_card_routing(self):
-        card = self.main_page.wait_render(self.main_page.card)
-        card.click()
+        self.main_page.wait_click(self.main_page.card)
         self.main_page.wait_any_redirect()
         self.assertEqual(self.driver.current_url.split('/')[3], 
                         'ad',
@@ -38,7 +38,67 @@ class MainTest(BaseTest):
 
     def test_card_empty_search(self):
         self.main_page.fill_input(self.main_page.search_input, 'paskdpasjdauewvbzxcjzlxkcweqoejqeov')
-        search_btn = self.main_page.wait_render(self.main_page.search_btn)
-        search_btn.click()
+        self.main_page.wait_click(self.main_page.search_btn)
         is_empty = self.main_page.is_exist(self.main_page.empty)
         self.assertEqual(is_empty, True, 'Элемент пустой сетки отсутствует')
+
+
+    def test_change_lang_btn(self):
+        btn = self.main_page.wait_render(self.main_page.open_modal_btn)
+        pre_text = btn.get_attribute('innerHTML')
+        self.main_page.wait_click(self.main_page.lang_btn)
+        post_text = btn.get_attribute('innerHTML')
+        self.assertNotEqual(pre_text, post_text, 'Текст не изменился')
+
+    def test_open_modal_log(self):
+        self.main_page.click_login()
+        is_modal_active = self.main_page.is_exist(self.main_page.modal_window)
+        self.assertEqual(is_modal_active, True, 'Модальное окно не открылось')
+
+    def test_open_modal_new_adv(self):
+        self.main_page.click_new_adv()
+        is_modal_active = self.main_page.is_exist(self.main_page.modal_window)
+        self.assertEqual(is_modal_active, True, 'Модальное окно не открылось')
+
+    
+    def test_card_empty_search(self):
+        self.main_page.fill_input(self.main_page.search_input, 'тест')
+        self.main_page.wait_click(self.main_page.search_btn)
+        self.main_page.wait_any_redirect()
+        search_text = self.driver.current_url.split('/')[4]
+        search_text = unquote(search_text)
+        self.assertEqual(search_text, 'тест', 'Инпут в поиск и страница поиска отличаются')
+
+    def test_username_visible(self):
+        self.login()
+        self.main_page.wait_click(self.main_page.header_profile)
+        is_visible = self.main_page.is_exist(self.main_page.expand_menu)
+        self.assertEqual(is_visible, True, 'Нажатие на имя пользователя не открывает меню')
+        
+    def test_profile_redirection(self):
+        self.login()
+        self.main_page.wait_click(self.main_page.header_profile)
+        self.main_page.wait_click(self.main_page.profile_link)
+        is_redirected = self.main_page.wait_redirect('https://volchock.ru/profile')
+        self.assertEqual(is_redirected, True, 'Редирект на профиль не выполнен')
+
+    def test_fav_redirection(self):
+        self.login()
+        self.main_page.wait_click(self.main_page.header_profile)
+        self.main_page.wait_click(self.main_page.fav_link)
+        is_redirected = self.main_page.wait_redirect('https://volchock.ru/profile/favorite')
+        self.assertEqual(is_redirected, True, 'Редирект на избранное не выполнен')
+
+    def test_set_redirection(self):
+        self.login()
+        self.main_page.wait_click(self.main_page.header_profile)
+        self.main_page.wait_click(self.main_page.setting_link)
+        is_redirected = self.main_page.wait_redirect('https://volchock.ru/profile/settings')
+        self.assertEqual(is_redirected, True, 'Редирект на настройки не выполнен')
+
+    def test_logout(self):
+        self.login()
+        self.main_page.wait_click(self.main_page.header_profile)
+        self.main_page.wait_click(self.main_page.logout_btn)
+        is_logout = self.main_page.is_exist(self.main_page.open_modal_btn)
+        self.assertEqual(is_logout, True, 'Логаут по нажатию кнопки не выполнен')

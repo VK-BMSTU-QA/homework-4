@@ -15,6 +15,15 @@ class MainPage(BasePage):
     search_input = '.search__input'
     search_btn = '.search__button'
     empty = '#empty'
+    lang_btn = '.lang-box'
+    modal_window = '.modal-window'
+    new_adv_btn = '.new-advert-capture-container'
+    expand_menu = '.expand-menu__content'
+
+    profile_link = '.expand-menu__sublabel:nth-of-type(1)'
+    fav_link = '.expand-menu__sublabel:nth-of-type(2)'
+    setting_link = '.expand-menu__sublabel:nth-of-type(3)'
+    logout_btn = '#logout'
 
     login_email_div = '#logEmail'
     login_email_input = '#logEmail > .text-input__input'
@@ -46,6 +55,6 @@ class MainPage(BasePage):
         elem = self.wait_render(self.open_modal_btn)
         elem.click()
 
-    def fill_input(self, selector, text):
-        text_input = self.wait_render(selector)
-        text_input.send_keys(text)
+    def click_new_adv(self):
+        elem = self.wait_render(self.new_advert_btn)
+        elem.click()
