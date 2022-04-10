@@ -11,6 +11,10 @@ class MainPage(BasePage):
     input_err = '.text-input_wrong'
     categories = '.root__category-container'
     category_href = '.root__category__content-categories-card-title'
+    card = '.card__content'
+    search_input = '.search__input'
+    search_btn = '.search__button'
+    empty = '#empty'
 
     login_email_div = '#logEmail'
     login_email_input = '#logEmail > .text-input__input'

@@ -5,7 +5,7 @@ import sys
 import unittest
 
 from tests.LoginTest import LoginTest
-# from tests.MainTest import MainTest
+from tests.MainTest import MainTest
 # from tests.DirectoryTest import DirectoryTest
 # from tests.SignUpTest import SignUpTest
 from tests.config import config
@@ -15,7 +15,8 @@ if __name__ == '__main__':
         subprocess.Popen(["bash", "./hub.sh"])
         subprocess.Popen(["bash", "./node.sh"])
     suite = unittest.TestSuite((
-        unittest.makeSuite(LoginTest)
+        # unittest.makeSuite(LoginTest)
+        unittest.makeSuite(MainTest)
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

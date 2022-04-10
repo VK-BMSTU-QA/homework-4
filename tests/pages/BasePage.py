@@ -22,6 +22,9 @@ class BasePage(Urls):
     def wait_redirect(self, url, timeout=60):
         return WebDriverWait(self.driver, timeout).until(EC.url_matches(url))
 
+    def wait_any_redirect(self, timeout=60):
+        return WebDriverWait(self.driver, timeout).until(EC.url_changes('some'))
+
     def is_exist(self, selector):
         try:
             self.wait_visible(selector, 3)
