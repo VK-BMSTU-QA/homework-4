@@ -9,6 +9,8 @@ class MainPage(BasePage):
     search_btn = '.search__button'
     lang_btn = '.lang-box'
     input_err = '.text-input_wrong'
+    categories = '.root__category-container'
+    category_href = '.root__category__content-categories-card-title'
 
     login_email_div = '#logEmail'
     login_email_input = '#logEmail > .text-input__input'
@@ -39,3 +41,7 @@ class MainPage(BasePage):
     def click_login(self):
         elem = self.wait_render(self.open_modal_btn)
         elem.click()
+
+    def fill_input(self, selector, text):
+        text_input = self.main_page.wait_render(selector)
+        text_input.send_keys(text)

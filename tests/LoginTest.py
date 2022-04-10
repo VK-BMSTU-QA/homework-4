@@ -18,8 +18,7 @@ class LoginTest(BaseTest):
                         )
 
     def test_log_broken_email(self):
-        login_email_input = self.main_page.wait_render(self.main_page.login_email_input)
-        login_email_input.send_keys('testtest')
+        self.main_page.fill_input(self.main_page.login_email_input, 'testtest')
         login_btn = self.main_page.wait_render(self.main_page.login_btn)
         login_btn.click()
         login_email_div = self.main_page.wait_render(self.main_page.login_email_div)
@@ -29,8 +28,7 @@ class LoginTest(BaseTest):
                         )
 
     def test_log_empty_password(self):
-        login_email_input = self.main_page.wait_render(self.main_page.login_email_input)
-        login_email_input.send_keys(self.correct_login)
+        self.main_page.fill_input(self.main_page.login_email_input, self.correct_login)
         login_btn = self.main_page.wait_render(self.main_page.login_btn)
         login_btn.click()
         login_password_div = self.main_page.wait_render(self.main_page.login_password_div)
@@ -40,10 +38,8 @@ class LoginTest(BaseTest):
                         )
 
     def test_log_no_user(self):
-        login_email_input = self.main_page.wait_render(self.main_page.login_email_input)
-        login_email_input.send_keys('somenonexistendstrongmail@mail.ru')
-        login_pass_input = self.main_page.wait_render(self.main_page.login_password_input)
-        login_pass_input.send_keys('somepassword')
+        self.main_page.fill_input(self.main_page.login_email_input, 'somenonexistendstrongmail@mail.ru')
+        self.main_page.fill_input(self.main_page.login_password_input, 'somepassword')
         login_btn = self.main_page.wait_render(self.main_page.login_btn)
         login_btn.click()
         is_error = self.main_page.is_exist(self.main_page.input_err)

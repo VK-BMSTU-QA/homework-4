@@ -6,6 +6,7 @@ from selenium.webdriver import DesiredCapabilities, Remote
 from dotenv import load_dotenv
 
 from tests.config import config
+from tests.pages.MainPage import MainPage
 
 class BaseTest(unittest.TestCase):
 
@@ -18,6 +19,7 @@ class BaseTest(unittest.TestCase):
         self.reg_name = os.getenv('REG_NAME')
         self.reg_surname = os.getenv('REG_SURNAME')
         self.reg_password = os.getenv('REG_PASSWORD')
+
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'ru,ru_RU'})
         if (config.ON_DRIVER):
@@ -31,4 +33,15 @@ class BaseTest(unittest.TestCase):
                 },
                 options=chrome_options
             )
+    
+    def login(self):
+        main_page = MainPage(self.driver)
+        login_email_input = main_page.wait_render(main_page.login_email_input)
+        login_email_input.send_keys(self.correct_login)
+        login_pass_input = main_page.wait_render(main_page.login_password_input)
+        login_pass_input.send_keys(self.correct_password)
+
+        login_btn = main_page.wait_render(main_page.login_btn)
+        login_btn.click()
+        main_page.is_exist(main_page.header_profile)
     

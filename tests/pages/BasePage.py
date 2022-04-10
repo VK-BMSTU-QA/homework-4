@@ -19,6 +19,9 @@ class BasePage(Urls):
     def wait_visible(self, selector, timeout=10):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
 
+    def wait_redirect(self, url, timeout=60):
+        return WebDriverWait(self.driver, timeout).until(EC.url_matches(url))
+
     def is_exist(self, selector):
         try:
             self.wait_render(selector, 3)
