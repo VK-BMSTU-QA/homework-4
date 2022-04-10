@@ -1,9 +1,9 @@
 from tests.BaseTest import BaseTest
 from tests.pages.MainPage import MainPage
 
-class LoginTest(BaseTest):
+class LoginAndSignUpTest(BaseTest):
     def setUp(self):
-        super(LoginTest, self).setUp()
+        super(LoginAndSignUpTest, self).setUp()
         self.main_page = MainPage(self.driver)
         self.main_page.open()
         self.main_page.click_login()

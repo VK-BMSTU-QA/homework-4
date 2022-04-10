@@ -4,12 +4,12 @@ import subprocess
 import sys
 import unittest
 
-from tests.LoginTest import LoginTest
+from tests.LoginAndSignUpTest import LoginAndSignUpTest
 from tests.MainTest import MainTest
 from tests.PromotionTest import PromotionTest
 from tests.SalesmanTest import SalesmanTest
-# from tests.DirectoryTest import DirectoryTest
-# from tests.SignUpTest import SignUpTest
+from tests.AdvertTest import AdvertTest
+
 from tests.config import config
 
 if __name__ == '__main__':
@@ -20,7 +20,8 @@ if __name__ == '__main__':
         # unittest.makeSuite(LoginTest)
         # unittest.makeSuite(MainTest)
         # unittest.makeSuite(PromotionTest)
-        unittest.makeSuite(SalesmanTest)
+        # unittest.makeSuite(SalesmanTest)
+        unittest.makeSuite(AdvertTest)
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

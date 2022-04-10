@@ -27,7 +27,7 @@ class BasePage(Urls):
 
     def is_exist(self, selector):
         try:
-            self.wait_visible(selector, 3)
+            self.wait_visible(selector, 5)
         except TimeoutException:
             return False
         return True
@@ -39,3 +39,7 @@ class BasePage(Urls):
     def wait_click(self, selector):
         elem = self.wait_render(selector)
         elem.click()
+
+    def get_innerhtml(self, selector):
+        return self.wait_render(selector).get_attribute('innerHTML')
+        
