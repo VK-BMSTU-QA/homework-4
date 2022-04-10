@@ -1,6 +1,5 @@
 from tests.BaseTest import BaseTest
 from tests.pages.PromotionPage import PromotionPage
-from urllib.parse import unquote
 
 
 class PromotionTest(BaseTest):
