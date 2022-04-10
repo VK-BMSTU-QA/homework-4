@@ -26,3 +26,6 @@ class Urls():
     
     def personal_chat_url(self, salesmanId: int, advertId: int) -> str:
         return f'https://volchock.ru/profile/chat/{salesmanId}/{advertId}'
+
+    def promotion_url(self, id: int) -> str:
+        return f'https://volchock.ru/ad/{id}/upgrade'
