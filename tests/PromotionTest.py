@@ -16,6 +16,6 @@ class PromotionTest(BaseTest):
 
     def test_redirect_promote(self):
         self.promotion_page.wait_click(self.promotion_page.promote_btn)
-        self.promotion_page.wait_any_redirect()
+        self.promotion_page.wait_any_redirect('yoomoney')
         is_yoomoney = (len(list(filter (lambda x : x == 'yoomoney.ru', self.driver.current_url.split('/')))) > 0)
         self.assertEqual(is_yoomoney, True, 'Редирект в сторонний сервис не произошел')

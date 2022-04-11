@@ -24,7 +24,7 @@ class BaseTest(unittest.TestCase):
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'ru,ru_RU'})
         if (config.ON_DRIVER):
             self.driver = webdriver.Chrome(config.DRIVER, chrome_options=chrome_options)
-            # self.driver = webdriver.Firefox(config.MOZILA_DRIVER)
+            # self.driver = webdriver.Firefox(executable_path=config.MOZILA_DRIVER)
         else:
             nodeUrl = 'http://localhost:4444/wd/hub'
             self.driver = webdriver.Remote(
