@@ -6,11 +6,13 @@ class AdvertPage(BasePage):
     nav_to_category = '.category__list__main:nth-of-type(2)'
     nav_to_elem = '.category__list__sub'
     active_image = '.mySlides:nth-of-type(1)'
+    second_image = '.mySlides:nth-of-type(2)'
     next_btn = '.gallery__next-button'
     second_dot = '.dot:nth-of-type(2)'
     show_map = '.advertisment-detail__add-info__location__name-block__maps-label'
     ymap = '.advertisment-detail__add-info__location__map'
     modal_window = '.modal-window'
+    title = '.advertisment-detail__main-info__main__text__name'
 
     fav_btn = '.advertisment-detail__main-info__shop__capture'
     chat_btn = '#chatBtn'
