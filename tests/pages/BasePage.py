@@ -1,4 +1,3 @@
-from lib2to3.pgen2 import driver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -22,8 +21,8 @@ class BasePage(Urls):
     def wait_redirect(self, url, timeout=60):
         return WebDriverWait(self.driver, timeout).until(EC.url_matches(url))
 
-    def wait_any_redirect(self, timeout=60):
-        return WebDriverWait(self.driver, timeout).until(EC.url_changes('some'))
+    def wait_any_redirect(self, url='some', timeout=5):
+        return WebDriverWait(self.driver, timeout).until(EC.url_contains(url))
 
     def wait_until_innerhtml_changes_after_click(self, selector, timeout=60):
         elem = self.wait_render(selector)
