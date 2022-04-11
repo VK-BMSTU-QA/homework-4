@@ -25,6 +25,17 @@ class BasePage(Urls):
     def wait_any_redirect(self, timeout=60):
         return WebDriverWait(self.driver, timeout).until(EC.url_changes('some'))
 
+    def wait_until_innerhtml_changes_after_click(self, selector, timeout=60):
+        elem = self.wait_render(selector)
+        first_text = elem.get_attribute('innerHTML')
+        self.wait_click(selector)
+        WebDriverWait(self.driver, timeout).until(EC.none_of(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, selector), first_text)
+        ))
+
+    def wait_for_delete(self, elem, timeout=60):
+        return WebDriverWait(self.driver, timeout).until(EC.staleness_of(elem))
+
     def is_exist(self, selector):
         try:
             self.wait_visible(selector, 5)

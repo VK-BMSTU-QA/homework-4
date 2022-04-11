@@ -16,6 +16,7 @@ class AdvertPage(BasePage):
     chat_btn = '#chatBtn'
     cart_btn = '#addToCartBtn'
     edit_btn = '#editBtn'
+    card = '.card__content'
 
     delete_btn = '#deleteBtn'
     delete_sign = '.card__delete'
@@ -32,11 +33,18 @@ class AdvertPage(BasePage):
 
     def clearFav(self):
         self.driver.get('https://volchock.ru/profile/favorite')
+        card = self.wait_render(self.card)
         self.wait_click(self.delete_btn)
         self.wait_click(self.delete_sign)
+        self.wait_for_delete(card)
 
     def clearCart(self):
         self.driver.get('https://volchock.ru/profile/cart')
+        card = self.wait_render(self.card)
         self.wait_click(self.delete_btn)
         self.wait_click(self.delete_sign)
+        self.wait_for_delete(card)
 
+        
+
+        
