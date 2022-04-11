@@ -11,6 +11,7 @@ from tests.SalesmanTest import SalesmanTest
 from tests.AdvertTest import AdvertTest
 from tests.NewAdvertTest import NewAdvertTest
 from tests.EditTest import EditTest
+from tests.ProfileTest import ProfileTest
 
 from tests.config import config
 
@@ -25,7 +26,8 @@ if __name__ == '__main__':
         # unittest.makeSuite(SalesmanTest)
         # unittest.makeSuite(AdvertTest)
         # unittest.makeSuite(NewAdvertTest)
-        unittest.makeSuite(EditTest)
+        # unittest.makeSuite(EditTest)
+        unittest.makeSuite(ProfileTest)
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())
