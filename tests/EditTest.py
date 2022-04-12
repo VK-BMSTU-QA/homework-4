@@ -1,7 +1,6 @@
 from tests.BaseTest import BaseTest
 from tests.pages.NewAdvertPage import NewAdvertPage
 from tests.pages.AdvertPage import AdvertPage
-import os
 
 
 class EditTest(BaseTest):
@@ -13,7 +12,6 @@ class EditTest(BaseTest):
         self.adv_page.open(13)
         self.adv_page.wait_click(self.adv_page.edit_btn)
 
-
     def test_title_input(self):
         title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
         self.assertGreater(len(title), 0, 'Название пустое')
@@ -21,7 +19,6 @@ class EditTest(BaseTest):
     def test_price_input(self):
         price = self.new_adv_page.get_input_value(self.new_adv_page.price_input)
         self.assertGreater(len(price), 0, 'Цена пустая')
-
 
     def test_name_change(self):
         title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)

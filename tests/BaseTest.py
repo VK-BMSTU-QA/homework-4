@@ -2,11 +2,11 @@
 import os
 import unittest
 from selenium import webdriver
-from selenium.webdriver import DesiredCapabilities, Remote
 from dotenv import load_dotenv
 
 from tests.config import config
 from tests.pages.MainPage import MainPage
+
 
 class BaseTest(unittest.TestCase):
 
@@ -34,7 +34,7 @@ class BaseTest(unittest.TestCase):
                 },
                 options=chrome_options
             )
-    
+
     def login(self):
         main_page = MainPage(self.driver)
         main_page.open()
@@ -47,4 +47,3 @@ class BaseTest(unittest.TestCase):
         login_btn = main_page.wait_render(main_page.login_btn)
         login_btn.click()
         main_page.is_exist(main_page.header_profile)
-    

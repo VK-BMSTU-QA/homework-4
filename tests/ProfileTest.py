@@ -1,5 +1,4 @@
 import os
-import profile
 from tests.BaseTest import BaseTest
 from tests.pages.ProfilePage import ProfilePage
 
@@ -10,7 +9,6 @@ class ProfileTest(BaseTest):
         self.login()
         self.profile_page = ProfilePage(self.driver)
         self.profile_page.open()
-
 
     def test_nav_adv(self):
         self.profile_page.wait_click(self.profile_page.adv_btn)
@@ -52,7 +50,6 @@ class ProfileTest(BaseTest):
         is_ad = self.profile_page.wait_any_redirect('ad')
         self.assertEqual(is_ad, True, 'Редирект на страницу объявления не выполнен')
 
-
     def test_delete_btn(self):
         self.profile_page.wait_click(self.profile_page.delete_btn_main)
         is_exist = self.profile_page.is_exist(self.profile_page.card_delete_cross)
@@ -63,7 +60,6 @@ class ProfileTest(BaseTest):
         self.profile_page.wait_click(self.profile_page.card_delete_cross)
         is_exist = self.profile_page.is_exist(self.profile_page.modal)
         self.assertEqual(is_exist, True, 'Элемент модального окна не появился')
-
 
     def test_delete_from_fav(self):
         self.profile_page.add_to_fav()
@@ -94,14 +90,12 @@ class ProfileTest(BaseTest):
         is_ad = self.profile_page.wait_any_redirect('upgrade')
         self.assertEqual(is_ad, True, 'Редирект на страницу промо не выполнен')
 
-
     def test_chat_nav(self):
         self.profile_page.driver.get('https://volchock.ru/profile/chat')
         self.profile_page.wait_click(self.profile_page.dialog_btn)
         is_redir = self.profile_page.wait_redirect('https://volchock.ru/profile/chat/2/8')
         self.assertEqual(is_redir, True, 'Редирект на страницу чата не выполнен')
 
-    
     def test_chat_send(self):
         self.profile_page.driver.get('https://volchock.ru/profile/chat/2/8')
         self.profile_page.fill_input(self.profile_page.chat_input, 'тест')
@@ -140,7 +134,6 @@ class ProfileTest(BaseTest):
         is_error = "text-input_wrong" in old_div.get_attribute("class")
         self.assertEqual(is_error, True, 'Нет ошибки при пустом старом пароле')
 
-
     def test_password_change_short_new(self):
         self.profile_page.driver.get('https://volchock.ru/profile/settings')
         self.profile_page.fill_input(self.profile_page.new_password_input, 'a')
@@ -159,7 +152,6 @@ class ProfileTest(BaseTest):
         new_div = self.profile_page.wait_render(self.profile_page.new_password_div)
         is_error = "text-input_wrong" in new_div.get_attribute("class")
         self.assertEqual(is_error, True, 'Нет ошибки при одинаковых паролях')
-
 
     def test_password_change_correct(self):
         self.profile_page.driver.get('https://volchock.ru/profile/settings')
@@ -189,7 +181,6 @@ class ProfileTest(BaseTest):
         surname_div = self.profile_page.wait_render(self.profile_page.surname_div)
         is_error = "text-input_wrong" in surname_div.get_attribute("class")
         self.assertEqual(is_error, True, 'Нет ошибки при короткой фамилии')
-
 
     def test_name_change(self):
         self.profile_page.driver.get('https://volchock.ru/profile/settings')

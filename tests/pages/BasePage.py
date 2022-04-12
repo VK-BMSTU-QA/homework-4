@@ -5,13 +5,14 @@ from selenium.common.exceptions import TimeoutException
 
 from ..urls import Urls
 
+
 class BasePage(Urls):
     driver = None
 
     def __init__(self, driver) -> None:
         super().__init__()
         self.driver = driver
-    
+
     def wait_render(self, selector, timeout=10):
         return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
 

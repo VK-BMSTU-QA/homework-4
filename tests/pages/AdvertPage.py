@@ -45,8 +45,3 @@ class AdvertPage(BasePage):
         self.wait_click(self.delete_btn)
         self.wait_click(self.delete_sign)
         self.wait_for_delete(card)
-
-
-        
-
-        

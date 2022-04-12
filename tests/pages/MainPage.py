@@ -44,7 +44,6 @@ class MainPage(BasePage):
     reg_reppassword_input = '#regRepPassword > .text-input__input'
     reg_btn = '#regButton'
 
-
     def __init__(self, driver) -> None:
         super().__init__(driver)
 

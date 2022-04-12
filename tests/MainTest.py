@@ -11,30 +11,29 @@ class MainTest(BaseTest):
 
     def test_categories(self):
         is_exist = self.main_page.is_exist(self.main_page.categories)
-        self.assertEqual(is_exist, True, 
-                        'На главной странице не отображается блок категорий'
-                        )
+        self.assertEqual(is_exist, True,
+                         'На главной странице не отображается блок категорий')
 
     def test_category_routing(self):
         category_href = self.main_page.wait_render(self.main_page.category_href)
         href = category_href.get_attribute('href')
         category_href.click()
         self.main_page.wait_redirect(href)
-        self.assertEqual(self.driver.current_url, 
-                        self.main_page.category_url(href.split('/')[-1]),
-                        'Название категории и страницы категорий не совпадают')
+        self.assertEqual(self.driver.current_url,
+                         self.main_page.category_url(href.split('/')[-1]),
+                         'Название категории и страницы категорий не совпадают')
 
     def test_card_grid(self):
         is_visible_card = self.main_page.is_exist(self.main_page.card)
         self.assertEqual(is_visible_card, True,
-                        'Грид карточек не отображается')
+                         'Грид карточек не отображается')
 
     def test_card_routing(self):
         self.main_page.wait_click(self.main_page.card)
         self.main_page.wait_any_redirect('ad')
-        self.assertEqual(self.driver.current_url.split('/')[3], 
-                        'ad',
-                        'Названия страниц не совпадают')
+        self.assertEqual(self.driver.current_url.split('/')[3],
+                         'ad',
+                         'Названия страниц не совпадают')
 
     def test_card_empty_search(self):
         self.main_page.fill_input(self.main_page.search_input, 'paskdpasjdauewvbzxcjzlxkcweqoejqeov')
@@ -42,7 +41,6 @@ class MainTest(BaseTest):
         self.main_page.wait_any_redirect('search')
         is_empty = self.main_page.is_exist(self.main_page.empty)
         self.assertEqual(is_empty, True, 'Элемент пустой сетки отсутствует')
-
 
     def test_change_lang_btn(self):
         btn = self.main_page.wait_render(self.main_page.open_modal_btn)
@@ -61,7 +59,6 @@ class MainTest(BaseTest):
         is_modal_active = self.main_page.is_exist(self.main_page.modal_window)
         self.assertEqual(is_modal_active, True, 'Модальное окно не открылось')
 
-    
     def test_card_search(self):
         self.main_page.fill_input(self.main_page.search_input, 'тест')
         self.main_page.wait_click(self.main_page.search_btn)
@@ -75,7 +72,7 @@ class MainTest(BaseTest):
         self.main_page.wait_click(self.main_page.header_profile)
         is_visible = self.main_page.is_exist(self.main_page.expand_menu)
         self.assertEqual(is_visible, True, 'Нажатие на имя пользователя не открывает меню')
-        
+
     def test_profile_redirection(self):
         self.login()
         self.main_page.wait_click(self.main_page.header_profile)

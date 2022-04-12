@@ -23,7 +23,7 @@ class Urls():
 
     def category_url(self, text: str) -> str:
         return f'https://volchock.ru/category/{text}'
-    
+
     def personal_chat_url(self, salesmanId: int, advertId: int) -> str:
         return f'https://volchock.ru/profile/chat/{salesmanId}/{advertId}'
 

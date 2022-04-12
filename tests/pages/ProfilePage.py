@@ -72,7 +72,7 @@ class ProfilePage(BasePage):
         img_input.send_keys(image)
 
     def get_avatar_src(self, selector):
-         return self.wait_render(selector).get_attribute('src')
+        return self.wait_render(selector).get_attribute('src')
 
     def reset_pass(self, password):
         self.driver.get('https://volchock.ru/profile/settings')
