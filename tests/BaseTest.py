@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from tests.config import config
 from tests.pages.MainPage import MainPage
+from pyvirtualdisplay import Display
 
 
 class BaseTest(unittest.TestCase):
@@ -19,6 +20,8 @@ class BaseTest(unittest.TestCase):
         self.reg_name = os.getenv('REG_NAME')
         self.reg_surname = os.getenv('REG_SURNAME')
         self.reg_password = os.getenv('REG_PASSWORD')
+        display = Display(visible=0, size=(1600, 900))  
+        display.start()
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'ru,ru_RU'})

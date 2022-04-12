@@ -1,2 +1,3 @@
 selenium==4.1.3
 python-dotenv==0.20.0
+pyvirtualdisplay==3.0
