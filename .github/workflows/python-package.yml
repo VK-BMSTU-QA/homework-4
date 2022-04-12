@@ -40,6 +40,8 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Install xserver-xephyr
       run: sudo apt-get install xvfb xserver-xephyr
+    - name: Start XVFB
+      run: sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional, disables headless mode
     - name: Create env file
       run: |
         touch .env
@@ -53,4 +55,6 @@ jobs:
     - name: Test with unittest
       run: |
         python -m unittest run_tests.py
+      env:
+        DISPLAY: :99
 
