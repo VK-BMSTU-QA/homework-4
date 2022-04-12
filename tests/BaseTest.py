@@ -35,6 +35,8 @@ class BaseTest(unittest.TestCase):
                 },
                 options=chrome_options
             )
+    def tearDown(self):
+        self.driver.quit()
 
     def login(self):
         main_page = MainPage(self.driver)
