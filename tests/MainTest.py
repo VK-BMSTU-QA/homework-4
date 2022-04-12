@@ -31,7 +31,7 @@ class MainTest(BaseTest):
 
     def test_card_routing(self):
         self.main_page.wait_click(self.main_page.card)
-        self.main_page.wait_any_redirect()
+        self.main_page.wait_any_redirect('ad')
         self.assertEqual(self.driver.current_url.split('/')[3], 
                         'ad',
                         'Названия страниц не совпадают')
@@ -39,6 +39,7 @@ class MainTest(BaseTest):
     def test_card_empty_search(self):
         self.main_page.fill_input(self.main_page.search_input, 'paskdpasjdauewvbzxcjzlxkcweqoejqeov')
         self.main_page.wait_click(self.main_page.search_btn)
+        self.main_page.wait_any_redirect('search')
         is_empty = self.main_page.is_exist(self.main_page.empty)
         self.assertEqual(is_empty, True, 'Элемент пустой сетки отсутствует')
 
@@ -61,10 +62,10 @@ class MainTest(BaseTest):
         self.assertEqual(is_modal_active, True, 'Модальное окно не открылось')
 
     
-    def test_card_empty_search(self):
+    def test_card_search(self):
         self.main_page.fill_input(self.main_page.search_input, 'тест')
         self.main_page.wait_click(self.main_page.search_btn)
-        self.main_page.wait_any_redirect()
+        self.main_page.wait_any_redirect('search')
         search_text = self.driver.current_url.split('/')[4]
         search_text = unquote(search_text)
         self.assertEqual(search_text, 'тест', 'Инпут в поиск и страница поиска отличаются')

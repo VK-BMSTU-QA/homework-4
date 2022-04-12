@@ -12,7 +12,7 @@ class SalesmanTest(BaseTest):
     
     def test_advert_redirect(self):
         self.salesman_page.wait_click(self.salesman_page.card)
-        self.salesman_page.wait_any_redirect()
+        self.salesman_page.wait_any_redirect('ad')
         self.assertEqual(self.driver.current_url.split('/')[3], 
                         'ad',
                         'Названия страниц не совпадают')
