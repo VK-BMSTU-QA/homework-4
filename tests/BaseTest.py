@@ -24,6 +24,8 @@ class BaseTest(unittest.TestCase):
         # display.start()
 
         chrome_options = webdriver.ChromeOptions()
+        chrome_options.addArguments("--no-sandbox");
+        chrome_options.addArguments("--disable-dev-shm-usage");
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'ru,ru_RU'})
         if (config.ON_DRIVER):
             self.driver = webdriver.Chrome(config.DRIVER, chrome_options=chrome_options)
