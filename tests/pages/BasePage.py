@@ -52,4 +52,3 @@ class BasePage(Urls):
 
     def get_innerhtml(self, selector):
         return self.wait_render(selector).get_attribute('innerHTML')
-        

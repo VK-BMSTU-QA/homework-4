@@ -32,7 +32,6 @@ class AdvertPage(BasePage):
     def open(self, id):
         self.driver.get(self.advert_url(id))
 
-
     def clearFav(self):
         self.driver.get('https://volchock.ru/profile/favorite')
         card = self.wait_render(self.card)
@@ -46,6 +45,7 @@ class AdvertPage(BasePage):
         self.wait_click(self.delete_btn)
         self.wait_click(self.delete_sign)
         self.wait_for_delete(card)
+
 
         
 

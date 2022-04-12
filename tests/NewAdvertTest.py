@@ -19,7 +19,6 @@ class NewAdvertTest(BaseTest):
                         'Нет ошибки при создании объявления при слишком коротком названии <2'
                         )
 
-
     def test_price_error_validation(self):
         self.new_adv_page.fill_input(self.new_adv_page.name_input, 'тест')
         self.new_adv_page.fill_input(self.new_adv_page.price_input, -100)
@@ -57,7 +56,6 @@ class NewAdvertTest(BaseTest):
                         'изображение не добавилось'
                         )
 
-    
     def test_image_delete(self):
         self.new_adv_page.fill_image_input(os.getcwd()+"/tests/images/test.jpeg")
         is_added = self.new_adv_page.is_exist(self.new_adv_page.inputed_image)
@@ -66,7 +64,6 @@ class NewAdvertTest(BaseTest):
         self.assertNotEqual(is_added, is_exist, 
                         'изображение не удалилось'
                         )
-
 
     def test_valid_adv_simple(self):
         self.new_adv_page.fill_input(self.new_adv_page.name_input, 'тест')

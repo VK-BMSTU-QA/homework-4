@@ -46,13 +46,11 @@ class ProfilePage(BasePage):
     username = '.profile-content__username'
     navbar_username = '.mini-profile__capture'
 
-
     def __init__(self, driver) -> None:
         super().__init__(driver)
 
     def open(self):
         self.driver.get('https://volchock.ru/profile')
-
 
     def add_to_fav(self):
         adv_page = AdvertPage(self.driver)
@@ -67,7 +65,6 @@ class ProfilePage(BasePage):
         adv_page.get_innerhtml(adv_page.cart_btn)
         adv_page.wait_until_innerhtml_changes_after_click(adv_page.cart_btn)
         self.driver.get('https://volchock.ru/profile/cart')
-
 
     def fill_image_input(self, image):
         img_input = WebDriverWait(self.driver, 10).until(

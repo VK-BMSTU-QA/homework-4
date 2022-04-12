@@ -123,7 +123,6 @@ class ProfileTest(BaseTest):
         second_src = self.profile_page.get_avatar_src(self.profile_page.navbar_image)
         self.assertNotEqual(first_src, second_src, 'Аватар не изменился')
 
-
     def test_password_change_empty_new(self):
         self.profile_page.driver.get('https://volchock.ru/profile/settings')
         self.profile_page.wait_click(self.profile_page.change_password_btn)
@@ -174,7 +173,6 @@ class ProfileTest(BaseTest):
         self.assertEqual(is_error, True, 'ошибка при корретных данных')
         self.profile_page.reset_pass(self.correct_password)
 
-
     def test_short_name(self):
         self.profile_page.driver.get('https://volchock.ru/profile/settings')
         self.profile_page.fill_input(self.profile_page.name_input, 'a')
@@ -204,7 +202,6 @@ class ProfileTest(BaseTest):
         new_username = self.profile_page.get_innerhtml(self.profile_page.username)
         self.assertEqual(new_username, username, 'Имя в профиле не изменилось')
         self.profile_page.reset_info()
-
 
     def test_name_change_navbar(self):
         self.profile_page.driver.get('https://volchock.ru/profile/settings')

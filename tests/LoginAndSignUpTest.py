@@ -148,7 +148,6 @@ class LoginAndSignUpTest(BaseTest):
                         'Нет ошибки в регистрации при слишком короткой фамилии <2'
                         )
 
-
     def test_reg_spec_sign_surname(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
         to_reg_btn.click()
@@ -163,7 +162,6 @@ class LoginAndSignUpTest(BaseTest):
         self.assertEqual(is_error, True, 
                         'Нет ошибки в регистрации при спец символах в фамилии'
                         )
-
 
     def test_reg_short_password(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
@@ -213,7 +211,6 @@ class LoginAndSignUpTest(BaseTest):
         self.assertEqual(is_logged, True, 
                         'Ошибка регистрации при корректных данных'
                         )
-
 
     def test_reg_used_email(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)

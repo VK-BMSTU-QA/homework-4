@@ -9,7 +9,6 @@ class SalesmanTest(BaseTest):
         self.salesman_page = SalesmanPage(self.driver)
         self.salesman_page.open(2)
 
-    
     def test_advert_redirect(self):
         self.salesman_page.wait_click(self.salesman_page.card)
         self.salesman_page.wait_any_redirect('ad')

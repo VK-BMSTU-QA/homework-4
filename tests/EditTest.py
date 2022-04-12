@@ -32,7 +32,6 @@ class EditTest(BaseTest):
         page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
         self.assertEqual(title + 'aaa', page_title, 'Название не изменилось')
 
-    
     def test_name_notchange(self):
         title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
         self.new_adv_page.fill_input(self.new_adv_page.name_input, title+'bbb')
