@@ -41,7 +41,7 @@ jobs:
     - name: Install xserver-xephyr
       run: sudo apt-get install xvfb xserver-xephyr
     - name: Start XVFB
-      run: sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional, disables headless mode
+      run: sudo Xvfb -ac :99 -screen 0 1920x1080x24 > /dev/null 2>&1 & # optional, disables headless mode
     - name: Create env file
       run: |
         touch .env
