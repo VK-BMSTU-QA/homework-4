@@ -39,14 +39,14 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Create env file
-        run: |
-          touch .env
-          echo LOGIN_EXIST=${{ secrets.LOGIN_EXIST}} >> .env
-          echo PASSWORD_EXIST=${{ secrets.PASSWORD_EXIST}} >> .env
-          echo REG_MAIL=${{ secrets.REG_MAIL}} >> .env
-          echo REG_NAME=${{ secrets.REG_NAME}} >> .env
-          echo REG_SURNAME=${{ secrets.REG_SURNAME}} >> .env
-          echo REG_PASSWORD=${{ secrets.REG_PASSWORD}} >> .env
+      run: |
+        touch .env
+        echo LOGIN_EXIST=${{ secrets.LOGIN_EXIST}} >> .env
+        echo PASSWORD_EXIST=${{ secrets.PASSWORD_EXIST}} >> .env
+        echo REG_MAIL=${{ secrets.REG_MAIL}} >> .env
+        echo REG_NAME=${{ secrets.REG_NAME}} >> .env
+        echo REG_SURNAME=${{ secrets.REG_SURNAME}} >> .env
+        echo REG_PASSWORD=${{ secrets.REG_PASSWORD}} >> .env
           
     - name: Test with unittest
       run: |
