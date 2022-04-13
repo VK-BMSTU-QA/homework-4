@@ -54,7 +54,7 @@ jobs:
           
     - name: Test with unittest
       run: |
-        python -m unittest run_tests.py
+        python3 run_tests.py
       env:
         DISPLAY: :99
 

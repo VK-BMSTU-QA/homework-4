@@ -50,7 +50,7 @@ class BasePage(Urls):
 
     def wait_click(self, selector):
         elem = self.wait_render(selector)
-        elem.click()
+        self.driver.execute_script('arguments[0].click()', elem)
 
     def get_innerhtml(self, selector):
         return self.wait_render(selector).get_attribute('innerHTML')
