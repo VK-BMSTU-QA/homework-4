@@ -15,7 +15,7 @@ class BasePage(Urls):
         self.driver.implicitly_wait(30)
 
     def wait_render(self, selector, timeout=60):
-        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.CSS_SELECTOR, selector)))
 
     def wait_visible(self, selector, timeout=60):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
