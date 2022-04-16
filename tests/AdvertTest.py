@@ -122,7 +122,7 @@ class AdvertTest(BaseTest):
         self.adv_page.wait_until_innerhtml_changes_after_click(self.adv_page.cart_btn)
         second_text = self.adv_page.get_innerhtml(self.adv_page.cart_btn)
         self.assertNotEqual(first_text, second_text, 'Нажатие по кнопке добавить в корзину не изменяет текст')
-        self.adv_page.clearCart
+        self.adv_page.clearCart()
 
     def test_two_cart_click(self):
         self.login()

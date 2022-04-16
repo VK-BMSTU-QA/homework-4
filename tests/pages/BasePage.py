@@ -12,7 +12,7 @@ class BasePage(Urls):
     def __init__(self, driver) -> None:
         super().__init__()
         self.driver = driver
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(10)
 
     def wait_render(self, selector, timeout=60):
         return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
@@ -39,7 +39,7 @@ class BasePage(Urls):
 
     def is_exist(self, selector):
         try:
-            self.wait_visible(selector, 20)
+            self.wait_visible(selector, 10)
         except TimeoutException:
             return False
         return True
