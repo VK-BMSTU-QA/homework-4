@@ -30,7 +30,7 @@ class EditTest(BaseTest):
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
         self.adv_page.wait_render(self.adv_page.title)
         page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-        self.assertEqual(title + 'aaa', page_title, 'Название не изменилось')
+        self.assertNotEqual(title, page_title, 'Название не изменилось')
 
     def test_name_notchange(self):
         self.adv_page.open(13)
@@ -46,5 +46,5 @@ class EditTest(BaseTest):
     def test_add_image(self):
         self.new_adv_page.input_images()
         is_paginatable = self.adv_page.is_exist(self.adv_page.next_btn)
-        self.assertEqual(is_paginatable, True, 'Изображений не 2')
+        self.assertTrue(is_paginatable, 'Изображений не 2')
         self.new_adv_page.delete_images()
