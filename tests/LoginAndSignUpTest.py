@@ -163,8 +163,7 @@ class LoginAndSignUpTest(BaseTest):
 
         password_div = self.main_page.wait_render(self.main_page.reg_password_div)
         is_error = "text-input_wrong" in password_div.get_attribute("class")
-        self.assertEqual(is_error, True,
-                         'Нет ошибки в регистрации при слишком коротком пароле')
+        self.assertTrue(is_error, 'Нет ошибки в регистрации при слишком коротком пароле')
 
     def test_reg_passwords_missmatch(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
@@ -178,8 +177,7 @@ class LoginAndSignUpTest(BaseTest):
 
         repassword_div = self.main_page.wait_render(self.main_page.reg_reppassword_div)
         is_error = "text-input_wrong" in repassword_div.get_attribute("class")
-        self.assertEqual(is_error, True,
-                         'Нет ошибки в регистрации при разных паролях')
+        self.assertTrue(is_error, 'Нет ошибки в регистрации при разных паролях')
 
     def test_reg_correct(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
@@ -195,8 +193,7 @@ class LoginAndSignUpTest(BaseTest):
         reg_btn.click()
 
         is_logged = self.main_page.is_exist(self.main_page.header_profile)
-        self.assertEqual(is_logged, True,
-                         'Ошибка регистрации при корректных данных')
+        self.assertTrue(is_logged, 'Ошибка регистрации при корректных данных')
 
     def test_reg_used_email(self):
         to_reg_btn = self.main_page.wait_render(self.main_page.swith_to_reg_btn)
@@ -211,7 +208,7 @@ class LoginAndSignUpTest(BaseTest):
         reg_btn = self.main_page.wait_render(self.main_page.reg_btn)
         reg_btn.click()
 
-        email_div = self.main_page.wait_render(self.main_page.reg_email_div)
-        is_error = "text-input_wrong" in email_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.main_page.wait_render(self.main_page.reg_email_div)
+        is_error = self.main_page.wait_until_text_in_attribute(self.main_page.reg_email_div, "class", "text-input_wrong")
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при использовании существующего email')

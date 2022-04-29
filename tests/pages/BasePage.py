@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from sympy import false
 
 from ..urls import Urls
 
@@ -12,7 +13,7 @@ class BasePage(Urls):
     def __init__(self, driver) -> None:
         super().__init__()
         self.driver = driver
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(20)
 
     def wait_render(self, selector, timeout=60):
         elem = self.wait_visible(selector)
@@ -32,8 +33,16 @@ class BasePage(Urls):
         first_text = elem.get_attribute('innerHTML')
         self.wait_click(selector)
         WebDriverWait(self.driver, timeout).until(EC.none_of(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, selector), first_text)
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, selector), first_text)
         ))
+
+    def wait_until_text_in_attribute(self, selector, attribute, value, timeout=10):
+        try:
+            WebDriverWait(self.driver, timeout).until(EC.text_to_be_present_in_element_attribute((By.CSS_SELECTOR, selector), attribute, value))
+        except TimeoutException:
+            return False
+        return True
 
     def wait_for_delete(self, elem, timeout=60):
         return WebDriverWait(self.driver, timeout).until(EC.staleness_of(elem))

@@ -21,7 +21,10 @@ class EditTest(BaseTest):
         self.assertGreater(len(price), 0, 'Цена пустая')
 
     def test_name_change(self):
-        title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
+        self.adv_page.open(13)
+        self.adv_page.wait_render(self.adv_page.title)
+        title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
+        self.adv_page.wait_click(self.adv_page.edit_btn)
         self.new_adv_page.fill_input(self.new_adv_page.name_input, 'aaa')
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
@@ -30,7 +33,9 @@ class EditTest(BaseTest):
         self.assertEqual(title + 'aaa', page_title, 'Название не изменилось')
 
     def test_name_notchange(self):
-        title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
+        self.adv_page.open(13)
+        self.adv_page.wait_render(self.adv_page.title)
+        title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
         self.new_adv_page.fill_input(self.new_adv_page.name_input, title+'bbb')
         self.new_adv_page.wait_click(self.new_adv_page.cancel_btn)
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')

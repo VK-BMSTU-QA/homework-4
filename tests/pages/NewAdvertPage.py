@@ -32,6 +32,7 @@ class NewAdvertPage(BasePage):
         text_input.send_keys(image)
 
     def get_input_value(self, selector):
+        self.wait_until_text_in_attribute(selector, 'value', 'sometext')
         return self.wait_render(selector).get_attribute('value')
 
     def delete_images(self):

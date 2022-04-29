@@ -71,21 +71,21 @@ class MainTest(BaseTest):
         self.login()
         self.main_page.wait_click(self.main_page.header_profile)
         is_visible = self.main_page.is_exist(self.main_page.expand_menu)
-        self.assertEqual(is_visible, True, 'Нажатие на имя пользователя не открывает меню')
+        self.assertTrue(is_visible, 'Нажатие на имя пользователя не открывает меню')
 
     def test_profile_redirection(self):
         self.login()
         self.main_page.wait_click(self.main_page.header_profile)
         self.main_page.wait_click(self.main_page.profile_link)
         is_redirected = self.main_page.wait_redirect('https://volchock.ru/profile')
-        self.assertEqual(is_redirected, True, 'Редирект на профиль не выполнен')
+        self.assertTrue(is_redirected, 'Редирект на профиль не выполнен')
 
     def test_fav_redirection(self):
         self.login()
         self.main_page.wait_click(self.main_page.header_profile)
         self.main_page.wait_click(self.main_page.fav_link)
         is_redirected = self.main_page.wait_redirect('https://volchock.ru/profile/favorite')
-        self.assertEqual(is_redirected, True, 'Редирект на избранное не выполнен')
+        self.assertTrue(is_redirected, 'Редирект на избранное не выполнен')
 
     def test_set_redirection(self):
         self.login()
