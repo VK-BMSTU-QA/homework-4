@@ -43,7 +43,7 @@ class EditTest(BaseTest):
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
         self.adv_page.wait_render(self.adv_page.title)
         page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-        self.assertEqual(title, page_title, 'Название изменилось')
+        self.assertEqual(len(title), len(page_title), 'Название изменилось')
 
     def test_add_image(self):
         self.new_adv_page.input_images()
