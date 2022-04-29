@@ -12,13 +12,13 @@ class EditTest(BaseTest):
         self.adv_page.open(13)
         self.adv_page.wait_click(self.adv_page.edit_btn)
 
-    def test_title_input(self):
-        title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
-        self.assertGreater(len(title), 0, 'Название пустое')
+    # def test_title_input(self):
+    #     title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
+    #     self.assertGreater(len(title), 0, 'Название пустое')
 
-    def test_price_input(self):
-        price = self.new_adv_page.get_input_value(self.new_adv_page.price_input)
-        self.assertGreater(len(price), 0, 'Цена пустая')
+    # def test_price_input(self):
+    #     price = self.new_adv_page.get_input_value(self.new_adv_page.price_input)
+    #     self.assertGreater(len(price), 0, 'Цена пустая')
 
     def test_name_change(self):
         self.adv_page.open(13)
@@ -36,6 +36,7 @@ class EditTest(BaseTest):
         self.adv_page.open(13)
         self.adv_page.wait_render(self.adv_page.title)
         title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
+        self.adv_page.wait_click(self.adv_page.edit_btn)
         self.new_adv_page.fill_input(self.new_adv_page.name_input, title+'bbb')
         self.new_adv_page.wait_click(self.new_adv_page.cancel_btn)
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
@@ -43,8 +44,8 @@ class EditTest(BaseTest):
         page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
         self.assertEqual(title, page_title, 'Название изменилось')
 
-    def test_add_image(self):
-        self.new_adv_page.input_images()
-        is_paginatable = self.adv_page.is_exist(self.adv_page.next_btn)
-        self.assertTrue(is_paginatable, 'Изображений не 2')
-        self.new_adv_page.delete_images()
+    # def test_add_image(self):
+    #     self.new_adv_page.input_images()
+    #     is_paginatable = self.adv_page.is_exist(self.adv_page.next_btn)
+    #     self.assertTrue(is_paginatable, 'Изображений не 2')
+    #     self.new_adv_page.delete_images()
