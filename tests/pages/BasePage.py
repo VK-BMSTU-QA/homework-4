@@ -12,7 +12,7 @@ class BasePage(Urls):
     def __init__(self, driver) -> None:
         super().__init__()
         self.driver = driver
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(30)
 
     def wait_render(self, selector, timeout=60):
         elem = self.wait_visible(selector)
