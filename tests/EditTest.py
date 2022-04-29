@@ -30,8 +30,7 @@ class EditTest(BaseTest):
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
         self.adv_page.wait_render(self.adv_page.title)
         page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-        print(title, page_title)
-        self.assertNotEqual(title, page_title, 'Название не изменилось')
+        self.assertNotEqual(len(title), len(page_title), 'Название не изменилось')
 
     def test_name_notchange(self):
         self.adv_page.open(13)
