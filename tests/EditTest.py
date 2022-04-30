@@ -21,19 +21,6 @@ class EditTest(BaseTest):
         price = self.new_adv_page.get_input_value(self.new_adv_page.price_input)
         self.assertGreater(len(price), 0, 'Цена пустая')
 
-    # def test_name_change(self):
-    #     self.adv_page.open(13)
-    #     self.adv_page.wait_render(self.adv_page.title)
-    #     title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-    #     self.adv_page.wait_click(self.adv_page.edit_btn)
-    #     self.new_adv_page.fill_input(self.new_adv_page.name_input, f'aaa')
-    #     self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
-    #     self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
-    #     self.adv_page.wait_render(self.adv_page.title)
-    #     self.adv_page.is_exist(self.adv_page.title)
-    #     page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-    #     self.assertNotEqual(len(title), len(page_title), 'Название не изменилось')
-
     def test_name_notchange(self):
         self.adv_page.open(13)
         self.adv_page.wait_render(self.adv_page.title)

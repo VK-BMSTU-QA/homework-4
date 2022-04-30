@@ -15,7 +15,7 @@ class NewAdvertTest(BaseTest):
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         name_div = self.new_adv_page.wait_render(self.new_adv_page.name_div)
         is_error = "text-input_wrong" in name_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки при создании объявления при названии <2')
 
     def test_price_error_validation(self):
@@ -24,7 +24,7 @@ class NewAdvertTest(BaseTest):
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         price_div = self.new_adv_page.wait_render(self.new_adv_page.price_div)
         is_error = "text-input_wrong" in price_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки при отрицательной цене')
 
     def test_address_error_validation(self):
@@ -33,7 +33,7 @@ class NewAdvertTest(BaseTest):
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         adr_div = self.new_adv_page.wait_visible(self.new_adv_page.addres_div)
         is_error = "text-input_wrong" in adr_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки при создании объявления без адреса')
 
     def test_price_valid_validation(self):
@@ -42,13 +42,13 @@ class NewAdvertTest(BaseTest):
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         price_div = self.new_adv_page.wait_visible(self.new_adv_page.price_div)
         is_error = "text-input_correct" in price_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет корректной валидации цены')
 
     def test_image_uploader(self):
         self.new_adv_page.fill_image_input(os.getcwd()+"/tests/images/test.jpeg")
         is_added = self.new_adv_page.is_exist(self.new_adv_page.inputed_image)
-        self.assertEqual(is_added, True,
+        self.assertTrue(is_added,
                          'изображение не добавилось')
 
     def test_image_delete(self):

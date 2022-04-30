@@ -19,6 +19,4 @@ class SalesmanTest(BaseTest):
         self.salesman_page.hover(self.salesman_page.star)
         star = self.salesman_page.wait_render(self.salesman_page.star)
         is_active = "star_active" in star.get_attribute("class")
-        self.assertEqual(is_active,
-                         True,
-                         'Элементы рейтинга не становятся активными')
+        self.assertTrue(is_active, 'Элементы рейтинга не становятся активными')

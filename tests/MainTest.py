@@ -11,7 +11,7 @@ class MainTest(BaseTest):
 
     def test_categories(self):
         is_exist = self.main_page.is_exist(self.main_page.categories)
-        self.assertEqual(is_exist, True,
+        self.assertTrue(is_exist,
                          'На главной странице не отображается блок категорий')
 
     def test_category_routing(self):
@@ -25,7 +25,7 @@ class MainTest(BaseTest):
 
     def test_card_grid(self):
         is_visible_card = self.main_page.is_exist(self.main_page.card)
-        self.assertEqual(is_visible_card, True,
+        self.assertTrue(is_visible_card,
                          'Грид карточек не отображается')
 
     def test_card_routing(self):
@@ -40,7 +40,7 @@ class MainTest(BaseTest):
         self.main_page.wait_click(self.main_page.search_btn)
         self.main_page.wait_any_redirect('search')
         is_empty = self.main_page.is_exist(self.main_page.empty)
-        self.assertEqual(is_empty, True, 'Элемент пустой сетки отсутствует')
+        self.assertTrue(is_empty, 'Элемент пустой сетки отсутствует')
 
     def test_change_lang_btn(self):
         btn = self.main_page.wait_render(self.main_page.open_modal_btn)
@@ -52,12 +52,12 @@ class MainTest(BaseTest):
     def test_open_modal_log(self):
         self.main_page.click_login()
         is_modal_active = self.main_page.is_exist(self.main_page.modal_window)
-        self.assertEqual(is_modal_active, True, 'Модальное окно не открылось')
+        self.assertTrue(is_modal_active, 'Модальное окно не открылось')
 
     def test_open_modal_new_adv(self):
         self.main_page.click_new_adv()
         is_modal_active = self.main_page.is_exist(self.main_page.modal_window)
-        self.assertEqual(is_modal_active, True, 'Модальное окно не открылось')
+        self.assertTrue(is_modal_active, 'Модальное окно не открылось')
 
     def test_card_search(self):
         self.main_page.fill_input(self.main_page.search_input, 'тест')
@@ -92,11 +92,11 @@ class MainTest(BaseTest):
         self.main_page.wait_click(self.main_page.header_profile)
         self.main_page.wait_click(self.main_page.setting_link)
         is_redirected = self.main_page.wait_redirect('https://volchock.ru/profile/settings')
-        self.assertEqual(is_redirected, True, 'Редирект на настройки не выполнен')
+        self.assertTrue(is_redirected, 'Редирект на настройки не выполнен')
 
     def test_logout(self):
         self.login()
         self.main_page.wait_click(self.main_page.header_profile)
         self.main_page.wait_click(self.main_page.logout_btn)
         is_logout = self.main_page.is_exist(self.main_page.open_modal_btn)
-        self.assertEqual(is_logout, True, 'Логаут по нажатию кнопки не выполнен')
+        self.assertTrue(is_logout, 'Логаут по нажатию кнопки не выполнен')

@@ -14,7 +14,7 @@ class LoginAndSignUpTest(BaseTest):
         login_btn.click()
         login_email_div = self.main_page.wait_render(self.main_page.login_email_div)
         is_error = "text-input_wrong" in login_email_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Поле ввода email нет ошибки при пустой почте')
 
     def test_log_broken_email(self):
@@ -23,7 +23,7 @@ class LoginAndSignUpTest(BaseTest):
         login_btn.click()
         login_email_div = self.main_page.wait_render(self.main_page.login_email_div)
         is_error = "text-input_wrong" in login_email_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Поле ввода email нет ошибки при ошибке в почте')
 
     def test_log_empty_password(self):
@@ -32,7 +32,7 @@ class LoginAndSignUpTest(BaseTest):
         login_btn.click()
         login_password_div = self.main_page.wait_render(self.main_page.login_password_div)
         is_error = "text-input_wrong" in login_password_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Поле ввода пароля логина не показывает ошибки при пустом инпуте'
                          )
 
@@ -42,7 +42,7 @@ class LoginAndSignUpTest(BaseTest):
         login_btn = self.main_page.wait_render(self.main_page.login_btn)
         login_btn.click()
         is_error = self.main_page.is_exist(self.main_page.input_err)
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Поле ввода email логина не показывает ошибки при несуществующем пользователе'
                          )
 
@@ -53,7 +53,7 @@ class LoginAndSignUpTest(BaseTest):
         login_btn = self.main_page.wait_render(self.main_page.login_btn)
         login_btn.click()
         is_logged = self.main_page.is_exist(self.main_page.header_profile)
-        self.assertEqual(is_logged, True,
+        self.assertTrue(is_logged,
                          'Ошибка авторизации при корректных данных')
 
     def test_reg_empty(self):
@@ -65,7 +65,7 @@ class LoginAndSignUpTest(BaseTest):
 
         email_div = self.main_page.wait_render(self.main_page.reg_email_div)
         is_error = "text-input_wrong" in email_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при пустом email')
 
     def test_reg_broken_email(self):
@@ -79,7 +79,7 @@ class LoginAndSignUpTest(BaseTest):
 
         email_div = self.main_page.wait_render(self.main_page.reg_email_div)
         is_error = "text-input_wrong" in email_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при неверном формате email')
 
     def test_reg_correct_email(self):
@@ -93,7 +93,7 @@ class LoginAndSignUpTest(BaseTest):
 
         email_div = self.main_page.wait_render(self.main_page.reg_email_div)
         is_correct = "text-input_correct" in email_div.get_attribute("class")
-        self.assertEqual(is_correct, True,
+        self.assertTrue(is_correct,
                          'Ошибки в регистрации при верном формате email')
 
     def test_reg_short_name(self):
@@ -107,7 +107,7 @@ class LoginAndSignUpTest(BaseTest):
 
         name_div = self.main_page.wait_render(self.main_page.reg_name_div)
         is_error = "text-input_wrong" in name_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при слишком коротком имени <2')
 
     def test_reg_spec_sign_name(self):
@@ -121,7 +121,7 @@ class LoginAndSignUpTest(BaseTest):
 
         name_div = self.main_page.wait_render(self.main_page.reg_name_div)
         is_error = "text-input_wrong" in name_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при спец символах в имени')
 
     def test_reg_short_surname(self):
@@ -135,7 +135,7 @@ class LoginAndSignUpTest(BaseTest):
 
         surnname_div = self.main_page.wait_render(self.main_page.reg_surname_div)
         is_error = "text-input_wrong" in surnname_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при слишком короткой фамилии <2')
 
     def test_reg_spec_sign_surname(self):
@@ -149,7 +149,7 @@ class LoginAndSignUpTest(BaseTest):
 
         surnname_div = self.main_page.wait_render(self.main_page.reg_surname_div)
         is_error = "text-input_wrong" in surnname_div.get_attribute("class")
-        self.assertEqual(is_error, True,
+        self.assertTrue(is_error,
                          'Нет ошибки в регистрации при спец символах в фамилии')
 
     def test_reg_short_password(self):
