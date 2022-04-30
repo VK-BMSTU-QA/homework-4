@@ -27,7 +27,7 @@ class NewAdvertPage(BasePage):
         self.driver.get('https://volchock.ru/newAd')
 
     def fill_image_input(self, image):
-        text_input = WebDriverWait(self.driver, 10).until(
+        text_input = WebDriverWait(self.driver, 20).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.image_input)))
         text_input.send_keys(image)
 
@@ -44,7 +44,7 @@ class NewAdvertPage(BasePage):
         self.wait_redirect('https://volchock.ru/ad/13')
 
     def input_images(self):
-        for _ in range(3):
+        for _ in range(2):
             self.driver.get('https://volchock.ru/ad/13/edit')
             self.fill_image_input(os.getcwd()+"/tests/images/test.jpeg")
             self.is_exist(self.inputed_image)
