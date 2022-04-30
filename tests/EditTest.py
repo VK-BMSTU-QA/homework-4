@@ -1,3 +1,4 @@
+import string
 from tests.BaseTest import BaseTest
 from tests.pages.NewAdvertPage import NewAdvertPage
 from tests.pages.AdvertPage import AdvertPage
@@ -25,7 +26,7 @@ class EditTest(BaseTest):
         self.adv_page.wait_render(self.adv_page.title)
         title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
         self.adv_page.wait_click(self.adv_page.edit_btn)
-        self.new_adv_page.fill_input(self.new_adv_page.name_input, title + 'aaa')
+        self.new_adv_page.fill_input(self.new_adv_page.name_input, f'{title}aaa')
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
         self.adv_page.wait_render(self.adv_page.title)
