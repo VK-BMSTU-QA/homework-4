@@ -46,6 +46,7 @@ class EditTest(BaseTest):
 
     def test_add_image(self):
         self.new_adv_page.input_images()
+        self.adv_page.wait_render(self.adv_page.next_btn)
         is_paginatable = self.adv_page.is_exist(self.adv_page.next_btn)
         self.assertTrue(is_paginatable, 'Изображений не 2')
         self.new_adv_page.delete_images()
