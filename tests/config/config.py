@@ -1,4 +1,4 @@
 ON_DRIVER = True
-DRIVER = './drivers/chromedriver_linux'
+DRIVER = './drivers/chromedriver'
 BROWSER = 'chrome'
 MOZILA_DRIVER = './drivers/geckodriver'
