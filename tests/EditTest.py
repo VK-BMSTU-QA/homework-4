@@ -30,6 +30,7 @@ class EditTest(BaseTest):
         self.new_adv_page.wait_click(self.new_adv_page.submit_btn)
         self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
         self.adv_page.wait_render(self.adv_page.title)
+        self.adv_page.is_exist(self.new_adv_page.addres_div)
         page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
         self.assertNotEqual(len(title), len(page_title), 'Название не изменилось')
 
