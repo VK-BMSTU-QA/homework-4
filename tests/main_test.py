@@ -10,6 +10,8 @@ from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException        
+
 
 from tests.login_test import LoginPage
 
@@ -54,6 +56,8 @@ class Sidebar(Component):
 
 class Playlists(Component):
     PLAYLIST = '//a[@class="pl-link"]'
+    PUBLIC_PLAYLISTS_BUTTON = '//div[contains(text(), "Public playlists")]'
+    TOP10_PUBLIC_PLAYLIST = '//div[@class="suggested-playlist-name" and contains(text(),"LostPointer top 10")]'
 
     def get_first_playlist_href(self):
         return self.driver.find_element_by_xpath(self.PLAYLIST).get_attribute('href')
@@ -63,6 +67,19 @@ class Playlists(Component):
             lambda d: d.find_element_by_xpath(self.PLAYLIST)
         )
         playlist.click()
+
+    def open_public_playlists(self):
+        public = WebDriverWait(self.driver, 5, 0.1).until(
+            lambda d: self.driver.find_element_by_xpath(self.PUBLIC_PLAYLISTS_BUTTON)
+        )
+        public.click()
+
+    def get_top10_playlist_exists(self):
+        try:
+            self.driver.find_element_by_xpath(self.TOP10_PUBLIC_PLAYLIST)
+        except NoSuchElementException:
+            return False
+        return True
 
 class Albums(Component):
     ALBUMS = '//div[@class="top-album"]'
@@ -105,17 +122,24 @@ class MainPageTest(unittest.TestCase):
         )
 
         main_page = MainPage(self.driver)
-        albums = main_page.albums
         
+        albums = main_page.albums
+
         first_album = albums.get_first_album_id()
         albums.open_first_album()
         self.assertEqual(main_page.BASE_URL + f'album/{first_album}', self.driver.current_url)
 
         sidebar = main_page.sidebar
+
         sidebar.go_home_by_logo()
         self.assertEqual(main_page.BASE_URL, self.driver.current_url)
 
         playlists = main_page.playlists
+
         first_playlist_href = playlists.get_first_playlist_href()
         playlists.open_first_playlist()
         self.assertEqual(first_playlist_href, self.driver.current_url)
+        main_page.open()
+
+        playlists.open_public_playlists()
+        self.assertTrue(playlists.get_top10_playlist_exists())
