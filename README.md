@@ -107,6 +107,11 @@
 
 ### Чек-лист №3 (Ветошкин Артем)
 #### Добавление уровня и редактирование уровня
+1. [Страница входа](https://pyaterochka-team.site/signin)
+2. [Страница аккаунта автора](https://pyaterochka-team.site/profile/edit/creator_settings)
+3. [Страница создания уровня](https://pyaterochka-team.site/profile/creator/level/create)
+4. [Страница редактирования уровня](https://pyaterochka-team.site/profile/creator/level/edit/2)
+
 - [ ] Войти в существующий аккаунт автора
 - [ ] Нажать кнопку `Настройки` в выпадающем меню пользователя
 - [ ] Выбрать вкладку `Аккаунт автора`
