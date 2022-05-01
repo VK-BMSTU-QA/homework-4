@@ -32,9 +32,37 @@ class MainPage(Page):
     def albums(self):
         return Albums(self.driver)
 
+    @property
+    def sidebar(self):
+        return Sidebar(self.driver)
+
+    @property
+    def playlists(self):
+        return Playlists(self.driver)
+
 class Component(object):
     def __init__(self, driver):
         self.driver = driver
+
+class Sidebar(Component):
+    LOGO = '//a[@class="sidebar__icon__logo"]'
+    HOME = '//a[@class="sidebar__icon" and @href="/"]'
+    FAVORITES = '//a[@class="sidebar__icon" and @href="/favorites"]'
+
+    def go_home_by_logo(self):
+        self.driver.find_element_by_xpath(self.LOGO).click()
+
+class Playlists(Component):
+    PLAYLIST = '//a[@class="pl-link"]'
+
+    def get_first_playlist_href(self):
+        return self.driver.find_element_by_xpath(self.PLAYLIST).get_attribute('href')
+
+    def open_first_playlist(self):
+        playlist = WebDriverWait(self.driver, 5, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.PLAYLIST)
+        )
+        playlist.click()
 
 class Albums(Component):
     ALBUMS = '//div[@class="top-album"]'
@@ -81,7 +109,13 @@ class MainPageTest(unittest.TestCase):
         
         first_album = albums.get_first_album_id()
         albums.open_first_album()
-
         self.assertEqual(main_page.BASE_URL + f'album/{first_album}', self.driver.current_url)
 
-        
+        sidebar = main_page.sidebar
+        sidebar.go_home_by_logo()
+        self.assertEqual(main_page.BASE_URL, self.driver.current_url)
+
+        playlists = main_page.playlists
+        first_playlist_href = playlists.get_first_playlist_href()
+        playlists.open_first_playlist()
+        self.assertEqual(first_playlist_href, self.driver.current_url)
