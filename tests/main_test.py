@@ -10,10 +10,10 @@ from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException        
-
+from selenium.common.exceptions import NoSuchElementException
 
 from tests.login_test import LoginPage
+
 
 def has_element(driver, xpath):
     try:
@@ -23,6 +23,7 @@ def has_element(driver, xpath):
     except NoSuchElementException:
         return False
     return True
+
 
 class Page(object):
     BASE_URL = 'https://lostpointer.site/'
@@ -36,12 +37,14 @@ class Page(object):
         self.driver.get(url)
         self.driver.maximize_window()
 
+
 class PlaylistPage(Page):
     path = 'playlist'
 
     @property
     def controls(self):
         return PlaylistPageControls(self.driver)
+
 
 class MainPage(Page):
     PATH = ''
@@ -58,16 +61,18 @@ class MainPage(Page):
     def playlists(self):
         return Playlists(self.driver)
 
+
 class Component(object):
     def __init__(self, driver):
         self.driver = driver
+
 
 class PlaylistPageControls(Component):
     EDIT_BUTTON = '//div[contains(text(), "Edit playlist")]'
 
     def has_edit_button(self):
         return has_element(self.driver, self.EDIT_BUTTON)
-        
+
 
 class Sidebar(Component):
     LOGO = '//a[@class="sidebar__icon__logo"]'
@@ -76,6 +81,7 @@ class Sidebar(Component):
 
     def go_home_by_logo(self):
         self.driver.find_element_by_xpath(self.LOGO).click()
+
 
 class Playlists(Component):
     PLAYLIST = '//a[@class="pl-link"]'
@@ -107,6 +113,7 @@ class Playlists(Component):
         )
         create.click()
 
+
 class Albums(Component):
     ALBUMS = '//div[@class="top-album"]'
     TITLE = '//div[@class="top-album__title"]'
@@ -115,9 +122,10 @@ class Albums(Component):
 
     def open_first_album(self):
         album = self.driver.find_element_by_xpath(self.ALBUMS).click()
-    
+
     def get_first_album_id(self):
         return self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute('data-id')
+
 
 class MainPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
@@ -127,7 +135,7 @@ class MainPageTest(unittest.TestCase):
         browser = os.environ.get('TESTBROWSER', 'CHROME')
 
         self.driver = Remote(
-            command_executor = 'http://127.0.0.1:4444/wd/hub',
+            command_executor='http://127.0.0.1:4444/wd/hub',
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
@@ -148,7 +156,7 @@ class MainPageTest(unittest.TestCase):
         )
 
         main_page = MainPage(self.driver)
-        
+
         albums = main_page.albums
 
         first_album = albums.get_first_album_id()

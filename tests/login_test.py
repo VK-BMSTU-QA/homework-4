@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+
 class Page(object):
     BASE_URL = 'https://lostpointer.site/'
     PATH = 'signin'
@@ -23,6 +24,7 @@ class Page(object):
         self.driver.get(url)
         self.driver.maximize_window()
 
+
 class LoginPage(Page):
     PATH = 'signin'
 
@@ -30,9 +32,11 @@ class LoginPage(Page):
     def form(self):
         return LoginForm(self.driver)
 
+
 class Component(object):
     def __init__(self, driver):
         self.driver = driver
+
 
 class LoginForm(Component):
     EMAIL = '//input[@name="email"]'
@@ -48,6 +52,7 @@ class LoginForm(Component):
     def login(self):
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
 
+
 class LoginTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
     PASSWORD = os.environ['TESTPASSWORD']
@@ -56,7 +61,7 @@ class LoginTest(unittest.TestCase):
         browser = os.environ.get('TESTBROWSER', 'CHROME')
 
         self.driver = Remote(
-            command_executor = 'http://127.0.0.1:4444/wd/hub',
+            command_executor='http://127.0.0.1:4444/wd/hub',
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
