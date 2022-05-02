@@ -15,6 +15,15 @@ from selenium.common.exceptions import NoSuchElementException
 
 from tests.login_test import LoginPage
 
+def has_element(driver, xpath):
+    try:
+        WebDriverWait(driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(xpath)
+        )
+    except NoSuchElementException:
+        return False
+    return True
+
 class Page(object):
     BASE_URL = 'https://lostpointer.site/'
     PATH = ''
@@ -26,6 +35,13 @@ class Page(object):
         url = urljoin(self.BASE_URL, self.PATH)
         self.driver.get(url)
         self.driver.maximize_window()
+
+class PlaylistPage(Page):
+    path = 'playlist'
+
+    @property
+    def controls(self):
+        return PlaylistPageControls(self.driver)
 
 class MainPage(Page):
     PATH = ''
@@ -46,6 +62,13 @@ class Component(object):
     def __init__(self, driver):
         self.driver = driver
 
+class PlaylistPageControls(Component):
+    EDIT_BUTTON = '//div[contains(text(), "Edit playlist")]'
+
+    def has_edit_button(self):
+        return has_element(self.driver, self.EDIT_BUTTON)
+        
+
 class Sidebar(Component):
     LOGO = '//a[@class="sidebar__icon__logo"]'
     HOME = '//a[@class="sidebar__icon" and @href="/"]'
@@ -58,6 +81,7 @@ class Playlists(Component):
     PLAYLIST = '//a[@class="pl-link"]'
     PUBLIC_PLAYLISTS_BUTTON = '//div[contains(text(), "Public playlists")]'
     TOP10_PUBLIC_PLAYLIST = '//div[@class="suggested-playlist-name" and contains(text(),"LostPointer top 10")]'
+    CREATE_NEW = '//div[@class="suggested-playlist-name" and contains(text(), "Create new...")]'
 
     def get_first_playlist_href(self):
         return self.driver.find_element_by_xpath(self.PLAYLIST).get_attribute('href')
@@ -70,16 +94,18 @@ class Playlists(Component):
 
     def open_public_playlists(self):
         public = WebDriverWait(self.driver, 5, 0.1).until(
-            lambda d: self.driver.find_element_by_xpath(self.PUBLIC_PLAYLISTS_BUTTON)
+            lambda d: d.find_element_by_xpath(self.PUBLIC_PLAYLISTS_BUTTON)
         )
         public.click()
 
     def get_top10_playlist_exists(self):
-        try:
-            self.driver.find_element_by_xpath(self.TOP10_PUBLIC_PLAYLIST)
-        except NoSuchElementException:
-            return False
-        return True
+        return has_element(self.driver, self.TOP10_PUBLIC_PLAYLIST)
+
+    def create_new_playlist(self):
+        create = WebDriverWait(self.driver, 5, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.CREATE_NEW)
+        )
+        create.click()
 
 class Albums(Component):
     ALBUMS = '//div[@class="top-album"]'
@@ -139,6 +165,13 @@ class MainPageTest(unittest.TestCase):
         first_playlist_href = playlists.get_first_playlist_href()
         playlists.open_first_playlist()
         self.assertEqual(first_playlist_href, self.driver.current_url)
+        main_page.open()
+
+        playlist_page = PlaylistPage(self.driver)
+        playlist_page_controls = playlist_page.controls
+        playlists.create_new_playlist()
+        self.assertTrue(playlist_page_controls.has_edit_button())
+
         main_page.open()
 
         playlists.open_public_playlists()
