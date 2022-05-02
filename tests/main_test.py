@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from cProfile import label
+from lib2to3.pgen2 import driver
 import os
 
 import unittest
@@ -10,7 +12,8 @@ from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException        
+from selenium.common.exceptions import NoSuchElementException
+from sympy import proper_divisor_count        
 
 
 from tests.login_test import LoginPage
@@ -57,6 +60,14 @@ class MainPage(Page):
     @property
     def playlists(self):
         return Playlists(self.driver)
+
+    @property
+    def tracks(self):
+        return Tracks(self.driver)
+
+    @property
+    def player(self):
+        return Player(self.driver)
 
 class Component(object):
     def __init__(self, driver):
@@ -107,6 +118,20 @@ class Playlists(Component):
         )
         create.click()
 
+class Tracks(Component):
+    FIRST_PLAY = '//img[@class="track-play"]'
+
+    def play_first_track(self):
+        play = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.FIRST_PLAY)
+        )
+        print(play)
+        print('play found')
+        play.click()
+
+    def get_first_track_id(self):
+        return self.driver.find_element_by_xpath(self.FIRST_PLAY).get_attribute('data-id')
+
 class Albums(Component):
     ALBUMS = '//div[@class="top-album"]'
     TITLE = '//div[@class="top-album__title"]'
@@ -114,10 +139,20 @@ class Albums(Component):
     PLAY_ICON = 'i[class^=top-album__play]'
 
     def open_first_album(self):
-        album = self.driver.find_element_by_xpath(self.ALBUMS).click()
+        self.driver.find_element_by_xpath(self.ALBUMS).click()
     
     def get_first_album_id(self):
-        return self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute('data-id')
+        id = self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute('data-id')
+        return id
+
+class Player(Component):
+    TRACK_LIKE = '//img[@class="player-fav"]'
+
+    def get_playing_track_id(self):
+        id = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.TRACK_LIKE).get_attribute('data-id')
+        )
+        return id
 
 class MainPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
@@ -176,3 +211,13 @@ class MainPageTest(unittest.TestCase):
 
         playlists.open_public_playlists()
         self.assertTrue(playlists.get_top10_playlist_exists())
+
+
+        tracks = main_page.tracks
+        player = main_page.player
+
+        first_track = tracks.get_first_track_id()
+        tracks.play_first_track()
+        self.driver.implicitly_wait(10)
+        playing_track = player.get_playing_track_id()
+        self.assertEqual(first_track, playing_track)
