@@ -47,9 +47,13 @@ class SearchBar(Component):
 class MainLayout(Component):
     LAY = '//div[@class="main-layout__content"]'
     LAY_CHILDREN = LAY + '/*'
+    NOT_FOUND = '//div[@class="search__content__not-found"]'
 
     def has_no_content(self):
         return len(self.driver.find_elements_by_xpath(self.LAY_CHILDREN)) == 0
+
+    def not_found(self):
+        return len(self.driver.find_elements_by_xpath(self.NOT_FOUND)) == 1
 
 
 class SearchPage(Page):
@@ -128,6 +132,9 @@ class SearchPageTest(unittest.TestCase):
 
         tracks.open_first_add_to_playlist()
         self.assertTrue(tracks.playlist_menu_exists())
+
+        search_bar.query('Fhu3u8nf87#Gfd73Odhn8#HD78NG#Dn783gdo78g#')
+        self.assertTrue(main_layout.not_found())
 
         search_album = 'blurry'
         search_bar.query(search_album)
