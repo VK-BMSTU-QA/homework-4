@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from cProfile import label
-from lib2to3.pgen2 import driver
 import os
 
 import unittest
 from urllib.parse import urljoin
-import selenium
 
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
-from sympy import proper_divisor_count        
 
 
 from tests.login_test import LoginPage
@@ -68,6 +65,10 @@ class MainPage(Page):
     @property
     def player(self):
         return Player(self.driver)
+    
+    @property
+    def topbar(self):
+        return Topbar(self.driver)
 
 class Component(object):
     def __init__(self, driver):
@@ -95,10 +96,13 @@ class Playlists(Component):
     CREATE_NEW = '//div[@class="suggested-playlist-name" and contains(text(), "Create new...")]'
 
     def get_first_playlist_href(self):
-        return self.driver.find_element_by_xpath(self.PLAYLIST).get_attribute('href')
+        playlist = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.PLAYLIST)
+        )
+        return playlist.get_attribute('href')
 
     def open_first_playlist(self):
-        playlist = WebDriverWait(self.driver, 5, 0.1).until(
+        playlist = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.PLAYLIST)
         )
         playlist.click()
@@ -120,17 +124,26 @@ class Playlists(Component):
 
 class Tracks(Component):
     FIRST_PLAY = '//img[@class="track-play"]'
+    FIRST_PLAYLIST = '//img[@class="track-list-item-playlist"]'
+    PLAYLISTS_MENU = '//div[@class="menu"]'
 
     def play_first_track(self):
         play = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.FIRST_PLAY)
         )
-        print(play)
-        print('play found')
         play.click()
 
     def get_first_track_id(self):
         return self.driver.find_element_by_xpath(self.FIRST_PLAY).get_attribute('data-id')
+
+    def open_first_add_to_playlist(self):
+        playlist = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.FIRST_PLAYLIST)
+        )
+        playlist.click()
+
+    def playlist_menu_exists(self):
+        return has_element(self.driver, self.PLAYLISTS_MENU)
 
 class Albums(Component):
     ALBUMS = '//div[@class="top-album"]'
@@ -145,6 +158,9 @@ class Albums(Component):
         id = self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute('data-id')
         return id
 
+    def play_first_album(self):
+        self.driver.find_element_by_css_selector(self.PLAY_ICON).click()
+
 class Player(Component):
     TRACK_LIKE = '//img[@class="player-fav"]'
 
@@ -153,6 +169,28 @@ class Player(Component):
             lambda d: d.find_element_by_xpath(self.TRACK_LIKE).get_attribute('data-id')
         )
         return id
+
+class Topbar(Component):
+    SETTINGS = '//i[@class="topbar-icon fa-solid fa-gear"]'
+    AVATAR = '//img[@class="avatar__img"]'
+
+    def click_settings(self):
+        settings = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.SETTINGS)
+        )
+        settings.click()
+
+    def click_avatar(self):
+        avatar = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.AVATAR)
+        )
+        avatar.click()
+
+class TopArtists(Component):
+    FIRST_ARTIST = '//img[@class="suggested-artist__img"]'
+
+    def get_first_artist_id(self):
+        return self.driver.find_element_by_xpath(self.FIRST_ARTIST).get_attribute('data-id')
 
 class MainPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
@@ -191,15 +229,14 @@ class MainPageTest(unittest.TestCase):
         self.assertEqual(main_page.BASE_URL + f'album/{first_album}', self.driver.current_url)
 
         sidebar = main_page.sidebar
-
         sidebar.go_home_by_logo()
         self.assertEqual(main_page.BASE_URL, self.driver.current_url)
 
         playlists = main_page.playlists
-
         first_playlist_href = playlists.get_first_playlist_href()
         playlists.open_first_playlist()
         self.assertEqual(first_playlist_href, self.driver.current_url)
+        
         main_page.open()
 
         playlist_page = PlaylistPage(self.driver)
@@ -212,12 +249,34 @@ class MainPageTest(unittest.TestCase):
         playlists.open_public_playlists()
         self.assertTrue(playlists.get_top10_playlist_exists())
 
-
         tracks = main_page.tracks
         player = main_page.player
 
         first_track = tracks.get_first_track_id()
         tracks.play_first_track()
-        self.driver.implicitly_wait(10)
         playing_track = player.get_playing_track_id()
         self.assertEqual(first_track, playing_track)
+
+        albums.play_first_album()
+        playing_track = player.get_playing_track_id()
+        albums.open_first_album()
+        first_track = tracks.get_first_track_id()
+        self.assertEqual(first_track, playing_track)
+
+        tracks.open_first_add_to_playlist()
+        self.assertTrue(tracks.playlist_menu_exists())
+
+        main_page.open()
+        self.assertEqual(self.driver.current_url, main_page.BASE_URL)
+
+        topbar = main_page.topbar
+
+        topbar.click_settings()
+        self.assertEqual(self.driver.current_url, main_page.BASE_URL + 'profile')
+
+        main_page.open()
+        self.assertEqual(self.driver.current_url, main_page.BASE_URL)
+
+        topbar.click_avatar()
+        self.assertEqual(self.driver.current_url, main_page.BASE_URL + 'profile')
+
