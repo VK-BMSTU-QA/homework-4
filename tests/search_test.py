@@ -33,13 +33,16 @@ class SearchBar(Component):
         # Хак, потому что есть дебаунс и он срабатывает только на физ. нажатие кнопки
         input.send_keys(' ')
         input.send_keys(Keys.BACKSPACE)
-        WebDriverWait(self.driver, 10, 0,1).until(
-            lambda d: len(d.find_elements_by_xpath(MainLayout.LAY_CHILDREN)) == 0
+        WebDriverWait(self.driver, 10, 0, 1).until(
+            lambda d: len(d.find_elements_by_xpath(
+                MainLayout.LAY_CHILDREN)) == 0
         )
         input.send_keys(query)
-        WebDriverWait(self.driver, 10, 0,1).until(
-            lambda d: len(d.find_elements_by_xpath(MainLayout.LAY_CHILDREN)) != 0
+        WebDriverWait(self.driver, 10, 0, 1).until(
+            lambda d: len(d.find_elements_by_xpath(
+                MainLayout.LAY_CHILDREN)) != 0
         )
+
 
 class MainLayout(Component):
     LAY = '//div[@class="main-layout__content"]'
@@ -47,6 +50,7 @@ class MainLayout(Component):
 
     def has_no_content(self):
         return len(self.driver.find_elements_by_xpath(self.LAY_CHILDREN)) == 0
+
 
 class SearchPage(Page):
     path = 'search'
@@ -75,6 +79,7 @@ class SearchPage(Page):
     # def artists(self):
     #     return Artists(self.driver)
 
+
 class SearchPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
     PASSWORD = os.environ['TESTPASSWORD']
@@ -83,7 +88,7 @@ class SearchPageTest(unittest.TestCase):
         browser = os.environ.get('TESTBROWSER', 'CHROME')
 
         self.driver = Remote(
-            command_executor = 'http://127.0.0.1:4444/wd/hub',
+            command_executor='http://127.0.0.1:4444/wd/hub',
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
@@ -110,15 +115,19 @@ class SearchPageTest(unittest.TestCase):
         albums = search_page.albums
         player = search_page.player
         # artists = search_page.artists
-        
+
         search_bar.click()
-        time.sleep(0.5) # !!!УБРАТЬб
+        time.sleep(0.5)  # !!!УБРАТЬб
         self.assertTrue(main_layout.has_no_content())
-        
+
         search_artist = 'tWenTY           onE pilots'
         search_bar.query(search_artist)
         result_artist = tracks.get_first_track_artist()
-        self.assertEqual(re.sub(' {2,}', ' ', search_artist.lower()), result_artist.lower())
+        self.assertEqual(
+            re.sub(' {2,}', ' ', search_artist.lower()), result_artist.lower())
+
+        tracks.open_first_add_to_playlist()
+        self.assertTrue(tracks.playlist_menu_exists())
 
         search_album = 'blurry'
         search_bar.query(search_album)

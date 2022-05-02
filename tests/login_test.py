@@ -18,6 +18,7 @@ class LoginPage(Page):
     def form(self):
         return LoginForm(self.driver)
 
+
 class LoginForm(Component):
     EMAIL = '//input[@name="email"]'
     PASSWORD = '//input[@name="password"]'
@@ -32,6 +33,7 @@ class LoginForm(Component):
     def login(self):
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
 
+
 class LoginTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
     PASSWORD = os.environ['TESTPASSWORD']
@@ -40,7 +42,7 @@ class LoginTest(unittest.TestCase):
         browser = os.environ.get('TESTBROWSER', 'CHROME')
 
         self.driver = Remote(
-            command_executor = 'http://127.0.0.1:4444/wd/hub',
+            command_executor='http://127.0.0.1:4444/wd/hub',
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
