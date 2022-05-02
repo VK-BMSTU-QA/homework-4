@@ -1,18 +1,22 @@
-from cProfile import label
+# -*- coding: utf-8 -*-
+
 import os
 import re
 import time
 import unittest
-from selenium.webdriver import DesiredCapabilities, Remote
-from selenium.webdriver import DesiredCapabilities, Remote
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from tests.common import Page
+from cProfile import label
 
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import DesiredCapabilities, Remote
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from tests.common import Page, Player
 from tests.login_test import Component, LoginPage
-from tests.main_test import MainPage
+from tests.main_test import Albums, MainPage, Tracks
+
 
 class SearchBar(Component):
     SEARCHBAR = '//input[@class="topbar__search-input"]'
@@ -24,7 +28,18 @@ class SearchBar(Component):
         bar.click()
 
     def query(self, query):
-        self.driver.find_element_by_xpath(self.SEARCHBAR).send_keys(query)
+        input = self.driver.find_element_by_xpath(self.SEARCHBAR)
+        input.clear()
+        # Хак, потому что есть дебаунс и он срабатывает только на физ. нажатие кнопки
+        input.send_keys(' ')
+        input.send_keys(Keys.BACKSPACE)
+        WebDriverWait(self.driver, 10, 0,1).until(
+            lambda d: len(d.find_elements_by_xpath(MainLayout.LAY_CHILDREN)) == 0
+        )
+        input.send_keys(query)
+        WebDriverWait(self.driver, 10, 0,1).until(
+            lambda d: len(d.find_elements_by_xpath(MainLayout.LAY_CHILDREN)) != 0
+        )
 
 class MainLayout(Component):
     LAY = '//div[@class="main-layout__content"]'
@@ -53,23 +68,12 @@ class SearchPage(Page):
         return Albums(self.driver)
 
     @property
-    def artists(self):
-        return Artists(self.driver)
-    
-class Tracks(Component):
-    FIRST_TRACK_ARTIST = '//div[@class="track__container__artist"]'
+    def player(self):
+        return Player(self.driver)
 
-    def get_first_track_artist(self):
-        artist = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ARTIST).text
-        )
-        return artist
-
-class Albums(Component):
-    FIRST_ALBUM_ARTIST = '//'
-
-class Artists(Component):
-    FIRST_ARTIST = '//'
+    # @property
+    # def artists(self):
+    #     return Artists(self.driver)
 
 class SearchPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
@@ -104,7 +108,8 @@ class SearchPageTest(unittest.TestCase):
         main_layout = search_page.main_layout
         tracks = search_page.tracks
         albums = search_page.albums
-        artists = search_page.artists
+        player = search_page.player
+        # artists = search_page.artists
         
         search_bar.click()
         time.sleep(0.5) # !!!УБРАТЬб
@@ -114,3 +119,11 @@ class SearchPageTest(unittest.TestCase):
         search_bar.query(search_artist)
         result_artist = tracks.get_first_track_artist()
         self.assertEqual(re.sub(' {2,}', ' ', search_artist.lower()), result_artist.lower())
+
+        search_album = 'blurry'
+        search_bar.query(search_album)
+        albums.play_first_album()
+        playing_track = player.get_playing_track_id()
+        albums.open_first_album()
+        first_track = tracks.get_first_track_id()
+        self.assertEqual(first_track, playing_track)

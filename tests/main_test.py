@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from cProfile import label
 import os
-
 import unittest
+from cProfile import label
 
 from selenium.webdriver import DesiredCapabilities, Remote
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from tests.common import Page, has_element
+from selenium.webdriver.support.ui import WebDriverWait
 
+from tests.common import Albums, Page, Player, Topbar, Tracks, has_element
 from tests.login_test import Component, LoginPage
+
 
 class PlaylistPage(Page):
     path = 'playlist'
@@ -52,7 +52,6 @@ class PlaylistPageControls(Component):
 
     def has_edit_button(self):
         return has_element(self.driver, self.EDIT_BUTTON)
-        
 
 class Sidebar(Component):
     LOGO = '//a[@class="sidebar__icon__logo"]'
@@ -95,75 +94,6 @@ class Playlists(Component):
         )
         create.click()
 
-class Tracks(Component):
-    FIRST_PLAY = '//img[@class="track-play"]'
-    FIRST_PLAYLIST = '//img[@class="track-list-item-playlist"]'
-    PLAYLISTS_MENU = '//div[@class="menu"]'
-
-    def play_first_track(self):
-        play = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_PLAY)
-        )
-        play.click()
-
-    def get_first_track_id(self):
-        return self.driver.find_element_by_xpath(self.FIRST_PLAY).get_attribute('data-id')
-
-    def open_first_add_to_playlist(self):
-        playlist = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_PLAYLIST)
-        )
-        playlist.click()
-
-    def playlist_menu_exists(self):
-        return has_element(self.driver, self.PLAYLISTS_MENU)
-
-class Albums(Component):
-    ALBUMS = '//div[@class="top-album"]'
-    TITLE = '//div[@class="top-album__title"]'
-    ARTIST = '//div[@class="top-album__artist"]'
-    PLAY_ICON = 'i[class^=top-album__play]'
-
-    def open_first_album(self):
-        self.driver.find_element_by_xpath(self.ALBUMS).click()
-    
-    def get_first_album_id(self):
-        id = self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute('data-id')
-        return id
-
-    def play_first_album(self):
-        self.driver.find_element_by_css_selector(self.PLAY_ICON).click()
-
-class Player(Component):
-    TRACK_LIKE = '//img[@class="player-fav"]'
-
-    def get_playing_track_id(self):
-        id = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.TRACK_LIKE).get_attribute('data-id')
-        )
-        return id
-
-class Topbar(Component):
-    SETTINGS = '//i[@class="topbar-icon fa-solid fa-gear"]'
-    AVATAR = '//img[@class="avatar__img"]'
-
-    def click_settings(self):
-        settings = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.SETTINGS)
-        )
-        settings.click()
-
-    def click_avatar(self):
-        avatar = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.AVATAR)
-        )
-        avatar.click()
-
-class TopArtists(Component):
-    FIRST_ARTIST = '//img[@class="suggested-artist__img"]'
-
-    def get_first_artist_id(self):
-        return self.driver.find_element_by_xpath(self.FIRST_ARTIST).get_attribute('data-id')
 
 class MainPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']

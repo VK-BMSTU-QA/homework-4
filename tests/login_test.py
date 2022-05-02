@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import os
-
 import unittest
-from urllib.parse import urljoin
-import selenium
 
 from selenium.webdriver import DesiredCapabilities, Remote
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 from tests.common import Component, Page
+
 
 class LoginPage(Page):
     PATH = 'signin'

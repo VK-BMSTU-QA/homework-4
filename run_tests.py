@@ -2,11 +2,8 @@
 
 import sys
 import unittest
+
 from tests.login_test import LoginTest
-
-import unittest
-from selenium import webdriver
-
 from tests.main_test import MainPageTest
 from tests.search_test import SearchPageTest
 
