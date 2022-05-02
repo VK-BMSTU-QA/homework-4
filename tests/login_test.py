@@ -11,17 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-class Page(object):
-    BASE_URL = 'https://lostpointer.site/'
-    PATH = 'signin'
-
-    def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        url = urljoin(self.BASE_URL, self.PATH)
-        self.driver.get(url)
-        self.driver.maximize_window()
+from tests.common import Component, Page
 
 class LoginPage(Page):
     PATH = 'signin'
@@ -29,10 +19,6 @@ class LoginPage(Page):
     @property
     def form(self):
         return LoginForm(self.driver)
-
-class Component(object):
-    def __init__(self, driver):
-        self.driver = driver
 
 class LoginForm(Component):
     EMAIL = '//input[@name="email"]'
