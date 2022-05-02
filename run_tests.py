@@ -8,13 +8,13 @@ import unittest
 from selenium import webdriver
 
 from tests.main_test import MainPageTest
-from tests.search_test import SearchTest
+from tests.search_test import SearchPageTest
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
         unittest.makeSuite(LoginTest),
         unittest.makeSuite(MainPageTest),
-        unittest.makeSuite(SearchTest),
+        unittest.makeSuite(SearchPageTest),
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())
