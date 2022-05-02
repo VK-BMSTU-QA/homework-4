@@ -4,37 +4,14 @@ from cProfile import label
 import os
 
 import unittest
-from urllib.parse import urljoin
 
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from tests.common import Page, has_element
 
-
-from tests.login_test import LoginPage
-
-def has_element(driver, xpath):
-    try:
-        WebDriverWait(driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(xpath)
-        )
-    except NoSuchElementException:
-        return False
-    return True
-
-class Page(object):
-    BASE_URL = 'https://lostpointer.site/'
-    PATH = ''
-
-    def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        url = urljoin(self.BASE_URL, self.PATH)
-        self.driver.get(url)
-        self.driver.maximize_window()
+from tests.login_test import Component, LoginPage
 
 class PlaylistPage(Page):
     path = 'playlist'
@@ -69,10 +46,6 @@ class MainPage(Page):
     @property
     def topbar(self):
         return Topbar(self.driver)
-
-class Component(object):
-    def __init__(self, driver):
-        self.driver = driver
 
 class PlaylistPageControls(Component):
     EDIT_BUTTON = '//div[contains(text(), "Edit playlist")]'
@@ -279,4 +252,3 @@ class MainPageTest(unittest.TestCase):
 
         topbar.click_avatar()
         self.assertEqual(self.driver.current_url, main_page.BASE_URL + 'profile')
-
