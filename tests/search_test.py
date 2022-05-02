@@ -129,6 +129,10 @@ class SearchPageTest(unittest.TestCase):
         result_artist = tracks.get_first_track_artist()
         self.assertEqual(
             re.sub(' {2,}', ' ', search_artist.lower()), result_artist.lower())
+        first_track = tracks.get_first_track_id()
+        tracks.play_first_track()
+        playing_track = player.get_playing_track_id()
+        self.assertEqual(first_track, playing_track)
 
         tracks.open_first_add_to_playlist()
         self.assertTrue(tracks.playlist_menu_exists())

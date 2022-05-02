@@ -36,6 +36,7 @@ def has_element(driver, xpath):
 
 class Player(Component):
     TRACK_LIKE = '//img[@class="player-fav"]'
+    CURRENT_TIME = '//div[@class="player__time"]'
 
     def get_playing_track_id(self):
         id = WebDriverWait(self.driver, 10, 0.1).until(
@@ -60,10 +61,13 @@ class Albums(Component):
         return id
 
     def play_first_album(self):
-        play = WebDriverWait(self.driver, 10, 0, 1).until(
+        play = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_css_selector(self.PLAY_ICON)
         )
         play.click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(Player.CURRENT_TIME).text == '0:01'
+        )
 
 
 class Topbar(Component):
