@@ -80,7 +80,7 @@ class FavoritesTest(unittest.TestCase):
     def test_toggle_player_favor(self):
         track_id = self.favorites_page.track_list.get_track_id()
 
-        self.favorites_page.track_list.play_first_track()
+        self.favorites_page.track_list.play_track()
         self.favorites_page.track_list.pause_first_track()
 
         self.favorites_page.track_list.remove_like(track_id)
