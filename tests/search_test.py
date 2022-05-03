@@ -77,10 +77,6 @@ class SearchPage(Page):
     def player(self):
         return Player(self.driver)
 
-    # @property
-    # def artists(self):
-    #     return Artists(self.driver)
-
 
 class SearchPageTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
