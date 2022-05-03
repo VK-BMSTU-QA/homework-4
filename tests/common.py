@@ -47,13 +47,17 @@ class Player(Component):
 
 
 class Albums(Component):
-    ALBUMS = '//div[@class="top-album"]'
+    FIRST_ALBUM = '//div[@class="top-album"]'
     TITLE = '//div[@class="top-album__title"]'
     ARTIST = '//div[@class="top-album__artist"]'
     PLAY_ICON = 'i[class^=top-album__play]'
+    ALBUM_LABEL = '//div[@class="album__description-label"]'
 
     def open_first_album(self):
-        self.driver.find_element_by_xpath(self.ALBUMS).click()
+        self.driver.find_element_by_xpath(self.FIRST_ALBUM).click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.ALBUM_LABEL).text == 'album'
+        )
 
     def get_first_album_id(self):
         id = self.driver.find_element_by_css_selector(
@@ -66,7 +70,8 @@ class Albums(Component):
         )
         play.click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(Player.CURRENT_TIME).text == '0:01'
+            lambda d: d.find_element_by_xpath(
+                Player.CURRENT_TIME).text == '0:01'
         )
 
 

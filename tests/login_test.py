@@ -49,7 +49,7 @@ class LoginTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def test(self):
+    def test_signin(self):
         login_page = LoginPage(self.driver)
         login_page.open()
 

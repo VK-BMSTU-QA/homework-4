@@ -64,7 +64,8 @@ class Playlists(Component):
 
     def get_first_playlist_href(self):
         return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.PLAYLIST).get_attribute('href')
+            lambda d: d.find_element_by_xpath(
+                self.PLAYLIST).get_attribute('href')
         )
 
     def open_first_playlist(self):
@@ -101,10 +102,6 @@ class MainPageTest(unittest.TestCase):
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
-    def tearDown(self):
-        self.driver.quit()
-
-    def test(self):
         login_page = LoginPage(self.driver)
         login_page.open()
 
@@ -117,6 +114,10 @@ class MainPageTest(unittest.TestCase):
             EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
         )
 
+    def tearDown(self):
+        self.driver.quit()
+
+    def test_open_first_album(self):
         main_page = MainPage(self.driver)
 
         albums = main_page.albums
@@ -126,27 +127,35 @@ class MainPageTest(unittest.TestCase):
         self.assertEqual(main_page.BASE_URL +
                          f'album/{first_album}', self.driver.current_url)
 
+    def test_go_home_from_profile(self):
+        main_page = MainPage(self.driver)
         sidebar = main_page.sidebar
         sidebar.go_home_by_logo()
         self.assertEqual(main_page.BASE_URL, self.driver.current_url)
 
+    def test_open_first_playlist(self):
+        main_page = MainPage(self.driver)
         playlists = main_page.playlists
         first_playlist_href = playlists.get_first_playlist_href()
         playlists.open_first_playlist()
         self.assertEqual(first_playlist_href, self.driver.current_url)
 
-        main_page.open()
-
+    def test_create_new_playlist(self):
+        main_page = MainPage(self.driver)
+        playlists = main_page.playlists
         playlist_page = PlaylistPage(self.driver)
         playlist_page_controls = playlist_page.controls
         playlists.create_new_playlist()
         self.assertTrue(playlist_page_controls.has_edit_button())
 
-        main_page.open()
-
+    def test_open_public_playlist(self):
+        main_page = MainPage(self.driver)
+        playlists = main_page.playlists
         playlists.open_public_playlists()
         self.assertTrue(playlists.get_top10_playlist_exists())
 
+    def test_play_first_track(self):
+        main_page = MainPage(self.driver)
         tracks = main_page.tracks
         player = main_page.player
 
@@ -155,27 +164,32 @@ class MainPageTest(unittest.TestCase):
         playing_track = player.get_playing_track_id()
         self.assertEqual(first_track, playing_track)
 
+    def test_play_first_album(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        albums = main_page.albums
         albums.play_first_album()
         playing_track = player.get_playing_track_id()
         albums.open_first_album()
         first_track = tracks.get_first_track_id()
         self.assertEqual(first_track, playing_track)
 
+    def test_add_to_playlist_popup(self):
+        tracks = MainPage(self.driver).tracks
         tracks.open_first_add_to_playlist()
         self.assertTrue(tracks.playlist_menu_exists())
 
-        main_page.open()
-        self.assertEqual(self.driver.current_url, main_page.BASE_URL)
-
+    def test_open_profile_via_settings(self):
+        main_page = MainPage(self.driver)
         topbar = main_page.topbar
-
         topbar.click_settings()
         self.assertEqual(self.driver.current_url,
                          main_page.BASE_URL + 'profile')
 
-        main_page.open()
-        self.assertEqual(self.driver.current_url, main_page.BASE_URL)
-
+    def test_open_profile_via_avatar(self):
+        main_page = MainPage(self.driver)
+        topbar = main_page.topbar
         topbar.click_avatar()
         self.assertEqual(self.driver.current_url,
                          main_page.BASE_URL + 'profile')
