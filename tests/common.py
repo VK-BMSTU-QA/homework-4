@@ -63,6 +63,28 @@ class Player(Component):
         )
         return id
 
+    def get_like_btn(self):
+        return WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.TRACK_LIKE)
+        )
+
+    def remove_like(self):
+        self.get_like_btn().click()
+        WebDriverWait(self.driver, 10).until(
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+        )
+
+    def add_like(self):
+        self.get_like_btn().click()
+        WebDriverWait(self.driver, 10).until(
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+        )
+
+    def track_is_liked(self):
+        return bool(
+            self.get_like_btn().get_attribute("data-in_favorites")
+        )
+
 
 class Albums(Component):
     FIRST_ALBUM = '//div[@class="top-album"]'
@@ -135,8 +157,7 @@ class Tracks(Component):
     PLAYLISTS_MENU = '//div[@class="menu"]'
     FIRST_TRACK_ARTIST = '//div[@class="track__container__artist"]'
     FIRST_TRACK_ALBUM = '//img[@class="track__artwork__img"]'
-    FIRST_TRACK_FAV_BTN = '//img[@class="track-fav"]'
-    TRACK_FAV_BTN_BY_ID = '//img[@class="track-fav" and @data-id="{}"]'
+    TRACK_LIKE_BTN = '//img[@class="track-fav" and @data-id="{}"]'
 
     def get_first_track_artist(self):
         artist = WebDriverWait(self.driver, 10, 0.1).until(
@@ -149,6 +170,9 @@ class Tracks(Component):
             lambda d: d.find_element_by_xpath(self.FIRST_PLAY)
         )
         play.click()
+
+    def pause_first_track(self):
+        self.play_first_track()
 
     def get_first_track_id(self):
         return WebDriverWait(self.driver, 10, 0.1).until(
@@ -177,24 +201,24 @@ class Tracks(Component):
         )
         artist.click()
 
-    def get_fav_btn(self, track_id):
+    def get_like_btn(self, track_id):
         return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.TRACK_FAV_BTN_BY_ID.format(track_id))
+            lambda d: d.find_element_by_xpath(self.TRACK_LIKE_BTN.format(track_id))
         )
 
-    def remove_favor(self, track_id):
-        self.get_fav_btn(track_id).click()
+    def remove_like(self, track_id):
+        self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, 10).until(
-            element_attribute_not_to_include((By.XPATH, self.TRACK_FAV_BTN_BY_ID.format(track_id)), "data-in_favorites")
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
-    def add_to_favorites(self, track_id):
-        self.get_fav_btn(track_id).click()
+    def add_like(self, track_id):
+        self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, 10).until(
-            EC.element_attribute_to_include((By.XPATH, self.TRACK_FAV_BTN_BY_ID.format(track_id)), "data-in_favorites")
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
-    def track_is_in_favor(self, track_id):
+    def track_is_liked(self, track_id):
         return bool(
-            self.get_fav_btn(track_id).get_attribute("data-in_favorites")
+            self.get_like_btn(track_id).get_attribute("data-in_favorites")
         )
