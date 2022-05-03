@@ -14,7 +14,7 @@ from tests.login_test import Component, LoginPage
 
 
 class PlaylistPage(Page):
-    path = 'playlist'
+    PATH = 'playlist'
 
     @property
     def controls(self):
