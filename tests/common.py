@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from urllib.parse import urljoin
 
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException, StaleElementReferenceException
