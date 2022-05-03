@@ -177,11 +177,8 @@ class PlaylistsTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def logout(self):
-        self.playlists_page.topbar.click_logout()
-
     def test_edit_window_unauthorized(self):
-        self.logout()
+        self.playlists_page.topbar.log_out()
         WebDriverWait(self.driver, 10).until(
             EC.element_attribute_to_include((By.ID, "signin-button"), "href")
         )
