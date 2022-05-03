@@ -1,7 +1,5 @@
 import os
-import time
 import unittest
-from cProfile import label
 
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.common.by import By
@@ -9,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from sympy import O
 
-from tests.common import Albums, Page, Player, Sidebar, Topbar, Tracks, has_element
+from tests.common import Page
 from tests.login_test import Component, LoginPage
 
 
