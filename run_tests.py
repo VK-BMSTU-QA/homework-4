@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-
 import sys
 import unittest
 
 from tests.main_test import MainPageTest
 
 from tests.login_test import LoginTest
+from tests.playlists_test import PlaylistsTest
 from tests.register_test import RegisterTest
 from tests.favorites_test import FavoritesTest
 
@@ -22,7 +21,8 @@ if __name__ == '__main__':
         unittest.makeSuite(SearchPageTest),
         unittest.makeSuite(ProfilePageTest),
         unittest.makeSuite(FavoritesTest),
-        unittest.makeSuite(PlayerTest)
+        unittest.makeSuite(PlayerTest),
+        unittest.makeSuite(PlaylistsTest),
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())
