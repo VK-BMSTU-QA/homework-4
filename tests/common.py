@@ -134,6 +134,9 @@ class Player(Component):
         pause = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.PLAY)
         )
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_to_be_clickable((By.XPATH, self.PLAY))
+        )
         pause.click()
 
 
