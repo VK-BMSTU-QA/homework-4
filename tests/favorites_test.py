@@ -67,7 +67,7 @@ class FavoritesTest(unittest.TestCase):
         )
 
     def test_toggle_favor(self):
-        track_id = self.favorites_page.track_list.get_first_track_id()
+        track_id = self.favorites_page.track_list.get_track_id()
 
         self.favorites_page.track_list.remove_like(track_id)
         assert not self.favorites_page.track_list.track_is_liked(track_id)
@@ -78,7 +78,7 @@ class FavoritesTest(unittest.TestCase):
         assert self.favorites_page.track_list.track_is_liked(track_id)
 
     def test_toggle_player_favor(self):
-        track_id = self.favorites_page.track_list.get_first_track_id()
+        track_id = self.favorites_page.track_list.get_track_id()
 
         self.favorites_page.track_list.play_first_track()
         self.favorites_page.track_list.pause_first_track()
