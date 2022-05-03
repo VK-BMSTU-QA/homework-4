@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-
 import unittest
-import selenium
 
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.support.ui import WebDriverWait
