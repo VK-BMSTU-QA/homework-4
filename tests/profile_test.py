@@ -36,6 +36,9 @@ class ProfileForm(Component):
     WRONG_OLD_PASSWORD = '//div[contains(text(), "Old password is wrong")]'
 
     def submit(self):
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_to_be_clickable((By.XPATH, self.SUBMIT))
+        )
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
     def set_nickname(self, nickname):

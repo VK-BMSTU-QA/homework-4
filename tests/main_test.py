@@ -152,6 +152,19 @@ class MainPageTest(unittest.TestCase):
         playlists.open_public_playlists()
         self.assertTrue(playlists.get_top10_playlist_exists())
 
+    def test_play_first_track_unauthorized(self):
+        main_page = MainPage(self.driver)
+        main_page.topbar.log_out()
+        WebDriverWait(self.driver, 10).until(
+            EC.element_attribute_to_include((By.ID, "signin-button"), "href")
+        )
+        tracks = main_page.tracks
+        tracks.play_track()
+
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "login-ui"))
+        )
+
     def test_play_first_track(self):
         main_page = MainPage(self.driver)
         tracks = main_page.tracks
@@ -190,10 +203,10 @@ class MainPageTest(unittest.TestCase):
         topbar.click_avatar()
         self.assertEqual(self.driver.current_url,
                          main_page.BASE_URL + 'profile')
-    
+
     def test_logout(self):
         main_page = MainPage(self.driver)
-        topbar = main_page.topbar        
+        topbar = main_page.topbar
         topbar.log_out()
         self.assertTrue(topbar.logged_out())
     

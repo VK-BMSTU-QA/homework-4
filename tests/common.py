@@ -76,6 +76,9 @@ class Player(Component):
         return len(self.driver.find_elements_by_xpath(self.NEXT_TRACK_CLASS)) == 0
 
     def mute(self):
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, self.MUTE))
+        )
         self.driver.find_element_by_css_selector(self.MUTE).click()
 
     def muted(self):
@@ -235,6 +238,9 @@ class Tracks(Component):
         )
         if last:
             i = len(play) - 1
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_to_be_clickable(play[i])
+        )
         play[i].click()
 
     def pause_track(self):
@@ -249,6 +255,9 @@ class Tracks(Component):
     def open_first_add_to_playlist(self):
         playlist = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.PLAYLIST)
+        )
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_to_be_clickable((By.XPATH, self.PLAYLIST))
         )
         playlist.click()
 
