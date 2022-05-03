@@ -39,6 +39,13 @@ def has_element(driver, xpath):
 class Player(Component):
     TRACK_LIKE = '//img[@class="player-fav"]'
     CURRENT_TIME = '//div[@class="player__time"]'
+    PREV_TRACK = '//img[@id="player-left"]'
+    PLAY = '//img[@id="player-play"]'
+    NEXT_TRACK = '//img[@id="player-right"]'
+    PLAYER = '//div[@class="player"]'
+
+    def hidden(self):
+        return len(self.driver.find_elements_by_xpath(self.PLAYER)) == 0
 
     def get_playing_track_id(self):
         id = WebDriverWait(self.driver, 10, 0.1).until(
@@ -46,6 +53,24 @@ class Player(Component):
                 self.TRACK_LIKE).get_attribute('data-id')
         )
         return id
+
+    def prev_track(self):
+        prev = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.PREV_TRACK)
+        )
+        prev.click()
+
+    def next_track(self):
+        next = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.NEXT_TRACK)
+        )
+        next.click()
+
+    def toggle_play(self):
+        pause = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.PLAY)
+        )
+        pause.click()
 
 
 class Albums(Component):
@@ -102,32 +127,32 @@ class TopArtists(Component):
 
 
 class Tracks(Component):
-    FIRST_PLAY = '//img[@class="track-play"]'
-    FIRST_PLAYLIST = '//img[@class="track-list-item-playlist"]'
+    PLAY = '//img[@class="track-play"]'
+    PLAYLIST = '//img[@class="track-list-item-playlist"]'
     PLAYLISTS_MENU = '//div[@class="menu"]'
     FIRST_TRACK_ARTIST = '//div[@class="track__container__artist"]'
 
-    def get_first_track_artist(self):
+    def get_track_artist(self, i=0):
         artist = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ARTIST).text
+            lambda d: d.find_elements_by_xpath(self.FIRST_TRACK_ARTIST)[i].text
         )
         return artist
 
-    def play_first_track(self):
+    def play_track(self, i=0):
         play = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_PLAY)
+            lambda d: d.find_elements_by_xpath(self.PLAY)[i]
         )
         play.click()
 
-    def get_first_track_id(self):
+    def get_track_id(self, i=0):
         return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(
-                self.FIRST_PLAY).get_attribute('data-id')
+            lambda d: d.find_elements_by_xpath(
+                self.PLAY)[i].get_attribute('data-id')
         )
 
     def open_first_add_to_playlist(self):
         playlist = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_PLAYLIST)
+            lambda d: d.find_element_by_xpath(self.PLAYLIST)
         )
         playlist.click()
 

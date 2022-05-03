@@ -159,8 +159,8 @@ class MainPageTest(unittest.TestCase):
         tracks = main_page.tracks
         player = main_page.player
 
-        first_track = tracks.get_first_track_id()
-        tracks.play_first_track()
+        first_track = tracks.get_track_id()
+        tracks.play_track()
         playing_track = player.get_playing_track_id()
         self.assertEqual(first_track, playing_track)
 
@@ -172,7 +172,7 @@ class MainPageTest(unittest.TestCase):
         albums.play_first_album()
         playing_track = player.get_playing_track_id()
         albums.open_first_album()
-        first_track = tracks.get_first_track_id()
+        first_track = tracks.get_track_id()
         self.assertEqual(first_track, playing_track)
 
     def test_add_to_playlist_popup(self):
