@@ -13,3 +13,7 @@ class MainPage(BasePage):
     def click_login(self):
         elem = self.wait_render(self.login_btn)
         elem.click()
+
+    def click_signup(self):
+        elem = self.wait_render(self.signup_btn)
+        elem.click()
