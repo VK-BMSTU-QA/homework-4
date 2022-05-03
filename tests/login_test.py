@@ -3,7 +3,6 @@
 import os
 
 import unittest
-from urllib.parse import urljoin
 import selenium
 
 from selenium.webdriver import DesiredCapabilities, Remote
@@ -11,18 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-
-class Page(object):
-    BASE_URL = 'https://lostpointer.site/'
-    PATH = 'signin'
-
-    def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        url = urljoin(self.BASE_URL, self.PATH)
-        self.driver.get(url)
-        self.driver.maximize_window()
+from tests import Page, Component
 
 
 class LoginPage(Page):
@@ -31,11 +19,6 @@ class LoginPage(Page):
     @property
     def form(self):
         return LoginForm(self.driver)
-
-
-class Component(object):
-    def __init__(self, driver):
-        self.driver = driver
 
 
 class LoginForm(Component):
@@ -64,9 +47,6 @@ class LoginForm(Component):
 
 
 class LoginTest(unittest.TestCase):
-    EMAIL = os.environ['TESTUSERNAME']
-    PASSWORD = os.environ['TESTPASSWORD']
-
     def setUp(self):
         browser = os.environ.get('TESTBROWSER', 'CHROME')
 
@@ -78,21 +58,27 @@ class LoginTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
+    def test(self):
+        self.login_page = LoginPage(self.driver)
+        self.login_page.open()
+        self.login_form = self.login_page.form
+
 
 class PositiveLoginTest(LoginTest):
-    def test(self):
-        login_page = LoginPage(self.driver)
-        login_page.open()
+    EMAIL = os.environ['TESTUSERNAME']
+    PASSWORD = os.environ['TESTPASSWORD']
 
-        login_form = login_page.form
-        login_form.set_email(self.EMAIL)
-        login_form.set_password(self.PASSWORD)
+    def test(self):
+        super().test()
+
+        self.login_form.set_email(self.EMAIL)
+        self.login_form.set_password(self.PASSWORD)
 
         # Отсутсвие ошибок при вводе верных реквизитов
-        assert not login_form.frontend_warnings_text()
-        assert not login_form.backend_warnings_text()
+        assert not self.login_form.frontend_warnings_text()
+        assert not self.login_form.backend_warnings_text()
 
-        login_form.login()
+        self.login_form.login()
 
         # Успешный логин при вводе верных реквизитов
         WebDriverWait(self.driver, 10).until(
@@ -105,26 +91,24 @@ class NegativeLoginTest(LoginTest):
     PASSWORD = "djqowjdl12"
 
     def test(self):
-        login_page = LoginPage(self.driver)
-        login_page.open()
+        super().test()
 
         # Ошибка при submit'е пустой формы
-        login_form = login_page.form
-        login_form.login()
-        assert login_form.backend_warnings_text()
+        self.login_form.login()
+        assert self.login_form.backend_warnings_text()
 
         # Ошибка при незаполнении одного из двух полей
-        login_form.set_password(self.PASSWORD)
-        login_form.login()
-        assert login_form.backend_warnings_text()
+        self.login_form.set_password(self.PASSWORD)
+        self.login_form.login()
+        assert self.login_form.backend_warnings_text()
 
         # Ошибка при вводе некорректного email-адреса
-        login_form.set_email(self.EMAIL.replace(".", ""))
-        login_form.login()
-        assert login_form.frontend_warnings_text()
+        self.login_form.set_email(self.EMAIL.replace(".", ""))
+        self.login_form.login()
+        assert self.login_form.frontend_warnings_text()
 
         # Ошибка при вводе неверных реквизитов
-        login_form.set_email(self.EMAIL)
-        login_form.set_password(self.PASSWORD)
-        login_form.login()
-        assert login_form.backend_warnings_text()
+        self.login_form.set_email(self.EMAIL)
+        self.login_form.set_password(self.PASSWORD)
+        self.login_form.login()
+        assert self.login_form.backend_warnings_text()

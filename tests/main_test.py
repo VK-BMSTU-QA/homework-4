@@ -5,7 +5,6 @@ from lib2to3.pgen2 import driver
 import os
 
 import unittest
-from urllib.parse import urljoin
 import selenium
 
 from selenium.webdriver import DesiredCapabilities, Remote
@@ -15,6 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from sympy import proper_divisor_count
 
+from tests import Page, Component
 from tests.login_test import LoginPage
 
 
@@ -26,19 +26,6 @@ def has_element(driver, xpath):
     except NoSuchElementException:
         return False
     return True
-
-
-class Page(object):
-    BASE_URL = 'https://lostpointer.site/'
-    PATH = ''
-
-    def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        url = urljoin(self.BASE_URL, self.PATH)
-        self.driver.get(url)
-        self.driver.maximize_window()
 
 
 class PlaylistPage(Page):
@@ -71,11 +58,6 @@ class MainPage(Page):
     @property
     def player(self):
         return Player(self.driver)
-
-
-class Component(object):
-    def __init__(self, driver):
-        self.driver = driver
 
 
 class PlaylistPageControls(Component):
