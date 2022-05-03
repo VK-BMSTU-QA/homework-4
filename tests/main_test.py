@@ -190,3 +190,10 @@ class MainPageTest(unittest.TestCase):
         topbar.click_avatar()
         self.assertEqual(self.driver.current_url,
                          main_page.BASE_URL + 'profile')
+    
+    def test_logout(self):
+        main_page = MainPage(self.driver)
+        topbar = main_page.topbar        
+        topbar.log_out()
+        self.assertTrue(topbar.logged_out())
+    

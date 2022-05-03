@@ -48,7 +48,8 @@ class FavoritesTest(unittest.TestCase):
         self.favorites_page.open()
 
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
+            EC.presence_of_element_located(
+                (By.CLASS_NAME, "favorites__description-title"))
         )
 
     def tearDown(self):
@@ -99,5 +100,6 @@ class FavoritesTest(unittest.TestCase):
         self.main_page = MainPage(self.driver)
         self.main_page.sidebar.go_favorites()
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
+            EC.presence_of_element_located(
+                (By.CLASS_NAME, "favorites__description-title"))
         )

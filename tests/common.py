@@ -42,7 +42,8 @@ def element_attribute_not_to_include(locator, attribute_):
 
     def _predicate(driver):
         try:
-            element_attribute = driver.find_element(*locator).get_attribute(attribute_)
+            element_attribute = driver.find_element(
+                *locator).get_attribute(attribute_)
             return element_attribute is None
         except InvalidSelectorException as e:
             raise e
@@ -64,9 +65,13 @@ class Player(Component):
     MUTE = 'img[class^="mute"]'
     MUTE_XPATH = '//img[@class="mute"]'
 
+    def paused(self):
+        play = self.driver.find_element_by_xpath(self.PLAY)
+        return 'pause' in play.get_attribute('src')
+
     def prev_disabled(self):
         return len(self.driver.find_elements_by_xpath(self.PREV_TRACK_CLASS)) == 0
-    
+
     def next_disabled(self):
         return len(self.driver.find_elements_by_xpath(self.NEXT_TRACK_CLASS)) == 0
 
@@ -86,7 +91,6 @@ class Player(Component):
         )
         return id
 
-
     def get_like_btn(self):
         return WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.TRACK_LIKE)
@@ -95,13 +99,15 @@ class Player(Component):
     def remove_like(self):
         self.get_like_btn().click()
         WebDriverWait(self.driver, 10).until(
-            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            element_attribute_not_to_include(
+                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def add_like(self):
         self.get_like_btn().click()
         WebDriverWait(self.driver, 10).until(
-            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            EC.element_attribute_to_include(
+                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def track_is_liked(self):
@@ -160,7 +166,7 @@ class Albums(Component):
 class Topbar(Component):
     SETTINGS = '//i[@class="topbar-icon fa-solid fa-gear"]'
     AVATAR = '//img[@class="avatar__img"]'
-    LOGOUT = '//a[@id="signin-button"]'
+    LOGOUT = '//i[@class="topbar-icon js-logout fa-solid fa-right-from-bracket"]'
 
     def click_settings(self):
         settings = WebDriverWait(self.driver, 10, 0.1).until(
@@ -174,11 +180,20 @@ class Topbar(Component):
         )
         avatar.click()
 
-    def click_logout(self):
-        button = WebDriverWait(self.driver, 10, 0.1).until(
+    def log_out(self):
+        logout = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.LOGOUT)
         )
-        button.click()
+        logout.click()
+
+    def logged_out(self):
+        try:
+            WebDriverWait(self.driver, 10, 0.1).until(
+                lambda d: len(d.find_elements_by_xpath(self.AVATAR)) == 0
+            )
+        except:
+            return False
+        return True
 
 
 class TopArtists(Component):
@@ -254,19 +269,22 @@ class Tracks(Component):
 
     def get_like_btn(self, track_id):
         return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.TRACK_LIKE_BTN.format(track_id))
+            lambda d: d.find_element_by_xpath(
+                self.TRACK_LIKE_BTN.format(track_id))
         )
 
     def remove_like(self, track_id):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, 10).until(
-            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
+            element_attribute_not_to_include(
+                (By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
     def add_like(self, track_id):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, 10).until(
-            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
+            EC.element_attribute_to_include(
+                (By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
     def track_is_liked(self, track_id):

@@ -1,20 +1,14 @@
-# -*- coding: utf-8 -*-
-
 import os
-import time
 import unittest
-from cProfile import label
 
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from sympy import O, sec
 
-from tests.common import Albums, Page, Player, Sidebar, Topbar, Tracks, has_element
-from tests.login_test import Component, LoginPage
+from tests.login_test import LoginPage
 from tests.main_test import MainPage
-from tests.profile_test import ProfilePage
+
 
 class PlayerTest(unittest.TestCase):
     EMAIL = os.environ['TESTUSERNAME']
@@ -74,7 +68,7 @@ class PlayerTest(unittest.TestCase):
         player.mute()
         player.mute()
         self.assertFalse(player.muted())
-        
+
     def test_prev_disabled(self):
         main_page = MainPage(self.driver)
         player = main_page.player
@@ -102,3 +96,20 @@ class PlayerTest(unittest.TestCase):
         tracks = main_page.tracks
         tracks.play_track(last=True)
         self.assertFalse(player.prev_disabled())
+
+    def test_pause(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track()
+        player.toggle_play()
+        self.assertTrue(player.paused())
+
+    def test_resume(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track()
+        player.toggle_play()
+        player.toggle_play()
+        self.assertFalse(player.paused())
