@@ -2,14 +2,13 @@
 
 import os
 import unittest
-from cProfile import label
 
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from tests.common import Albums, Page, Player, Sidebar, Topbar, Tracks, has_element
+from tests import Page, Albums, Tracks, Player, Topbar, has_element, Sidebar
 from tests.login_test import Component, LoginPage
 
 
@@ -45,10 +44,6 @@ class MainPage(Page):
         return Player(self.driver)
 
     @property
-    def sidebar(self):
-        return Sidebar(self.driver)
-
-    @property
     def topbar(self):
         return Topbar(self.driver)
 
@@ -59,17 +54,6 @@ class PlaylistPageControls(Component):
     def has_edit_button(self):
         return has_element(self.driver, self.EDIT_BUTTON)
 
-
-class Sidebar(Component):
-    LOGO = '//a[@class="sidebar__icon__logo"]'
-    HOME = '//a[@class="sidebar__icon" and @href="/"]'
-    FAVORITES = '//a[@class="sidebar__icon" and @href="/favorites"]'
-
-    def go_home_by_logo(self):
-        self.driver.find_element_by_xpath(self.LOGO).click()
-
-    def go_favorites(self):
-        self.driver.find_element_by_xpath(self.FAVORITES).click()
 
 class Playlists(Component):
     PLAYLIST = '//a[@class="pl-link"]'

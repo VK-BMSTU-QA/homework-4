@@ -2,18 +2,18 @@
 
 from urllib.parse import urljoin
 
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException, StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 
-class Component(object):
+class Component:
     def __init__(self, driver):
         self.driver = driver
 
 
-class Page(object):
+class Page:
     BASE_URL = 'https://lostpointer.site/'
     PATH = ''
 
@@ -34,6 +34,24 @@ def has_element(driver, xpath):
     except NoSuchElementException:
         return False
     return True
+
+
+def element_attribute_not_to_include(locator, attribute_):
+    """ An expectation for checking if the given attribute is not included in the
+    specified element.
+    locator, attribute
+    """
+
+    def _predicate(driver):
+        try:
+            element_attribute = driver.find_element(*locator).get_attribute(attribute_)
+            return element_attribute is None
+        except InvalidSelectorException as e:
+            raise e
+        except StaleElementReferenceException:
+            return False
+
+    return _predicate
 
 
 class Player(Component):
@@ -101,11 +119,26 @@ class TopArtists(Component):
         return self.driver.find_element_by_xpath(self.FIRST_ARTIST).get_attribute('data-id')
 
 
+class Sidebar(Component):
+    LOGO = '//a[@class="sidebar__icon__logo"]'
+    HOME = '//a[@class="sidebar__icon" and @href="/"]'
+    FAVORITES = '//a[@class="sidebar__icon" and @href="/favorites"]'
+
+    def go_home_by_logo(self):
+        self.driver.find_element_by_xpath(self.LOGO).click()
+
+    def go_favorites(self):
+        self.driver.find_element_by_xpath(self.FAVORITES).click()
+
+
 class Tracks(Component):
     FIRST_PLAY = '//img[@class="track-play"]'
     FIRST_PLAYLIST = '//img[@class="track-list-item-playlist"]'
     PLAYLISTS_MENU = '//div[@class="menu"]'
     FIRST_TRACK_ARTIST = '//div[@class="track__container__artist"]'
+    FIRST_TRACK_ALBUM = '//img[@class="track__artwork__img"]'
+    FIRST_TRACK_FAV_BTN = '//img[@class="track-fav"]'
+    TRACK_FAV_BTN_BY_ID = '//img[@class="track-fav" and @data-id="{}"]'
 
     def get_first_track_artist(self):
         artist = WebDriverWait(self.driver, 10, 0.1).until(
@@ -134,11 +167,36 @@ class Tracks(Component):
     def playlist_menu_exists(self):
         return has_element(self.driver, self.PLAYLISTS_MENU)
 
+    def open_first_album(self):
+        album = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ALBUM)
+        )
+        album.click()
 
-class Sidebar(Component):
-    LOGO = '//a[@class="sidebar__icon__logo"]'
-    HOME = '//a[@class="sidebar__icon" and @href="/"]'
-    FAVORITES = '//a[@class="sidebar__icon" and @href="/favorites"]'
+    def open_first_artist(self):
+        artist = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ARTIST)
+        )
+        artist.click()
 
-    def go_home_by_logo(self):
-        self.driver.find_element_by_xpath(self.LOGO).click()
+    def get_fav_btn(self, track_id):
+        return WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.TRACK_FAV_BTN_BY_ID.format(track_id))
+        )
+
+    def remove_favor(self, track_id):
+        self.get_fav_btn(track_id).click()
+        WebDriverWait(self.driver, 10).until(
+            element_attribute_not_to_include((By.XPATH, self.TRACK_FAV_BTN_BY_ID.format(track_id)), "data-in_favorites")
+        )
+
+    def add_to_favorites(self, track_id):
+        self.get_fav_btn(track_id).click()
+        WebDriverWait(self.driver, 10).until(
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_FAV_BTN_BY_ID.format(track_id)), "data-in_favorites")
+        )
+
+    def track_is_in_favor(self, track_id):
+        return bool(
+            self.get_fav_btn(track_id).get_attribute("data-in_favorites")
+        )
