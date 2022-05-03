@@ -42,6 +42,8 @@ class LoginForm(Component):
     EMAIL = '//input[@name="email"]'
     PASSWORD = '//input[@name="password"]'
     LOGIN_BUTTON = '//input[@class="auth-form__submit"]'
+    FRONTEND_WARNINGS = '//div[@class="auth-form__invalidities form__invalidities"]'
+    BACKEND_WARNINGS = 'auth-form__fail_msg'
 
     def set_email(self, email):
         self.driver.find_element_by_xpath(self.EMAIL).send_keys(email)
@@ -51,6 +53,14 @@ class LoginForm(Component):
 
     def login(self):
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
+
+    def frontend_warnings_text(self):
+        warnings = self.driver.find_element_by_xpath(self.FRONTEND_WARNINGS)
+        return warnings.text
+
+    def backend_warnings_text(self):
+        warnings = self.driver.find_element_by_class_name(self.BACKEND_WARNINGS)
+        return warnings.text
 
 
 class LoginTest(unittest.TestCase):
@@ -68,6 +78,8 @@ class LoginTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
+
+class PositiveLoginTest(LoginTest):
     def test(self):
         login_page = LoginPage(self.driver)
         login_page.open()
@@ -75,8 +87,44 @@ class LoginTest(unittest.TestCase):
         login_form = login_page.form
         login_form.set_email(self.EMAIL)
         login_form.set_password(self.PASSWORD)
+
+        # Отсутсвие ошибок при вводе верных реквизитов
+        assert not login_form.frontend_warnings_text()
+        assert not login_form.backend_warnings_text()
+
         login_form.login()
 
+        # Успешный логин при вводе верных реквизитов
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
         )
+
+
+class NegativeLoginTest(LoginTest):
+    EMAIL = "test@test.com"
+    PASSWORD = "djqowjdl12"
+
+    def test(self):
+        login_page = LoginPage(self.driver)
+        login_page.open()
+
+        # Ошибка при submit'е пустой формы
+        login_form = login_page.form
+        login_form.login()
+        assert login_form.backend_warnings_text()
+
+        # Ошибка при незаполнении одного из двух полей
+        login_form.set_password(self.PASSWORD)
+        login_form.login()
+        assert login_form.backend_warnings_text()
+
+        # Ошибка при вводе некорректного email-адреса
+        login_form.set_email(self.EMAIL.replace(".", ""))
+        login_form.login()
+        assert login_form.frontend_warnings_text()
+
+        # Ошибка при вводе неверных реквизитов
+        login_form.set_email(self.EMAIL)
+        login_form.set_password(self.PASSWORD)
+        login_form.login()
+        assert login_form.backend_warnings_text()
