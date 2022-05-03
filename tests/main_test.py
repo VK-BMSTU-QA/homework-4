@@ -59,6 +59,10 @@ class MainPage(Page):
     def player(self):
         return Player(self.driver)
 
+    @property
+    def navbar(self):
+        return Navbar(self.driver)
+
 
 class PlaylistPageControls(Component):
     EDIT_BUTTON = '//div[contains(text(), "Edit playlist")]'
@@ -144,6 +148,16 @@ class Player(Component):
             lambda d: d.find_element_by_xpath(self.TRACK_LIKE).get_attribute('data-id')
         )
         return id
+
+
+class Navbar(Component):
+    FAVORITES_BTN = '//img[@class="js-fav-link-icon"]'
+
+    def open_favorites(self):
+        self.driver.find_element_by_xpath(self.FAVORITES_BTN).click()
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
+        )
 
 
 class MainPageTest(unittest.TestCase):
