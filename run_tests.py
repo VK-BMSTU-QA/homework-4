@@ -4,9 +4,13 @@ import sys
 import unittest
 
 from tests.main_test import MainPageTest
+
 from tests.login_test import LoginTest
 from tests.register_test import RegisterTest
 from tests.favorites_test import FavoritesTest
+
+from tests.player_test import PlayerTest
+
 from tests.profile_test import ProfilePageTest
 from tests.search_test import SearchPageTest
 
@@ -18,6 +22,7 @@ if __name__ == '__main__':
         unittest.makeSuite(SearchPageTest),
         unittest.makeSuite(ProfilePageTest),
         unittest.makeSuite(FavoritesTest),
+        unittest.makeSuite(PlayerTest)
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

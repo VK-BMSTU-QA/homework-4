@@ -125,7 +125,7 @@ class SearchPageTest(unittest.TestCase):
         tracks = search_page.tracks
         search_artist = 'tWenTY           onE pilots'
         search_bar.query(search_artist)
-        result_artist = tracks.get_first_track_artist()
+        result_artist = tracks.get_track_artist()
         self.assertEqual(
             re.sub(' {2,}', ' ', search_artist.lower()), result_artist.lower())
 
@@ -136,8 +136,8 @@ class SearchPageTest(unittest.TestCase):
         player = search_page.player
         search_artist = 'tWenTY           onE pilots'
         search_bar.query(search_artist)
-        first_track = tracks.get_first_track_id()
-        tracks.play_first_track()
+        first_track = tracks.get_track_id()
+        tracks.play_track()
         playing_track = player.get_playing_track_id()
         self.assertEqual(first_track, playing_track)
 
@@ -168,5 +168,5 @@ class SearchPageTest(unittest.TestCase):
         albums.play_first_album()
         playing_track = player.get_playing_track_id()
         albums.open_first_album()
-        first_track = tracks.get_first_track_id()
+        first_track = tracks.get_track_id()
         self.assertEqual(first_track, playing_track)
