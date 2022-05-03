@@ -5,7 +5,6 @@ from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from sympy import O
 
 from tests.common import Page
 from tests.login_test import Component, LoginPage

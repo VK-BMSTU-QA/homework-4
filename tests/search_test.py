@@ -1,10 +1,7 @@
 import os
 import re
-import time
 import unittest
-from cProfile import label
 
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -13,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from tests.common import Page, Player
 from tests.login_test import Component, LoginPage
-from tests.main_test import Albums, MainPage, Tracks
+from tests.main_test import Albums, Tracks
 
 
 class SearchBar(Component):
@@ -24,6 +21,9 @@ class SearchBar(Component):
             lambda d: d.find_element_by_xpath(self.SEARCHBAR)
         )
         bar.click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: len(d.find_elements_by_xpath(MainLayout.LAY_CHILDREN)) == 0
+        )
 
     def query(self, query):
         input = self.driver.find_element_by_xpath(self.SEARCHBAR)
@@ -36,7 +36,7 @@ class SearchBar(Component):
                 MainLayout.LAY_CHILDREN)) == 0
         )
         input.send_keys(query)
-        WebDriverWait(self.driver, 10, 0, 1).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: len(d.find_elements_by_xpath(
                 MainLayout.LAY_CHILDREN)) != 0
         )
@@ -115,7 +115,6 @@ class SearchPageTest(unittest.TestCase):
         main_layout = search_page.main_layout
 
         search_bar.click()
-        time.sleep(0.5)  # !!!УБРАТЬб
         self.assertTrue(main_layout.has_no_content())
 
     def test_search_ignores_case_and_returns_results(self):
