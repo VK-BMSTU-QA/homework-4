@@ -166,6 +166,7 @@ class Albums(Component):
 class Topbar(Component):
     SETTINGS = '//i[@class="topbar-icon fa-solid fa-gear"]'
     AVATAR = '//img[@class="avatar__img"]'
+    LOGOUT = '//i[@class="topbar-icon js-logout fa-solid fa-right-from-bracket"]'
 
     def click_settings(self):
         settings = WebDriverWait(self.driver, 10, 0.1).until(
@@ -178,6 +179,21 @@ class Topbar(Component):
             lambda d: d.find_element_by_xpath(self.AVATAR)
         )
         avatar.click()
+
+    def log_out(self):
+        logout = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.LOGOUT)
+        )
+        logout.click()
+    
+    def logged_out(self):
+        try:
+            WebDriverWait(self.driver, 10, 0.1).until(
+                lambda d: len(d.find_elements_by_xpath(self.AVATAR)) == 0
+            )
+        except:
+            return False
+        return True
 
 
 class TopArtists(Component):
