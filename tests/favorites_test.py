@@ -40,14 +40,14 @@ class FavoritesTest(unittest.TestCase):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
         )
 
         self.favorites_page = FavoritesPage(self.driver)
         self.favorites_page.open()
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located(
                 (By.CLASS_NAME, "favorites__description-title"))
         )
@@ -57,17 +57,17 @@ class FavoritesTest(unittest.TestCase):
 
     def test_album_opening(self):
         self.favorites_page.track_list.open_first_album()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "album"))
         )
 
     def test_artist_opening(self):
         self.favorites_page.track_list.open_first_artist()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "artist"))
         )
 
-    def test_toggle_favor(self):
+    def test_like(self):
         track_id = self.favorites_page.track_list.get_track_id()
 
         self.favorites_page.track_list.remove_like(track_id)
@@ -78,17 +78,17 @@ class FavoritesTest(unittest.TestCase):
         self.favorites_page.track_list.add_like(track_id)
         assert self.favorites_page.track_list.track_is_liked(track_id)
 
-    def test_toggle_player_favor(self):
+    def test_player_like(self):
         track_id = self.favorites_page.track_list.get_track_id()
 
         self.favorites_page.track_list.play_track()
         self.favorites_page.track_list.pause_track()
 
         self.favorites_page.track_list.remove_like(track_id)
-        assert not self.favorites_page.player.track_is_liked()
+        self.favorites_page.player.track_is_not_liked()
 
         self.favorites_page.track_list.add_like(track_id)
-        assert self.favorites_page.player.track_is_liked()
+        self.favorites_page.player.track_is_liked()
 
         self.favorites_page.player.remove_like()
         assert not self.favorites_page.track_list.track_is_liked(track_id)
@@ -99,7 +99,7 @@ class FavoritesTest(unittest.TestCase):
     def test_favorites_opening_from_navbar(self):
         self.main_page = MainPage(self.driver)
         self.main_page.sidebar.go_favorites()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located(
                 (By.CLASS_NAME, "favorites__description-title"))
         )

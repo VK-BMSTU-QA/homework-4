@@ -101,7 +101,7 @@ class RegisterTest(unittest.TestCase):
 
         self.register_form.register()
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
         )
 

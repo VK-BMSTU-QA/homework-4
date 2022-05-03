@@ -163,14 +163,14 @@ class PlaylistsTest(unittest.TestCase):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
         )
 
         self.playlists_page = PlaylistsPage(self.driver)
         self.playlists_page.open()
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "playlist__description-title"))
         )
 
@@ -179,7 +179,7 @@ class PlaylistsTest(unittest.TestCase):
 
     def test_edit_window_unauthorized(self):
         self.playlists_page.topbar.log_out()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.element_attribute_to_include((By.ID, "signin-button"), "href")
         )
         self.playlists_page.playlist_image.open_edit_window()

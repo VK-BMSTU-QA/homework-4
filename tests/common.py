@@ -95,27 +95,32 @@ class Player(Component):
         return id
 
     def get_like_btn(self):
-        return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.TRACK_LIKE)
-        )
+        return self.driver.find_element_by_xpath(self.TRACK_LIKE)
 
     def remove_like(self):
         self.get_like_btn().click()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             element_attribute_not_to_include(
                 (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def add_like(self):
         self.get_like_btn().click()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.element_attribute_to_include(
                 (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def track_is_liked(self):
-        return bool(
-            self.get_like_btn().get_attribute("data-in_favorites")
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_attribute_to_include(
+                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+        )
+
+    def track_is_not_liked(self):
+        WebDriverWait(self.driver, 10, 0.1).until(
+            element_attribute_not_to_include(
+                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def prev_track(self):
@@ -287,14 +292,14 @@ class Tracks(Component):
 
     def remove_like(self, track_id):
         self.get_like_btn(track_id).click()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             element_attribute_not_to_include(
                 (By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
     def add_like(self, track_id):
         self.get_like_btn(track_id).click()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.element_attribute_to_include(
                 (By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )

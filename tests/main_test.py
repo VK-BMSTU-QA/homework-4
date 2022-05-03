@@ -108,7 +108,7 @@ class MainPageTest(unittest.TestCase):
         login_form.set_password(self.PASSWORD)
         login_form.login()
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
         )
 
@@ -155,13 +155,13 @@ class MainPageTest(unittest.TestCase):
     def test_play_first_track_unauthorized(self):
         main_page = MainPage(self.driver)
         main_page.topbar.log_out()
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.element_attribute_to_include((By.ID, "signin-button"), "href")
         )
         tracks = main_page.tracks
         tracks.play_track()
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 10, 0.1).until(
             EC.presence_of_element_located((By.CLASS_NAME, "login-ui"))
         )
 
