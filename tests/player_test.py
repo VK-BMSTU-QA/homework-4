@@ -57,4 +57,48 @@ class PlayerTest(unittest.TestCase):
         main_page = MainPage(self.driver)
         player = main_page.player
         self.assertTrue(player.hidden())
-    
+
+    def test_mute(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track()
+        player.mute()
+        self.assertTrue(player.muted())
+
+    def test_unmute(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track()
+        player.mute()
+        player.mute()
+        self.assertFalse(player.muted())
+        
+    def test_prev_disabled(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track()
+        self.assertTrue(player.prev_disabled())
+
+    def test_next_enabled(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track()
+        self.assertFalse(player.next_disabled())
+
+    def test_next_disabled(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track(last=True)
+        self.assertTrue(player.next_disabled())
+
+    def test_prev_enabled(self):
+        main_page = MainPage(self.driver)
+        player = main_page.player
+        tracks = main_page.tracks
+        tracks.play_track(last=True)
+        self.assertFalse(player.prev_disabled())

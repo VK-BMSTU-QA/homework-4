@@ -40,9 +40,25 @@ class Player(Component):
     TRACK_LIKE = '//img[@class="player-fav"]'
     CURRENT_TIME = '//div[@class="player__time"]'
     PREV_TRACK = '//img[@id="player-left"]'
+    PREV_TRACK_CLASS = '//img[@class="player-skip-left"]'
     PLAY = '//img[@id="player-play"]'
     NEXT_TRACK = '//img[@id="player-right"]'
+    NEXT_TRACK_CLASS = '//img[@class="player-skip-right"]'
     PLAYER = '//div[@class="player"]'
+    MUTE = 'img[class^="mute"]'
+    MUTE_XPATH = '//img[@class="mute"]'
+
+    def prev_disabled(self):
+        return len(self.driver.find_elements_by_xpath(self.PREV_TRACK_CLASS)) == 0
+    
+    def next_disabled(self):
+        return len(self.driver.find_elements_by_xpath(self.NEXT_TRACK_CLASS)) == 0
+
+    def mute(self):
+        self.driver.find_element_by_css_selector(self.MUTE).click()
+
+    def muted(self):
+        return len(self.driver.find_elements_by_xpath(self.MUTE_XPATH)) == 0
 
     def hidden(self):
         return len(self.driver.find_elements_by_xpath(self.PLAYER)) == 0
@@ -138,11 +154,13 @@ class Tracks(Component):
         )
         return artist
 
-    def play_track(self, i=0):
+    def play_track(self, i=0, last=False):
         play = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_elements_by_xpath(self.PLAY)[i]
+            lambda d: d.find_elements_by_xpath(self.PLAY)
         )
-        play.click()
+        if last:
+            i = len(play) - 1
+        play[i].click()
 
     def get_track_id(self, i=0):
         return WebDriverWait(self.driver, 10, 0.1).until(
