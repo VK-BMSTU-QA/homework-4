@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 def has_element(driver, xpath):
     try:
-        WebDriverWait(driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(xpath))
+        WebDriverWait(driver, 10, 0.1).until(lambda d: d.find_element(by=By.XPATH, value=xpath))
     except NoSuchElementException:
         return False
     return True

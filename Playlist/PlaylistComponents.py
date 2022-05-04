@@ -13,7 +13,7 @@ class PlaylistImage(Component):
         WebDriverWait(self.driver, 10, 0.1).until(
             EC.element_to_be_clickable((By.CLASS_NAME, "playlist__description-avatar"))
         )
-        self.driver.find_element_by_xpath(self.IMAGE).click()
+        self.driver.find_element(by=By.XPATH, value=self.IMAGE).click()
 
 
 class PlaylistTextBlock(Component):
@@ -21,11 +21,13 @@ class PlaylistTextBlock(Component):
     EDIT_WINDOW_BTN = '//div[@class="playlist__description-text playlist__description-edit-btn"]'
 
     def open_edit_window(self):
-        btn = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.EDIT_WINDOW_BTN))
+        btn = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.EDIT_WINDOW_BTN)
+        )
         btn.click()
 
     def title(self):
-        title = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.TITLE).text)
+        title = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element(by=By.XPATH, value=self.TITLE).text)
         return title
 
 
@@ -41,26 +43,32 @@ class PlaylistEditWindow(Component):
 
     def is_open(self):
         try:
-            window = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.EDIT_WINDOW))
+            window = WebDriverWait(self.driver, 10, 0.1).until(
+                lambda d: d.find_element(by=By.XPATH, value=self.EDIT_WINDOW)
+            )
         except selenium.common.exceptions.TimeoutException:
             return False
         style = window.get_attribute("style")
         return "display: block;" in style
 
     def close_by_close_btn(self):
-        button = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.CLOSE_BTN))
+        button = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element(by=By.XPATH, value=self.CLOSE_BTN))
         button.click()
 
     def close_by_ext_area(self):
-        area = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.EDIT_WINDOW))
+        area = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element(by=By.XPATH, value=self.EDIT_WINDOW))
         area.click()
 
     def clear_title(self):
-        input = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.TITLE_INPUT))
+        input = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.TITLE_INPUT)
+        )
         input.clear()
 
     def set_title(self, title):
-        input = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.TITLE_INPUT))
+        input = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.TITLE_INPUT)
+        )
         input.clear()
         input.send_keys(title)
 
@@ -68,7 +76,7 @@ class PlaylistEditWindow(Component):
         WebDriverWait(self.driver, 10, 0.1).until(
             EC.element_to_be_clickable((By.CLASS_NAME, "editwindow__form-submit"))
         )
-        self.driver.find_element_by_xpath(self.SAVE_BUTTON).click()
+        self.driver.find_element(by=By.XPATH, value=self.SAVE_BUTTON).click()
 
     def fail_warning(self):
         WebDriverWait(self.driver, 10, 0.1).until(
@@ -79,12 +87,14 @@ class PlaylistEditWindow(Component):
         )
 
     def click_on_delete(self):
-        button = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.DELETE_BUTTON))
+        button = WebDriverWait(self.driver, 10, 0.1).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.DELETE_BUTTON)
+        )
         button.click()
 
     def toggle_publicity(self):
         WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable((By.XPATH, self.PUBLICITY_SWITCH)))
-        self.driver.find_element_by_xpath(self.PUBLICITY_SWITCH).click()
+        self.driver.find_element(by=By.XPATH, value=self.PUBLICITY_SWITCH).click()
 
     def success_warning(self):
         WebDriverWait(self.driver, 10, 0.1).until(
