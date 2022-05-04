@@ -4,6 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import unittest
+
+from basket.utils import TestUtils
 from utils.utils import Utils
 from selenium.webdriver.support.ui import Select
 from all_products.page import AllProductsPage
@@ -26,246 +28,176 @@ class Basket(unittest.TestCase):
         self.basketPage = BasketPage(self.driver)
         self.profilePage = ProfilePage(self.driver)
         self.utils.login()
+        self.testUtils = TestUtils(driver=self.driver)
 
     def test_basket(self):
-        product_card = self.allProductsPage.get_product_card()
-        product_card.click()
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        product_in_basket = self.basketPage.get_basket_product(self.product_id)
+        self.testUtils.click_add_to_basket_button()
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        self.testUtils.click_go_to_basket_button()
+
+        self.testUtils.wait_product_in_basket(self.product_id)
+
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+
+        finalizer()
 
     def test_basket_count(self):
-        product_card = self.allProductsPage.get_product_card()
-        product_card.click()
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        product_count_input = self.oneProductPage.get_product_count_input()
-        product_count_input.send_keys(Keys.ARROW_RIGHT)
-        product_count_input.send_keys(Keys.BACK_SPACE)
-        product_count_input.send_keys(PRODUCT_COUNT.__str__())
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.choose_products_count(PRODUCT_COUNT.__str__())
 
-        product_sum = self.basketPage.get_product_sum(self.product_id)
-        product_price = self.basketPage.get_product_price(self.product_id)
+        self.testUtils.click_go_to_basket_button()
 
-        count = int(int(product_sum.text) / int(product_price.text))
+        count = self.testUtils.check_product_count_in_basket(self.product_id)
+
         self.assertEqual(count, PRODUCT_COUNT)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+
+        finalizer()
 
     def test_basket_refresh(self):
-        product_card = self.allProductsPage.get_product_card()
-        product_card.click()
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
+        self.product_id = self.testUtils.click_on_product()
 
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
         self.driver.refresh()
 
-        product_in_basket = self.basketPage.get_basket_product(self.product_id)
+        self.testUtils.wait_product_in_basket(self.product_id)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+
+        finalizer()
 
     def test_basket_delete_product(self):
-        product_card = self.allProductsPage.get_product_card()
-        product_card.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        product_in_basket = self.basketPage.get_basket_product(self.product_id)
+        product_in_basket = self.testUtils.wait_product_in_basket(self.product_id)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        self.testUtils.remove_product_from_basket(self.product_id)
 
-        self.basketPage.wait_basket_product_remove(product_in_basket)
+        self.testUtils.check_product_absence(product_in_basket)
 
     def test_basket_empty(self):
-        product_card = self.allProductsPage.get_product_card()
-        product_card.click()
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
+        self.product_id = self.testUtils.click_on_product()
 
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        self.testUtils.remove_product_from_basket(self.product_id)
 
-        empty_basket_text = self.basketPage.get_empty_basket_text()
+        empty_basket_text = self.testUtils.wait_for_empty_basket_notification()
 
-        self.assertEqual(empty_basket_text.text, "Ваша корзина пуста. Вернуться к покупкам")
+        self.assertEqual(empty_basket_text, "Ваша корзина пуста. Вернуться к покупкам")
 
     def test_basket_increase_in_basket(self):
-        product_card = self.allProductsPage.get_product_card()
-        product_card.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        product_count_input = self.basketPage.get_product_count_input()
-        product_count_input.send_keys(Keys.ARROW_RIGHT)
-        product_count_input.send_keys(Keys.BACK_SPACE)
-        product_count_input.send_keys(PRODUCT_COUNT.__str__())
+        self.testUtils.choose_products_count_in_basket(PRODUCT_COUNT.__str__())
 
-        anywhere = self.basketPage.get_any_field()
-        anywhere.click()
+        self.testUtils.click_anywhere()
 
-        product_sum = self.basketPage.get_product_sum(self.product_id)
-        product_price = self.basketPage.get_product_price(self.product_id)
-
-        count = int(int(product_sum.text) / int(product_price.text))
+        count = self.testUtils.check_product_count_in_basket(self.product_id)
         self.assertEqual(count, PRODUCT_COUNT)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+
+        finalizer()
 
     def test_basket_change_sum_of_one_product(self):
-        product_card = product_card = self.allProductsPage.get_product_card()
-        product_card.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        product_count_input = self.basketPage.get_product_count_input()
-        product_count_input.send_keys(Keys.ARROW_RIGHT)
-        product_count_input.send_keys(Keys.BACK_SPACE)
-        product_count_input.send_keys(PRODUCT_COUNT.__str__())
+        self.testUtils.choose_products_count_in_basket(PRODUCT_COUNT.__str__())
 
-        anywhere = self.basketPage.get_any_field()
-        anywhere.click()
+        self.testUtils.click_anywhere()
 
-        order_sum = self.basketPage.get_order_sum()
-        product_price = self.basketPage.get_product_price(self.product_id)
+        order_sum = self.testUtils.wait_order_sum()
 
-        expected_sum = int(product_price.text) * PRODUCT_COUNT
+        expected_sum = self.testUtils.wait_product_price(self.product_id) * PRODUCT_COUNT
 
-        self.assertEqual(int(order_sum.text[:len(order_sum.text)-1]), expected_sum)
+        self.assertEqual(order_sum, expected_sum)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+
+        finalizer()
 
     def test_basket_change_sum_many_products(self):
-        product_card = product_card = self.allProductsPage.get_product_card()
-        product_card.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
+        self.testUtils.click_add_to_basket_button()
 
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_back_to_catalog_link()
 
-        back_in_catalog = self.basketPage.get_back_in_catalog_link()
-        back_in_catalog.click()
+        self.testUtils.click_on_product_by_id(self.product_id + 1)
 
-        product_card = self.oneProductPage.get_product_card_by_id(product_id=self.product_id+1)
-        product_card.click()
+        self.testUtils.click_add_to_basket_button()
 
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        expected_sum = self.testUtils.get_expected_sum(self.product_id, self.product_id+1)
 
-        product_sum_first = self.basketPage.get_product_sum(product_id=self.product_id)
-        product_sum_second = self.basketPage.get_product_sum(product_id=self.product_id+1)
+        order_sum = self.testUtils.wait_order_sum()
 
-        order_sum = self.basketPage.get_order_sum()
+        self.assertEqual(order_sum, expected_sum)
 
-        self.assertEqual(int(order_sum.text[:len(order_sum.text)-1]), int(product_sum_first.text) + int(product_sum_second.text))
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+            self.testUtils.remove_product_from_basket(self.product_id+1)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
-
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id+1)
-        remover.click()
+        finalizer()
 
     def test_basket_selector(self):
-        product_card = product_card = self.allProductsPage.get_product_card()
-        product_card.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        select_elem = self.basketPage.get_delivery_selector()
-        selector = Select(select_elem)
-        selector.select_by_index(POST_OPTION)
-        option = selector.first_selected_option
-        self.assertEqual(option.text, "Почта россии")
+        option = self.testUtils.select_delivery_way(POST_OPTION)
 
-        remover = self.basketPage.get_product_to_remove(product_id=self.product_id)
-        remover.click()
+        self.assertEqual(option, "Почта россии")
+
+        def finalizer():
+            self.testUtils.remove_product_from_basket(self.product_id)
+
+        finalizer()
 
     def test_success_order(self):
-        product_card = product_card = self.allProductsPage.get_product_card()
-        product_card.click()
+        self.product_id = self.testUtils.click_on_product()
 
-        one_product = self.oneProductPage.get_product_card()
-        current_url = self.driver.current_url
-        self.product_id = int(current_url[current_url.rfind('=')+1:len(current_url)])
-        add_to_basket_button = self.oneProductPage.get_add_to_basket_button()
-        add_to_basket_button.click()
+        self.testUtils.click_add_to_basket_button()
 
-        go_to_basket_button = self.oneProductPage.get_go_to_basket_button()
-        go_to_basket_button.click()
+        self.testUtils.click_go_to_basket_button()
 
-        confirm_order_button = self.basketPage.get_confirm_order_button()
-        confirm_order_button.click()
+        self.testUtils.click_on_confirm_order_button()
 
-        profile_orders_title = self.profilePage.get_profile_orders_title()
-        self.assertEqual(profile_orders_title.text, 'Мои заказы')
+        profile_orders_title = self.testUtils.wait_redirect_to_profile_orders()
+
+        self.assertEqual(profile_orders_title, 'Мои заказы')
 
     def tearDown(self):
 
