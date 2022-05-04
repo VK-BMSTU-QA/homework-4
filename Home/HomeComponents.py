@@ -1,7 +1,7 @@
 from Base.BaseComponent import Component
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from tests.utils import has_element
+from tests.utils import CHECK_FREQ, TIMEOUT, has_element
 
 
 class HomePlaylists(Component):
@@ -11,12 +11,12 @@ class HomePlaylists(Component):
     CREATE_NEW = '//div[@class="suggested-playlist-name" and contains(text(), "Create new...")]'
 
     def get_first_playlist_href(self):
-        return WebDriverWait(self.driver, 10, 0.1).until(
+        return WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             lambda d: d.find_element(by=By.XPATH, value=self.PLAYLIST).get_attribute("href")
         )
 
     def open_first_playlist(self):
-        playlist = WebDriverWait(self.driver, 10, 0.1).until(
+        playlist = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             lambda d: d.find_element(by=By.XPATH, value=self.PLAYLIST)
         )
         playlist.click()

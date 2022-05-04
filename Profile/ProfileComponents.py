@@ -2,6 +2,7 @@ from Base.BaseComponent import Component
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class ProfileForm(Component):
@@ -21,7 +22,7 @@ class ProfileForm(Component):
     WRONG_OLD_PASSWORD = '//div[contains(text(), "Old password is wrong")]'
 
     def submit(self):
-        WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable((By.XPATH, self.SUBMIT)))
+        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(EC.element_to_be_clickable((By.XPATH, self.SUBMIT)))
         self.driver.find_element(by=By.XPATH, value=self.SUBMIT).click()
 
     def set_nickname(self, nickname):
@@ -71,5 +72,7 @@ class ProfileForm(Component):
         return len(self.driver.find_element(by=By.XPATH, value=self.PASSWORD_MISMATCH)) == 1
 
     def wrong_old_password(self):
-        WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element(by=By.XPATH, value=self.WRONG_OLD_PASSWORD))
+        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.WRONG_OLD_PASSWORD)
+        )
         return True

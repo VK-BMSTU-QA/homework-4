@@ -3,6 +3,7 @@ from Profile.ProfileComponents import ProfileForm
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class ProfilePage(Page):
@@ -14,4 +15,6 @@ class ProfilePage(Page):
 
     def open(self):
         super().open()
-        WebDriverWait(self.driver, 10, 0.1).until(EC.presence_of_element_located((By.CLASS_NAME, "profile-page")))
+        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "profile-page"))
+        )

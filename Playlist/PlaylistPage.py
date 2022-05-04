@@ -4,6 +4,7 @@ from Playlist.PlaylistComponents import PlaylistEditWindow, PlaylistImage, Playl
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class PlaylistPage(Page):
@@ -31,6 +32,6 @@ class PlaylistPage(Page):
 
     def open(self):
         super().open()
-        WebDriverWait(self.driver, 10, 0.1).until(
+        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             EC.presence_of_element_located((By.CLASS_NAME, "playlist__description-title"))
         )

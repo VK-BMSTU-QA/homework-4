@@ -3,6 +3,7 @@ from Common.CommonComponents import Player, Tracks
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class FavoritesPage(Page):
@@ -18,6 +19,6 @@ class FavoritesPage(Page):
 
     def open(self):
         super().open()
-        WebDriverWait(self.driver, 10, 0.1).until(
+        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
         )

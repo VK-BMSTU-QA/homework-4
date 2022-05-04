@@ -1,14 +1,14 @@
-from urllib.parse import urljoin
-
 from selenium.common.exceptions import InvalidSelectorException, NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+TIMEOUT = 100
+CHECK_FREQ = 0.5
 
 
 def has_element(driver, xpath):
     try:
-        WebDriverWait(driver, 10, 0.1).until(lambda d: d.find_element(by=By.XPATH, value=xpath))
+        WebDriverWait(driver, TIMEOUT, CHECK_FREQ).until(lambda d: d.find_element(by=By.XPATH, value=xpath))
     except NoSuchElementException:
         return False
     return True
