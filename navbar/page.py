@@ -22,3 +22,21 @@ class NavbarPage:
 
     def get_reviews_link(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'reviews')))
+
+    def get_search_input(self):
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'search-input')))
+
+    def get_search_result_first_element(self):
+        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.search-suggests .search-suggest:first-child')))
+
+    def get_search_result_elements(self):
+        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.search-suggests .search-suggest')))
+        return self.driver.find_elements_by_css_selector(".search-suggests .search-suggest")
+
+    def get_search_result_products_elements(self):
+        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.search-suggests .search-suggest')))
+        return self.driver.find_elements_by_css_selector(".search-suggests > .search-suggest a[href^='/product']")
+
+    def get_search_result_categories_elements(self):
+        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.search-suggests .search-suggest')))
+        return self.driver.find_elements_by_css_selector(".search-suggests > .search-suggest a[href^='/category']")

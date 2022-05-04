@@ -22,7 +22,8 @@ NO_SEX = 0
 
 class Profile(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        EXE_PATH = r'C:\chromedriver.exe'
+        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
         self.utils = Utils(driver=self.driver)
         self.navbarPage = NavbarPage(self.driver)
         self.profilePage = ProfilePage(self.driver)
