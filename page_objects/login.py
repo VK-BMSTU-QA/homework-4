@@ -25,6 +25,7 @@ class LoginPage(Page):
             EC.presence_of_element_located((By.CSS_SELECTOR, self.USERNAME))
         )
         username.send_keys(login)
+
     def fill_password(self, password):
         pswd_elem = WebDriverWait(self.driver, 30, 0.1).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.PASSWORD))
@@ -48,49 +49,48 @@ class LoginPage(Page):
 
 
 
-
-public async fillLogin(username: string) {
-await this.inputUsername.waitForDisplayed();
-await this.inputUsername.setValue(username);
-}
-
-public async fillPassword(password: string) {
-await this.inputPassword.waitForDisplayed();
-await this.inputPassword.setValue(password);
-await this.btnSubmit.click();
-}
-
-public async login(username: string, password: string) {
-await this.fillLogin(username);
-await this.fillPassword(password);
-}
-
-public async logout()
-{
-await this.btnOpenNavBar.click();
-await this.btnNavBarLogout.click();
-}
-
-public async getEmail()
-{
-await this.userEmailHeader.waitForDisplayed();
-return this.userEmailHeader.getText();
-}
-
-public async getPageName()
-{
-await this.pageName.waitForDisplayed();
-return this.pageName.getText();
-}
-
-public async getError()
-{
-await this.invalidLoginOrPassword.waitForDisplayed();
-return this.invalidLoginOrPassword.getText();
-}
-
-public
-open()
-{
-return super.open('signin');
-}
+# public async fillLogin(username: string) {
+# await this.inputUsername.waitForDisplayed();
+# await this.inputUsername.setValue(username);
+# }
+#
+# public async fillPassword(password: string) {
+# await this.inputPassword.waitForDisplayed();
+# await this.inputPassword.setValue(password);
+# await this.btnSubmit.click();
+# }
+#
+# public async login(username: string, password: string) {
+# await this.fillLogin(username);
+# await this.fillPassword(password);
+# }
+#
+# public async logout()
+# {
+# await this.btnOpenNavBar.click();
+# await this.btnNavBarLogout.click();
+# }
+#
+# public async getEmail()
+# {
+# await this.userEmailHeader.waitForDisplayed();
+# return this.userEmailHeader.getText();
+# }
+#
+# public async getPageName()
+# {
+# await this.pageName.waitForDisplayed();
+# return this.pageName.getText();
+# }
+#
+# public async getError()
+# {
+# await this.invalidLoginOrPassword.waitForDisplayed();
+# return this.invalidLoginOrPassword.getText();
+# }
+#
+# public
+# open()
+# {
+# return super.open('signin');
+# }

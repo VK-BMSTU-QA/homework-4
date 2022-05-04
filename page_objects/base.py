@@ -1,15 +1,15 @@
+
 import urlparse
 
+from selenium_utils.utils_object import SeleniumBaseObject
 
-class Page(object):
-    BASE_URL = 'http://pyaterochka-team.site/'
+import setup.setup as stp
+
+class Page(SeleniumBaseObject):
     PATH = ''
 
-    def __init__(self, driver):
-        self.driver = driver
-
     def open(self):
-        url = urlparse.urljoin(self.BASE_URL, self.PATH)
+        url = urlparse.urljoin(stp.BASE_URL, self.PATH)
         self.driver.get(url)
         self.driver.maximize_window()
 

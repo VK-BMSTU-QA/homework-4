@@ -1,3 +1,5 @@
-class Component(object):
-    def __init__(self, driver):
-        self.driver = driver
+from selenium_utils.utils_object import SeleniumBaseObject
+
+
+class Component(SeleniumBaseObject):
+    pass
