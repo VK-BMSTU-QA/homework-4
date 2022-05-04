@@ -42,9 +42,9 @@ jobs:
     - name: Echo chrome version
       run : |
         /usr/bin/google-chrome --version
-    - name: Download latest chromedriver
+    - name: Download current chromedriver
       run : |
-        wget http://chromedriver.storage.googleapis.com/`/usr/bin/google-chrome --version | awk '{print $3}'`/chromedriver_linux64.zip
+        wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F982481%2Fchromedriver_linux64.zip?generation=1647559757425543&alt=media
     - name: Unzip chromedriver
       run: |
         unzip chromedriver_linux64.zip
