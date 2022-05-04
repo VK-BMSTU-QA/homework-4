@@ -4,7 +4,7 @@ import unittest
 from Login.LoginPage import LoginPage
 from Profile.ProfilePage import ProfilePage
 from selenium.webdriver import DesiredCapabilities, Remote
-
+from selenium.webdriver.chrome.options import Options
 
 class ProfilePageTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
@@ -12,10 +12,12 @@ class ProfilePageTest(unittest.TestCase):
 
     def setUp(self):
         browser = os.environ.get("TESTBROWSER", "CHROME")
-
+        options = Options()
+        options.headless = bool(os.environ.get("HEADLESS", False))
         self.driver = Remote(
             command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
+            options=options
         )
 
         login_page = LoginPage(self.driver)

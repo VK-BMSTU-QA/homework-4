@@ -4,6 +4,7 @@ import unittest
 from Login.LoginPage import LoginPage
 from Playlist.PlaylistPage import PlaylistPage
 from selenium.webdriver import DesiredCapabilities, Remote
+from selenium.webdriver.chrome.options import Options
 
 
 class PlaylistsTest(unittest.TestCase):
@@ -15,10 +16,12 @@ class PlaylistsTest(unittest.TestCase):
 
     def setUp(self):
         browser = os.environ.get("TESTBROWSER", "CHROME")
-
+        options = Options()
+        options.headless = True
         self.driver = Remote(
             command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
+            options=options
         )
         self.login_page = LoginPage(self.driver)
         self.login_page.login(self.EMAIL, self.PASSWORD)

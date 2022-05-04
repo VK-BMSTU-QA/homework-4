@@ -4,7 +4,7 @@ import unittest
 
 from Register.RegisterPage import RegisterPage
 from selenium.webdriver import DesiredCapabilities, Remote
-
+from selenium.webdriver.chrome.options import Options
 
 class RegisterTest(unittest.TestCase):
     NICKNAME = "test_{}".format(random.randint(0, 1000))
@@ -14,10 +14,12 @@ class RegisterTest(unittest.TestCase):
 
     def setUp(self):
         browser = os.environ.get("TESTBROWSER", "CHROME")
-
+        options = Options()
+        options.headless = bool(os.environ.get("HEADLESS", False))
         self.driver = Remote(
             command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
+            options=options
         )
         self.register_page = RegisterPage(self.driver)
         self.register_page.open()

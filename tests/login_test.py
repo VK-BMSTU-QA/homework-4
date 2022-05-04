@@ -3,7 +3,7 @@ import unittest
 
 from Login.LoginPage import LoginPage
 from selenium.webdriver import DesiredCapabilities, Remote
-
+from selenium.webdriver.chrome.options import Options
 
 class LoginTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
@@ -12,10 +12,12 @@ class LoginTest(unittest.TestCase):
 
     def setUp(self):
         browser = os.environ.get("TESTBROWSER", "CHROME")
-
+        options = Options()
+        options.headless = bool(os.environ.get("HEADLESS", False))
         self.driver = Remote(
             command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
+            options=options
         )
         self.login_page = LoginPage(self.driver)
         self.login_page.open()
