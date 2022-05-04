@@ -48,6 +48,8 @@ jobs:
       run: |
         tar xf geckodriver*.tar.gz
     - name: Test with unittest
+      env:
+        TESTUSERNAME: {{ secrets.TESTUSERNAME }}
+        TESTPASSWORD: {{ secrets.TESTPASSWORD }}
       run: |
         python -m unittest run_tests.py
-
