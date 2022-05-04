@@ -61,6 +61,8 @@ jobs:
     - name: Start chromedriver
       run: |
         ./chromedriver_linux64/chromedriver --port=4444 --url-base=/wd/hub &
+      env:
+        DISPLAY: :99
     - name: Test with unittest
       env:
         TESTUSERNAME: ${{ secrets.TESTUSERNAME }}
