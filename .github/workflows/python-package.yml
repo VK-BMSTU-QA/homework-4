@@ -22,8 +22,8 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Chrome
-      run: sudo apt-get install -y chromium-browser unzip
+    - name: Install unzip
+      run: sudo apt-get install -y unzip
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -35,9 +35,12 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Echo chrome version
+      run : |
+        /usr/bin/google-chrome --version
     - name: Download latest chromedriver
       run : |
-        wget http://chromedriver.storage.googleapis.com/`/usr/bin/google-chrome --version | awk '{print $2}'`/chromedriver_linux64.zip
+        wget http://chromedriver.storage.googleapis.com/`/usr/bin/google-chrome --version | awk '{print $3}'`/chromedriver_linux64.zip
     - name: Unzip chromedriver
       run: |
         unzip chromedriver_linux64.zip
