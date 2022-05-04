@@ -5,6 +5,8 @@ from selenium.webdriver.support.select import Select
 from navbar.page import NavbarPage
 from profile.page import ProfilePage
 import unittest
+
+from profile.utils import TestUtils
 from utils.utils import Utils
 
 OLD_NAME = 'OldName'
@@ -27,196 +29,147 @@ class Profile(unittest.TestCase):
         self.navbarPage = NavbarPage(self.driver)
         self.profilePage = ProfilePage(self.driver)
         self.utils.login()
+        self.testUtils = TestUtils(driver=self.driver)
 
     def test_profile_update_button(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        update_button = self.profilePage.get_update_profile_button()
+        update_button = self.testUtils.wait_for_update_button()
         self.assertEqual(update_button.text, 'ОБНОВИТЬ')
 
     def test_profile_update_notification(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        self.testUtils.click_on_update_button()
 
-        update_notification = self.profilePage.get_update_profile_notification()
-        self.assertEqual(update_notification.text, 'Данные обновлены!')
+        update_notification = self.testUtils.wait_for_update_notification()
+        self.assertEqual(update_notification, 'Данные обновлены!')
 
     def test_update_name(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        name_input = self.profilePage.get_name_input()
-        name_input.click()
-        name_input.clear()
-        name_input.send_keys(NEW_NAME)
+        self.testUtils.fill_name(NEW_NAME)
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        self.testUtils.click_on_update_button()
 
-        self.driver.refresh()
+        self.testUtils.refresh_page()
 
-        updated_name = self.profilePage.get_name_input()
-        self.assertEqual(updated_name.get_attribute('value'), NEW_NAME)
+        updated_name = self.testUtils.wait_for_updated_name()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.assertEqual(updated_name, NEW_NAME)
 
-        updated_name.click()
-        updated_name.clear()
-        updated_name.send_keys(OLD_NAME)
+        def finalizer():
+            self.testUtils.click_on_change_profile_link()
+            self.testUtils.fill_name(OLD_NAME)
+            self.testUtils.click_on_update_button()
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        finalizer()
 
     def test_update_surname(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        surname_input = self.profilePage.get_surname_input()
-        surname_input.click()
-        surname_input.clear()
-        surname_input.send_keys(NEW_SURNAME)
+        self.testUtils.fill_surname(NEW_SURNAME)
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        self.testUtils.click_on_update_button()
 
-        self.driver.refresh()
+        self.testUtils.refresh_page()
 
-        updated_surname = self.profilePage.get_surname_input()
-        self.assertEqual(updated_surname.get_attribute('value'), NEW_SURNAME)
+        updated_surname = self.testUtils.wait_for_updated_surname()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.assertEqual(updated_surname, NEW_SURNAME)
 
-        updated_surname.click()
-        updated_surname.clear()
-        updated_surname.send_keys(OLD_SURNAME)
+        def finalizer():
+            self.testUtils.click_on_change_profile_link()
+            self.testUtils.fill_surname(OLD_SURNAME)
+            self.testUtils.click_on_update_button()
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        finalizer()
 
     def test_update_email(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        email_input = self.profilePage.get_email_input()
-        email_input.click()
-        email_input.clear()
-        email_input.send_keys(NEW_EMAIL)
+        self.testUtils.fill_email(NEW_EMAIL)
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        self.testUtils.click_on_update_button()
 
-        self.driver.refresh()
+        self.testUtils.refresh_page()
 
-        updated_email = self.profilePage.get_email_input()
-        self.assertEqual(updated_email.get_attribute('value'), NEW_EMAIL)
+        updated_email = self.testUtils.wait_for_updated_email()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.assertEqual(updated_email, NEW_EMAIL)
 
-        updated_email.click()
-        updated_email.clear()
-        updated_email.send_keys(OLD_EMAIL)
+        def finalizer():
+            self.testUtils.click_on_change_profile_link()
+            self.testUtils.fill_email(OLD_EMAIL)
+            self.testUtils.click_on_update_button()
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        finalizer()
 
     def test_update_sex(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        sex = self.profilePage.get_sex_input()
-        selector = Select(sex)
-        selector.select_by_index(MALE_SEX)
+        self.testUtils.select_sex(MALE_SEX)
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        self.testUtils.click_on_update_button()
 
-        self.driver.refresh()
+        self.testUtils.refresh_page()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        updated_sex = self.testUtils.wait_for_updated_sex()
 
-        sex = self.profilePage.get_sex_input()
-        selector = Select(sex)
-        option = selector.first_selected_option
-        self.assertEqual(option.text, "Мужской")
+        self.assertEqual(updated_sex, "Мужской")
 
-        selector.select_by_index(NO_SEX)
-
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        def finalizer():
+            self.testUtils.select_sex(NO_SEX)
+            self.testUtils.click_on_update_button()
+        finalizer()
 
     def test_update_birthday(self):
-        profile_icon = self.navbarPage.get_profile_icon()
-        profile_icon.click()
+        self.testUtils.click_on_profile_icon()
 
-        profile_link = self.navbarPage.get_profile_link()
-        profile_link.click()
+        self.testUtils.click_on_profile_link()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.testUtils.click_on_change_profile_link()
 
-        birthday = self.profilePage.get_birthday_input()
-        birthday.send_keys(NEW_DATE)
+        self.testUtils.fill_birthday(NEW_DATE)
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        self.testUtils.click_on_update_button()
 
-        self.driver.refresh()
+        self.testUtils.refresh_page()
 
-        updated_birthday = self.profilePage.get_birthday_input()
-        self.assertEqual(updated_birthday.get_attribute('value'), NEW_DATE_COMPARE)
+        updated_birthday = self.testUtils.wait_for_updated_birthday()
 
-        change_profile_link = self.profilePage.get_change_profile_link()
-        change_profile_link.click()
+        self.assertEqual(updated_birthday, NEW_DATE_COMPARE)
 
-        updated_birthday.click()
-        updated_birthday.send_keys(OLD_DATE)
+        def finalizer():
+            self.testUtils.click_on_change_profile_link()
+            self.testUtils.fill_birthday(OLD_DATE)
+            self.testUtils.click_on_update_button()
 
-        update_button = self.profilePage.get_update_profile_button()
-        update_button.click()
+        finalizer()
 
     def tearDown(self):
         self.driver.close()
