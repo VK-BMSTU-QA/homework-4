@@ -39,8 +39,9 @@ jobs:
       run : |
         http://chromedriver.storage.googleapis.com/`curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
     - name: Extract chromedriver
-    - name: Test with unittest
       run: |
         unzip chromedriver_linux64.zip
+    - name: Test with unittest
+      run: |
         python -m unittest run_tests.py
 
