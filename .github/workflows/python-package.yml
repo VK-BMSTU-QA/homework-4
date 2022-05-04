@@ -35,12 +35,18 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Download chromedriver
+    - name: Download latest chromedriver
       run : |
         wget http://chromedriver.storage.googleapis.com/`curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-    - name: Extract chromedriver
+    - name: Unzip chromedriver
       run: |
         unzip chromedriver_linux64.zip
+    - name: Download geckodriver v0.31
+      run: |
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz
+    - name: Untar geckodriver
+      run: |
+        tar xf geckodriver*.tar.gz
     - name: Test with unittest
       run: |
         python -m unittest run_tests.py
