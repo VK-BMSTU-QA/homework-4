@@ -1,10 +1,10 @@
 from Base.BasePage import Page
-from Common.CommonComponents import Albums, Sidebar, Tracks, Player, Topbar
+from Common.CommonComponents import Albums, Player, Sidebar, Topbar, Tracks
 from Home.HomeComponents import HomePlaylists
 
 
 class HomePage(Page):
-    PATH = ''
+    PATH = ""
 
     @property
     def albums(self):

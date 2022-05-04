@@ -1,25 +1,24 @@
 import os
 import unittest
 
-from selenium.webdriver import DesiredCapabilities, Remote
-
 from Login.LoginPage import LoginPage
 from Playlist.PlaylistPage import PlaylistPage
+from selenium.webdriver import DesiredCapabilities, Remote
 
 
 class PlaylistsTest(unittest.TestCase):
-    EMAIL = os.environ['TESTUSERNAME']
-    PASSWORD = os.environ['TESTPASSWORD']
+    EMAIL = os.environ["TESTUSERNAME"]
+    PASSWORD = os.environ["TESTPASSWORD"]
     INVALID_TITLE = "dalwhdfpqjedlqwjedlwejflaiuwehf;efj;oWJDALEFNAKLWEHFLAEWHF"
     VALID_TITLE = "test Playlist"
     SETUP_TITLE = "playlist test"
 
     def setUp(self):
-        browser = os.environ.get('TESTBROWSER', 'CHROME')
+        browser = os.environ.get("TESTBROWSER", "CHROME")
 
         self.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+            command_executor="http://127.0.0.1:4444/wd/hub",
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
         )
         self.login_page = LoginPage(self.driver)
         self.login_page.login(self.EMAIL, self.PASSWORD)

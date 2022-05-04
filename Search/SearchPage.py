@@ -1,10 +1,10 @@
 from Base.BasePage import Page
-from Common.CommonComponents import Tracks, Albums, Player
-from Search.SearchComponents import SearchBar, MainLayout
+from Common.CommonComponents import Albums, Player, Tracks
+from Search.SearchComponents import MainLayout, SearchBar
 
 
 class SearchPage(Page):
-    path = 'search'
+    path = "search"
 
     @property
     def search_bar(self):

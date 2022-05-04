@@ -1,24 +1,22 @@
-
 import os
 import unittest
-
-from selenium.webdriver import DesiredCapabilities, Remote
 
 from Home.HomePage import HomePage
 from Login.LoginPage import LoginPage
 from Playlist.PlaylistPage import PlaylistPage
+from selenium.webdriver import DesiredCapabilities, Remote
 
 
 class MainPageTest(unittest.TestCase):
-    EMAIL = os.environ['TESTUSERNAME']
-    PASSWORD = os.environ['TESTPASSWORD']
+    EMAIL = os.environ["TESTUSERNAME"]
+    PASSWORD = os.environ["TESTPASSWORD"]
 
     def setUp(self):
-        browser = os.environ.get('TESTBROWSER', 'CHROME')
+        browser = os.environ.get("TESTBROWSER", "CHROME")
 
         self.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+            command_executor="http://127.0.0.1:4444/wd/hub",
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
         )
 
         login_page = LoginPage(self.driver)
@@ -34,8 +32,7 @@ class MainPageTest(unittest.TestCase):
 
         first_album = albums.get_first_album_id()
         albums.open_first_album()
-        self.assertEqual(home_page.BASE_URL +
-                         f'album/{first_album}', self.driver.current_url)
+        self.assertEqual(home_page.BASE_URL + f"album/{first_album}", self.driver.current_url)
 
     def test_go_home_from_profile(self):
         home_page = HomePage(self.driver)
@@ -100,19 +97,16 @@ class MainPageTest(unittest.TestCase):
         home_page = HomePage(self.driver)
         topbar = home_page.topbar
         topbar.click_settings()
-        self.assertEqual(self.driver.current_url,
-                         home_page.BASE_URL + 'profile')
+        self.assertEqual(self.driver.current_url, home_page.BASE_URL + "profile")
 
     def test_open_profile_via_avatar(self):
         home_page = HomePage(self.driver)
         topbar = home_page.topbar
         topbar.click_avatar()
-        self.assertEqual(self.driver.current_url,
-                         home_page.BASE_URL + 'profile')
+        self.assertEqual(self.driver.current_url, home_page.BASE_URL + "profile")
 
     def test_logout(self):
         home_page = HomePage(self.driver)
         topbar = home_page.topbar
         topbar.log_out()
         self.assertTrue(topbar.logged_out())
-    

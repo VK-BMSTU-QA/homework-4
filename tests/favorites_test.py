@@ -1,23 +1,22 @@
 import os
 import unittest
 
-from selenium.webdriver import DesiredCapabilities, Remote
-
 from Favorites.FavoritesPage import FavoritesPage
 from Home.HomePage import HomePage
 from Login.LoginPage import LoginPage
+from selenium.webdriver import DesiredCapabilities, Remote
 
 
 class FavoritesTest(unittest.TestCase):
-    EMAIL = os.environ['TESTUSERNAME']
-    PASSWORD = os.environ['TESTPASSWORD']
+    EMAIL = os.environ["TESTUSERNAME"]
+    PASSWORD = os.environ["TESTPASSWORD"]
 
     def setUp(self):
-        browser = os.environ.get('TESTBROWSER', 'CHROME')
+        browser = os.environ.get("TESTBROWSER", "CHROME")
 
         self.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+            command_executor="http://127.0.0.1:4444/wd/hub",
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
         )
         self.login_page = LoginPage(self.driver)
         self.login_page.login(self.EMAIL, self.PASSWORD)

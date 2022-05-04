@@ -1,8 +1,7 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
 from Base.BaseComponent import Component
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 from tests.utils import element_attribute_not_to_include, has_element
 
 
@@ -20,7 +19,7 @@ class Player(Component):
 
     def paused(self):
         play = self.driver.find_element_by_xpath(self.PLAY)
-        return 'pause' in play.get_attribute('src')
+        return "pause" in play.get_attribute("src")
 
     def prev_disabled(self):
         return len(self.driver.find_elements_by_xpath(self.PREV_TRACK_CLASS)) == 0
@@ -29,9 +28,7 @@ class Player(Component):
         return len(self.driver.find_elements_by_xpath(self.NEXT_TRACK_CLASS)) == 0
 
     def mute(self):
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, self.MUTE))
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.MUTE)))
         self.driver.find_element_by_css_selector(self.MUTE).click()
 
     def muted(self):
@@ -42,8 +39,7 @@ class Player(Component):
 
     def get_playing_track_id(self):
         id = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(
-                self.TRACK_LIKE).get_attribute('data-id')
+            lambda d: d.find_element_by_xpath(self.TRACK_LIKE).get_attribute("data-id")
         )
         return id
 
@@ -53,48 +49,36 @@ class Player(Component):
     def remove_like(self):
         self.get_like_btn().click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            element_attribute_not_to_include(
-                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def add_like(self):
         self.get_like_btn().click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_attribute_to_include(
-                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def track_is_liked(self):
         WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_attribute_to_include(
-                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def track_is_not_liked(self):
         WebDriverWait(self.driver, 10, 0.1).until(
-            element_attribute_not_to_include(
-                (By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
         )
 
     def prev_track(self):
-        prev = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.PREV_TRACK)
-        )
+        prev = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.PREV_TRACK))
         prev.click()
 
     def next_track(self):
-        next = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.NEXT_TRACK)
-        )
+        next = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.NEXT_TRACK))
         next.click()
 
     def toggle_play(self):
-        pause = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.PLAY)
-        )
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_to_be_clickable((By.XPATH, self.PLAY))
-        )
+        pause = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.PLAY))
+        WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable((By.XPATH, self.PLAY)))
         pause.click()
 
 
@@ -102,28 +86,22 @@ class Albums(Component):
     FIRST_ALBUM = '//div[@class="top-album"]'
     TITLE = '//div[@class="top-album__title"]'
     ARTIST = '//div[@class="top-album__artist"]'
-    PLAY_ICON = 'i[class^=top-album__play]'
+    PLAY_ICON = "i[class^=top-album__play]"
     ALBUM_LABEL = '//div[@class="album__description-label"]'
 
     def open_first_album(self):
         self.driver.find_element_by_xpath(self.FIRST_ALBUM).click()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.ALBUM_LABEL).text == 'album'
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.ALBUM_LABEL).text == "album")
 
     def get_first_album_id(self):
-        id = self.driver.find_element_by_css_selector(
-            self.PLAY_ICON).get_attribute('data-id')
+        id = self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute("data-id")
         return id
 
     def play_first_album(self):
-        play = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_css_selector(self.PLAY_ICON)
-        )
+        play = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_css_selector(self.PLAY_ICON))
         play.click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(
-                Player.CURRENT_TIME).text == '0:01'
+            lambda d: d.find_element_by_xpath(Player.CURRENT_TIME).text == "0:01"
         )
 
 
@@ -133,31 +111,21 @@ class Topbar(Component):
     LOGOUT = '//i[@class="topbar-icon js-logout fa-solid fa-right-from-bracket"]'
 
     def click_settings(self):
-        settings = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.SETTINGS)
-        )
+        settings = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.SETTINGS))
         settings.click()
 
     def click_avatar(self):
-        avatar = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.AVATAR)
-        )
+        avatar = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.AVATAR))
         avatar.click()
 
     def log_out(self):
-        logout = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.LOGOUT)
-        )
+        logout = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.LOGOUT))
         logout.click()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_attribute_to_include((By.ID, "signin-button"), "href")
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.element_attribute_to_include((By.ID, "signin-button"), "href"))
 
     def logged_out(self):
         try:
-            WebDriverWait(self.driver, 10, 0.1).until(
-                lambda d: len(d.find_elements_by_xpath(self.AVATAR)) == 0
-            )
+            WebDriverWait(self.driver, 10, 0.1).until(lambda d: len(d.find_elements_by_xpath(self.AVATAR)) == 0)
         except:
             return False
         return True
@@ -167,7 +135,7 @@ class TopArtists(Component):
     FIRST_ARTIST = '//img[@class="suggested-artist__img"]'
 
     def get_first_artist_id(self):
-        return self.driver.find_element_by_xpath(self.FIRST_ARTIST).get_attribute('data-id')
+        return self.driver.find_element_by_xpath(self.FIRST_ARTIST).get_attribute("data-id")
 
 
 class Sidebar(Component):
@@ -181,8 +149,7 @@ class Sidebar(Component):
     def go_favorites(self):
         self.driver.find_element_by_xpath(self.FAVORITES).click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located(
-                (By.CLASS_NAME, "favorites__description-title"))
+            EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
         )
 
 
@@ -201,14 +168,10 @@ class Tracks(Component):
         return artist
 
     def play_track(self, i=0, last=False):
-        play = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_elements_by_xpath(self.PLAY)
-        )
+        play = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_elements_by_xpath(self.PLAY))
         if last:
             i = len(play) - 1
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_to_be_clickable(play[i])
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable(play[i]))
         play[i].click()
 
     def pause_track(self):
@@ -216,66 +179,46 @@ class Tracks(Component):
 
     def get_track_id(self, i=0):
         return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_elements_by_xpath(
-                self.PLAY)[i].get_attribute('data-id')
+            lambda d: d.find_elements_by_xpath(self.PLAY)[i].get_attribute("data-id")
         )
 
     def open_first_add_to_playlist(self):
-        playlist = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.PLAYLIST)
-        )
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_to_be_clickable((By.XPATH, self.PLAYLIST))
-        )
+        playlist = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.PLAYLIST))
+        WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable((By.XPATH, self.PLAYLIST)))
         playlist.click()
 
     def playlist_menu_exists(self):
         return has_element(self.driver, self.PLAYLISTS_MENU)
 
     def open_first_album(self):
-        album = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ALBUM)
-        )
+        album = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ALBUM))
         album.click()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "album"))
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.presence_of_element_located((By.CLASS_NAME, "album")))
 
     def open_first_artist(self):
-        artist = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ARTIST)
-        )
+        artist = WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ARTIST))
         artist.click()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "artist"))
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.presence_of_element_located((By.CLASS_NAME, "artist")))
 
     def get_like_btn(self, track_id):
         return WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(
-                self.TRACK_LIKE_BTN.format(track_id))
+            lambda d: d.find_element_by_xpath(self.TRACK_LIKE_BTN.format(track_id))
         )
 
     def remove_like(self, track_id):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            element_attribute_not_to_include(
-                (By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
     def add_like(self, track_id):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_attribute_to_include(
-                (By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
         )
 
     def track_is_liked(self, track_id):
-        return bool(
-            self.get_like_btn(track_id).get_attribute("data-in_favorites")
-        )
+        return bool(self.get_like_btn(track_id).get_attribute("data-in_favorites"))
 
     def check_redirect_to_login(self):
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "login-ui"))
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.presence_of_element_located((By.CLASS_NAME, "login-ui")))

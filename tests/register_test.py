@@ -2,9 +2,8 @@ import os
 import random
 import unittest
 
-from selenium.webdriver import DesiredCapabilities, Remote
-
 from Register.RegisterPage import RegisterPage
+from selenium.webdriver import DesiredCapabilities, Remote
 
 
 class RegisterTest(unittest.TestCase):
@@ -14,11 +13,11 @@ class RegisterTest(unittest.TestCase):
     PASSWORD = "djqowjdl12"
 
     def setUp(self):
-        browser = os.environ.get('TESTBROWSER', 'CHROME')
+        browser = os.environ.get("TESTBROWSER", "CHROME")
 
         self.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+            command_executor="http://127.0.0.1:4444/wd/hub",
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
         )
         self.register_page = RegisterPage(self.driver)
         self.register_page.open()

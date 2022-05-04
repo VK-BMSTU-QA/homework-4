@@ -3,7 +3,7 @@ from Login.LoginComponents import LoginForm
 
 
 class LoginPage(Page):
-    PATH = 'signin'
+    PATH = "signin"
 
     @property
     def form(self):

@@ -1,14 +1,13 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
 from Base.BasePage import Page
 from Common.CommonComponents import Topbar
-from Playlist.PlaylistComponents import PlaylistPageControls, PlaylistImage, PlaylistTextBlock, PlaylistEditWindow
+from Playlist.PlaylistComponents import PlaylistEditWindow, PlaylistImage, PlaylistPageControls, PlaylistTextBlock
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class PlaylistPage(Page):
-    PATH = 'playlist/289'
+    PATH = "playlist/289"
 
     @property
     def controls(self):

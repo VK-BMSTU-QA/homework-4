@@ -3,7 +3,7 @@ from Register.RegisterComponents import RegisterForm
 
 
 class RegisterPage(Page):
-    PATH = 'signup'
+    PATH = "signup"
 
     @property
     def form(self):

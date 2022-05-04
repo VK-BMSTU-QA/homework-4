@@ -1,8 +1,7 @@
 from Base.BaseComponent import Component
-
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class ProfileForm(Component):
@@ -14,7 +13,7 @@ class ProfileForm(Component):
     SUBMIT = '//input[@class="profile-form__submit"]'
     ERROR_FILL_REMAINING_FIELDS = '//div[contains(text(), "Please, fill in the remaining fields")]'
     ERROR_NAME_LT3 = '//div[contains(text(), "Name needs to be at least 3 characters")]'
-    INVALID_NICKNAME_CHARS = '//div[contains(text(), "Name allows only letters and numbers and \'_\'")]'
+    INVALID_NICKNAME_CHARS = "//div[contains(text(), \"Name allows only letters and numbers and '_'\")]"
     INVALID_EMAIL = '//div[contains(text(), "Invalid email address")]'
     WEAK_PASSWORD_LENGTH = '//div[contains(text(), "Password needs to be 8 or more characters")]'
     WEAK_PASSWORD_NUMBERS = '//div[contains(text(), "Password requires at least 1 number")]'
@@ -22,9 +21,7 @@ class ProfileForm(Component):
     WRONG_OLD_PASSWORD = '//div[contains(text(), "Old password is wrong")]'
 
     def submit(self):
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.element_to_be_clickable((By.XPATH, self.SUBMIT))
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(EC.element_to_be_clickable((By.XPATH, self.SUBMIT)))
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
     def set_nickname(self, nickname):
@@ -65,13 +62,14 @@ class ProfileForm(Component):
         return len(self.driver.find_elements_by_xpath(self.INVALID_EMAIL)) == 1
 
     def weak_password(self):
-        return len(self.driver.find_elements_by_xpath(self.WEAK_PASSWORD_LENGTH)) == 1 and len(self.driver.find_elements_by_xpath(self.WEAK_PASSWORD_NUMBERS)) == 1
+        return (
+            len(self.driver.find_elements_by_xpath(self.WEAK_PASSWORD_LENGTH)) == 1
+            and len(self.driver.find_elements_by_xpath(self.WEAK_PASSWORD_NUMBERS)) == 1
+        )
 
     def password_mismatch(self):
         return len(self.driver.find_elements_by_xpath(self.PASSWORD_MISMATCH)) == 1
 
     def wrong_old_password(self):
-        WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.WRONG_OLD_PASSWORD)
-        )
+        WebDriverWait(self.driver, 10, 0.1).until(lambda d: d.find_element_by_xpath(self.WRONG_OLD_PASSWORD))
         return True
