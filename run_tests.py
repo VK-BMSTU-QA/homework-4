@@ -8,12 +8,12 @@ from one_product.one_product import OneProduct
 
 def suite():
     suite = unittest.TestSuite()
-    # suite.addTest(SignIn('test_signin_positive'))
-    # suite.addTest(SignIn('test_signin_empty_field'))
-    # suite.addTest(SignIn('test_signin_no_user'))
-    # suite.addTest(SignIn('test_signin_incorrect_password'))
-    # suite.addTest(SignIn('test_signin_short_password'))
-    # suite.addTest(SignIn('test_signin_redirect_to_signup'))
+    suite.addTest(SignIn('test_signin_positive'))
+    suite.addTest(SignIn('test_signin_empty_field'))
+    suite.addTest(SignIn('test_signin_no_user'))
+    suite.addTest(SignIn('test_signin_incorrect_password'))
+    suite.addTest(SignIn('test_signin_short_password'))
+    suite.addTest(SignIn('test_signin_redirect_to_signup'))
     # suite.addTest(Signup('test_signup_positive'))
     # suite.addTest(Signup('test_signup_empty_field'))
     # suite.addTest(Signup('test_signup_user_exists'))
@@ -43,10 +43,10 @@ def suite():
     # suite.addTest(OneProduct('test_one_product_favourite_button_changes'))
     # suite.addTest(OneProduct('test_one_product_add_favourite_product'))
     # suite.addTest(OneProduct('test_one_product_review_under'))
-    suite.addTest(OneProduct('test_one_product_review_users'))
-    suite.addTest(OneProduct('test_one_product_review_error_no_rating'))
-    suite.addTest(OneProduct('test_one_product_review_error_no_text'))
-    suite.addTest(OneProduct('test_one_product_redirect_to_catalog'))
+    # suite.addTest(OneProduct('test_one_product_review_users'))
+    # suite.addTest(OneProduct('test_one_product_review_error_no_rating'))
+    # suite.addTest(OneProduct('test_one_product_review_error_no_text'))
+    # suite.addTest(OneProduct('test_one_product_redirect_to_catalog'))
     return suite
 
 
