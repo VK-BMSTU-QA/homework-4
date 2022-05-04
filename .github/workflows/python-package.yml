@@ -47,6 +47,9 @@ jobs:
     - name: Untar geckodriver
       run: |
         tar xf geckodriver*.tar.gz
+    - name: Start chromedriver
+      run: |
+        ./chromedriver --port=4444 --url-base=/wd/hub &
     - name: Test with unittest
       env:
         TESTUSERNAME: ${{ secrets.TESTUSERNAME }}
