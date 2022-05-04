@@ -18,7 +18,7 @@ class TestUtils:
         return self.navbarPage.get_search_result_elements()
 
     def get_count_search_result(self):
-        return len(self.navbarPage.get_search_result_async())
+        return self.navbarPage.get_search_result_async()
 
     def wait_result_products_search(self):
         return self.navbarPage.get_search_result_products_elements()

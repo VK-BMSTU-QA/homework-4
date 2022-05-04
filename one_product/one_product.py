@@ -88,7 +88,7 @@ class OneProduct(unittest.TestCase):
 
         self.testUtils.click_add_favourite_button()
 
-        delete_from_favourite_button = self.testUtils.wait_add_favourite_button()
+        delete_from_favourite_button = self.testUtils.wait_delete_from_favourite_button()
 
         self.assertEqual(delete_from_favourite_button.text, 'УДАЛИТЬ ИЗ ИЗБРАННОГО')
 

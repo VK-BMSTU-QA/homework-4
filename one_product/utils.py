@@ -72,6 +72,9 @@ class TestUtils:
     def wait_add_favourite_button(self):
         return self.oneProductPage.get_favourite_button()
 
+    def wait_delete_from_favourite_button(self):
+        return self.oneProductPage.get_delete_from_favourite_button()
+
     def click_delete_from_favourite_button(self):
         delete_from_favourite_button = self.oneProductPage.get_favourite_button()
         delete_from_favourite_button.click()

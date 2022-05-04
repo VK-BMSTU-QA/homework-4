@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from selenium import webdriver
@@ -51,8 +52,4 @@ class Search(unittest.TestCase):
     def test_input_text_incorrect(self):
         self.testUtils.fill_search_input(SEARCH_STRING_INCORRECT)
 
-        self.assertEqual(self.testUtils.get_count_search_result(), 0)
-
-    def test_cancel_input(self):
-        self.testUtils.fill_search_input(SEARCH_STRING_INCORRECT)
-
+        self.assertEqual(self.testUtils.get_count_search_result(), True)

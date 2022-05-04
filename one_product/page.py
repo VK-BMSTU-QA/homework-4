@@ -35,6 +35,9 @@ class OneProductPage:
     def get_favourite_button(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-favorite-btn__favorite')))
 
+    def get_delete_from_favourite_button(self):
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'flagIsFavorite_true')))
+
     def get_review_text_field(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'add-comment-text')))
 

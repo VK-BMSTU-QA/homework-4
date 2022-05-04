@@ -63,8 +63,8 @@ class TestUtils:
     def check_product_count_in_basket(self, product_id):
         product_sum = self.basketPage.get_product_sum(product_id)
         product_price = self.basketPage.get_product_price(product_id)
-
-        return int(int(product_sum.text) / int(product_price.text))
+        count = int(int(product_sum.text) / int(product_price.text))
+        return count
 
     def check_product_absence(self, product):
         return self.basketPage.wait_basket_product_remove(product)

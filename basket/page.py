@@ -49,7 +49,7 @@ class BasketPage:
         return self.wait.until(EC.element_to_be_clickable((By.ID, 'orderform-delivery_method')))
 
     def get_confirm_order_button(self):
-        return self.driver.find_element(by=By.CLASS_NAME, value='confirm-btn')
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'confirm-btn')))
 
     def get_page_title(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'title-page')))
