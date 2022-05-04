@@ -1,56 +1,9 @@
-from urllib.parse import urljoin
-
-from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException, StaleElementReferenceException
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
-class Component:
-    def __init__(self, driver):
-        self.driver = driver
-
-
-class Page:
-    BASE_URL = 'https://lostpointer.site/'
-    PATH = ''
-
-    def __init__(self, driver):
-        self.driver = driver
-
-    def open(self):
-        url = urljoin(self.BASE_URL, self.PATH)
-        self.driver.get(url)
-        self.driver.maximize_window()
-
-
-def has_element(driver, xpath):
-    try:
-        WebDriverWait(driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(xpath)
-        )
-    except NoSuchElementException:
-        return False
-    return True
-
-
-def element_attribute_not_to_include(locator, attribute_):
-    """ An expectation for checking if the given attribute is not included in the
-    specified element.
-    locator, attribute
-    """
-
-    def _predicate(driver):
-        try:
-            element_attribute = driver.find_element(
-                *locator).get_attribute(attribute_)
-            return element_attribute is None
-        except InvalidSelectorException as e:
-            raise e
-        except StaleElementReferenceException:
-            return False
-
-    return _predicate
+from Base.BaseComponent import Component
+from tests.utils import element_attribute_not_to_include, has_element
 
 
 class Player(Component):
@@ -196,6 +149,9 @@ class Topbar(Component):
             lambda d: d.find_element_by_xpath(self.LOGOUT)
         )
         logout.click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.element_attribute_to_include((By.ID, "signin-button"), "href")
+        )
 
     def logged_out(self):
         try:
@@ -224,6 +180,10 @@ class Sidebar(Component):
 
     def go_favorites(self):
         self.driver.find_element_by_xpath(self.FAVORITES).click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.presence_of_element_located(
+                (By.CLASS_NAME, "favorites__description-title"))
+        )
 
 
 class Tracks(Component):
@@ -277,12 +237,18 @@ class Tracks(Component):
             lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ALBUM)
         )
         album.click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "album"))
+        )
 
     def open_first_artist(self):
         artist = WebDriverWait(self.driver, 10, 0.1).until(
             lambda d: d.find_element_by_xpath(self.FIRST_TRACK_ARTIST)
         )
         artist.click()
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "artist"))
+        )
 
     def get_like_btn(self, track_id):
         return WebDriverWait(self.driver, 10, 0.1).until(
@@ -307,4 +273,9 @@ class Tracks(Component):
     def track_is_liked(self, track_id):
         return bool(
             self.get_like_btn(track_id).get_attribute("data-in_favorites")
+        )
+
+    def check_redirect_to_login(self):
+        WebDriverWait(self.driver, 10, 0.1).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "login-ui"))
         )

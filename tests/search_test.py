@@ -3,79 +3,9 @@ import re
 import unittest
 
 from selenium.webdriver import DesiredCapabilities, Remote
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
-from tests.common import Page, Player
-from tests.login_test import Component, LoginPage
-from tests.main_test import Albums, Tracks
-
-
-class SearchBar(Component):
-    SEARCHBAR = '//input[@class="topbar__search-input"]'
-
-    def click(self):
-        bar = WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: d.find_element_by_xpath(self.SEARCHBAR)
-        )
-        bar.click()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: len(d.find_elements_by_xpath(MainLayout.LAY_CHILDREN)) == 0
-        )
-
-    def query(self, query):
-        input = self.driver.find_element_by_xpath(self.SEARCHBAR)
-        input.clear()
-        # Хак, потому что есть дебаунс и он срабатывает только на физ. нажатие кнопки
-        input.send_keys(' ')
-        input.send_keys(Keys.BACKSPACE)
-        WebDriverWait(self.driver, 10, 0, 1).until(
-            lambda d: len(d.find_elements_by_xpath(
-                MainLayout.LAY_CHILDREN)) == 0
-        )
-        input.send_keys(query)
-        WebDriverWait(self.driver, 10, 0.1).until(
-            lambda d: len(d.find_elements_by_xpath(
-                MainLayout.LAY_CHILDREN)) != 0
-        )
-
-
-class MainLayout(Component):
-    LAY = '//div[@class="main-layout__content"]'
-    LAY_CHILDREN = LAY + '/*'
-    NOT_FOUND = '//div[@class="search__content__not-found"]'
-
-    def has_no_content(self):
-        return len(self.driver.find_elements_by_xpath(self.LAY_CHILDREN)) == 0
-
-    def not_found(self):
-        return len(self.driver.find_elements_by_xpath(self.NOT_FOUND)) == 1
-
-
-class SearchPage(Page):
-    path = 'search'
-
-    @property
-    def search_bar(self):
-        return SearchBar(self.driver)
-
-    @property
-    def main_layout(self):
-        return MainLayout(self.driver)
-
-    @property
-    def tracks(self):
-        return Tracks(self.driver)
-
-    @property
-    def albums(self):
-        return Albums(self.driver)
-
-    @property
-    def player(self):
-        return Player(self.driver)
+from Login.LoginPage import LoginPage
+from Search.SearchPage import SearchPage
 
 
 class SearchPageTest(unittest.TestCase):
@@ -91,16 +21,7 @@ class SearchPageTest(unittest.TestCase):
         )
 
         login_page = LoginPage(self.driver)
-        login_page.open()
-
-        login_form = login_page.form
-        login_form.set_email(self.EMAIL)
-        login_form.set_password(self.PASSWORD)
-        login_form.login()
-
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
-        )
+        login_page.login(self.EMAIL, self.PASSWORD)
 
     def tearDown(self):
         self.driver.quit()

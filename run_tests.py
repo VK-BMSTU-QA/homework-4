@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-from tests.main_test import MainPageTest
+from tests.home_test import MainPageTest
 
 from tests.login_test import LoginTest
 from tests.playlists_test import PlaylistsTest
