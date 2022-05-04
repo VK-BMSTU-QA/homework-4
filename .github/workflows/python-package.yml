@@ -44,10 +44,10 @@ jobs:
         /usr/bin/google-chrome --version
     - name: Download current chromedriver
       run : |
-        wget 'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F982481%2Fchromedriver_linux64.zip?generation=1647559757425543&alt=media'
+        wget 'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F982481%2Fchromedriver_linux64.zip?generation=1647559757425543&alt=media' -O chromedriver.zip
     - name: Unzip chromedriver
       run: |
-        unzip *chromedriver*.zip
+        unzip chromedriver.zip
     - name: Download geckodriver v0.31
       run: |
         wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz
