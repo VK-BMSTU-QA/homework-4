@@ -1,0 +1,14 @@
+[tool.isort]
+line_length = 119
+profile = "black"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DOSEN", "FIRSTPARTY", "LOCALFOLDER"]
+known_dosen = "dosen"
+src_paths = ["search-blender-service/src", "*/*/"] # "goods/static_files/", "goods/search-processor-goods/", "jivo/static_files/", ...
+
+[tool.black]
+line-length = 119
+
+[tool.flake8]
+max-line-length = 119
+extend-ignore = "E203"
+per-file-ignores = "*/__init__.py: F401"
