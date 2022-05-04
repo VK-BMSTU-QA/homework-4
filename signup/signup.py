@@ -22,8 +22,7 @@ PASSWORD_CONFIRM_NOT_MATCH = '12346'
 
 class Signup(unittest.TestCase):
     def setUp(self):
-        EXE_PATH = r'C:\chromedriver.exe'
-        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
+        self.driver = webdriver.Chrome()
         self.signinPage = SignInPage(self.driver)
         self.profilePage = ProfilePage(self.driver)
         self.signupPage = SignUpPage(self.driver)

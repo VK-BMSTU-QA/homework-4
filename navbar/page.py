@@ -33,6 +33,9 @@ class NavbarPage:
         self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.search-suggests .search-suggest')))
         return self.driver.find_elements_by_css_selector(".search-suggests .search-suggest")
 
+    def get_search_result_async(self):
+        return self.driver.find_elements_by_css_selector(".search-suggests .search-suggest")
+
     def get_search_result_products_elements(self):
         self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.search-suggests .search-suggest')))
         return self.driver.find_elements_by_css_selector(".search-suggests > .search-suggest a[href^='/product']")
