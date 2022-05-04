@@ -1,3 +1,4 @@
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.common.by import By
@@ -32,3 +33,11 @@ class SeleniumBaseObject(object):
             EC.visibility_of_element_located((By.CSS_SELECTOR, css_selector))
         )
         return element
+
+    def _check_drawable(self, css_selector):
+        try:
+            WebDriverWait(self.driver, 1).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+        except TimeoutException:
+            return False
+        return True

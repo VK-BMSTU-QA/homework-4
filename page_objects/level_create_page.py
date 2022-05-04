@@ -5,6 +5,7 @@ from page_objects.base import Page
 
 class LevelAddPage(Page):
     LEVEL_SAVE_BUTTON = 'button[class="btn btn_success "]'
+    LEVEL_ERROR = 'div[class="edit-level__fields"] > div[class="validation_error"]'
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -17,6 +18,12 @@ class LevelAddPage(Page):
 
     def add_advantage_to_level(self):
         self.level_form.add_advantage()
+
+    def check_advantage(self, n):
+        return self.level_form.check_advantage(n)
+
+    def fill_form(self, name, price, first_advantage):
+        self.fill_form(name, price, first_advantage)
 
     def set_level_name(self, value):
         self.level_form.set_name(value)
@@ -35,3 +42,18 @@ class LevelAddPage(Page):
 
     def get_preview_level_price(self):
         return self.preview_card.get_level_price()
+
+    def check_name_error(self):
+        return self.level_form.check_name_error()
+
+    def check_advantage_error(self, n):
+        return self.level_form.check_advantage_error(n)
+
+    def check_price_error(self):
+        return self.level_form.check_price_error()
+
+    def delete_advantage(self, n):
+        self.level_form.delete_advantage(n)
+
+    def check_error(self):
+        return self._check_drawable(self.LEVEL_ERROR)

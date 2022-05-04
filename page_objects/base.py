@@ -1,9 +1,9 @@
-
-import urlparse
+import urllib.parse as urlparse
 
 from selenium_utils.utils_object import SeleniumBaseObject
 
 import setup.setup as stp
+
 
 class Page(SeleniumBaseObject):
     PATH = ''
