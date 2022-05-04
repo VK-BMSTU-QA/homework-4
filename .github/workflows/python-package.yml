@@ -30,10 +30,6 @@ jobs:
         sudo dpkg -i google-chrome-stable_current_amd64.deb
     - name: Install unzip
       run: sudo apt-get install -y unzip
-    - name: Install xserver-xephyr
-      run: sudo apt-get install -y xvfb xserver-xephyr
-    - name: Start XVFB
-      run: sudo Xvfb -ac :99 -screen 0 1280x720x24 > /dev/null 2>&1 &
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -63,8 +59,6 @@ jobs:
     - name: Start chromedriver
       run: |
         ./chromedriver_linux64/chromedriver --port=4444 --url-base=/wd/hub &
-      env:
-        DISPLAY: :99
     - name: Test with unittest
       env:
         TESTUSERNAME: ${{ secrets.TESTUSERNAME }}
