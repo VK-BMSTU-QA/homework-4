@@ -5,6 +5,7 @@ from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 
 from tests.login_test import LoginPage
 from tests.main_test import MainPage
@@ -16,10 +17,12 @@ class PlayerTest(unittest.TestCase):
 
     def setUp(self):
         browser = os.environ.get('TESTBROWSER', 'CHROME')
-
+        options = Options()
+        options.headless = bool(os.environ.get('HEADLESS', False))
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
+            options=options
         )
 
         login_page = LoginPage(self.driver)
