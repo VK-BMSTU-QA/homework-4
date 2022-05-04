@@ -53,3 +53,5 @@ class OneProductPage:
     def get_back_to_catalog_link(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'back-to-result__link')))
 
+    def get_product_name(self):
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-card__name')))

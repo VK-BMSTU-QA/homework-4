@@ -17,3 +17,6 @@ class AllProductsPage:
     def get_product_trends_title(self):
         return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#product-tabletrends > div > span')))
 
+    def get_category_name(self):
+        self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'search-left')))
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'product-table__title')))

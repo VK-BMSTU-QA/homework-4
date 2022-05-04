@@ -21,6 +21,7 @@ POST_OPTION = 2
 class Basket(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
+
         self.product_id = 0
         self.utils = Utils(driver=self.driver)
         self.allProductsPage = AllProductsPage(self.driver)

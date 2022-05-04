@@ -16,17 +16,17 @@ class SignInPage:
         return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.auth-box h2')))
 
     def get_login_element(self):
-        return self.driver.find_element(by=By.CLASS_NAME, value='user-box__login')
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'user-box__login')))
 
     def get_password_element(self):
-        return self.driver.find_element(by=By.CLASS_NAME, value='user-box__password')
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'user-box__password')))
 
     def get_button_element(self):
-        return self.driver.find_element(by=By.CLASS_NAME, value='auth-btn')
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'auth-btn')))
 
     def get_error_element(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'auth-content-inner__error')))
 
     def get_signup_link(self):
-        return self.driver.find_element(by=By.CLASS_NAME, value='auth-content-form-registration__link')
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'auth-content-form-registration__link')))
 
