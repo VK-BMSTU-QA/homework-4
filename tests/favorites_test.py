@@ -1,74 +1,37 @@
 import os
 import unittest
 
+from Favorites.FavoritesPage import FavoritesPage
+from Home.HomePage import HomePage
+from Login.LoginPage import LoginPage
 from selenium.webdriver import DesiredCapabilities, Remote
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-
-from tests import Page, Tracks, Player
-from tests.login_test import LoginPage
-from tests.main_test import MainPage
-
-
-class FavoritesPage(Page):
-    PATH = 'favorites'
-
-    @property
-    def track_list(self):
-        return Tracks(self.driver)
-
-    @property
-    def player(self):
-        return Player(self.driver)
 
 
 class FavoritesTest(unittest.TestCase):
-    EMAIL = os.environ['TESTUSERNAME']
-    PASSWORD = os.environ['TESTPASSWORD']
+    EMAIL = os.environ["TESTUSERNAME"]
+    PASSWORD = os.environ["TESTPASSWORD"]
 
     def setUp(self):
-        browser = os.environ.get('TESTBROWSER', 'CHROME')
-        options = Options()
-        options.headless = bool(os.environ.get('HEADLESS', False))
+        browser = os.environ.get("TESTBROWSER", "CHROME")
+
         self.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
+            command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
-            options=options
         )
         self.login_page = LoginPage(self.driver)
-        self.login_page.open()
-        self.login_form = self.login_page.form
-        self.login_form.set_email(self.EMAIL)
-        self.login_form.set_password(self.PASSWORD)
-        self.login_form.login()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
-        )
+        self.login_page.login(self.EMAIL, self.PASSWORD)
 
         self.favorites_page = FavoritesPage(self.driver)
         self.favorites_page.open()
-
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located(
-                (By.CLASS_NAME, "favorites__description-title"))
-        )
 
     def tearDown(self):
         self.driver.quit()
 
     def test_album_opening(self):
         self.favorites_page.track_list.open_first_album()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "album"))
-        )
 
     def test_artist_opening(self):
         self.favorites_page.track_list.open_first_artist()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "artist"))
-        )
 
     def test_like(self):
         track_id = self.favorites_page.track_list.get_track_id()
@@ -100,9 +63,5 @@ class FavoritesTest(unittest.TestCase):
         assert self.favorites_page.track_list.track_is_liked(track_id)
 
     def test_favorites_opening_from_navbar(self):
-        self.main_page = MainPage(self.driver)
-        self.main_page.sidebar.go_favorites()
-        WebDriverWait(self.driver, 10, 0.1).until(
-            EC.presence_of_element_located(
-                (By.CLASS_NAME, "favorites__description-title"))
-        )
+        self.home_page = HomePage(self.driver)
+        self.home_page.sidebar.go_favorites()
