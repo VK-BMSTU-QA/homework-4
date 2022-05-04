@@ -6,20 +6,20 @@ from tests.level_edit.base import BaseLevelTest
 
 class EditLevelTest(BaseLevelTest):
 
-    def __init__(self):
-        super(EditLevelTest, self).__init__()
+    def __init__(self, methodName: str = ...):
+        super(EditLevelTest, self).__init__(methodName)
 
         self.edit_level_data = {
-            "name": "Первый уровень".decode('utf-8'),
-            "first_advantage": "Хорошее преимущество".decode('utf-8'),
-            "second_advantage": "Второе хорошее преимущество".decode('utf-8'),
+            "name": "Первый уровень",
+            "first_advantage": "Хорошее преимущество",
+            "second_advantage": "Второе хорошее преимущество",
             "price": "20",
         }
 
         self.level_data = {
-            "name": "Редактированный уровень".decode('utf-8'),
-            "first_advantage": "Редактированное преимущество".decode('utf-8'),
-            "third_advantage": "Третье Редактированное преимущество".decode('utf-8'),
+            "name": "Редактированный уровень",
+            "first_advantage": "Редактированное преимущество",
+            "third_advantage": "Третье Редактированное преимущество",
             "price": "30",
         }
 

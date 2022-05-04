@@ -10,5 +10,5 @@ if __name__ == '__main__':
         unittest.makeSuite(LoginPage),
         unittest.makeSuite(AddLevelTest),
         unittest.makeSuite(EditLevelTest)))
-    result = unittest.TextTest().run(suite)
+    result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

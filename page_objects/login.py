@@ -4,7 +4,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from components.base import Component
 from page_objects.base import Page
-from components.login_form import AuthForm
 
 
 class LoginPage(Page):

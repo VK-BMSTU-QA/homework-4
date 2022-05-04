@@ -26,7 +26,7 @@ class BaseLevelTest(unittest.TestCase):
         self.settings_page.open_author_setting()
 
         self.incorrect_price = [
-            "Привет мир".decode('utf-8'),
+            "Привет мир",
             "-20",
             "0",
             "5001",
