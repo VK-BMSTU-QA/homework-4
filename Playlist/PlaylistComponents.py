@@ -8,10 +8,11 @@ from tests.utils import CHECK_FREQ, TIMEOUT, has_element
 
 class PlaylistImage(Component):
     IMAGE = '//div[@class="playlist__description-avatar"]'
+    PLAYLIST_DESCR = "playlist__description-avatar"
 
     def open_edit_window(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "playlist__description-avatar"))
+            EC.element_to_be_clickable((By.CLASS_NAME, self.PLAYLIST_DESCR))
         )
         self.driver.find_element(by=By.XPATH, value=self.IMAGE).click()
 
@@ -42,6 +43,8 @@ class PlaylistEditWindow(Component):
     WARNING_CLS = "editwindow__form-msg"
     LINK = '//div[@class="editwindow__link"]'
     PUBLICITY_SWITCH = '//span[@class="slider"]'
+    IS_OPEN = "display: block;"
+    EDIT_SUBMIT = "editwindow__form-submit"
 
     def is_open(self, timeout=TIMEOUT):
         try:
@@ -51,7 +54,7 @@ class PlaylistEditWindow(Component):
         except selenium.common.exceptions.TimeoutException:
             return False
         style = window.get_attribute("style")
-        return "display: block;" in style
+        return self.IS_OPEN in style
 
     def close_by_close_btn(self):
         button = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -80,7 +83,7 @@ class PlaylistEditWindow(Component):
 
     def save(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "editwindow__form-submit"))
+            EC.element_to_be_clickable((By.CLASS_NAME, self.EDIT_SUBMIT))
         )
         self.driver.find_element(by=By.XPATH, value=self.SAVE_BUTTON).click()
 

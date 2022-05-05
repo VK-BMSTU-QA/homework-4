@@ -13,6 +13,7 @@ class LoginForm(Component):
     LOGIN_BUTTON = '//input[@class="auth-form__submit"]'
     FRONTEND_ERRORS = '//div[@class="auth-form__invalidities form__invalidities"]'
     BACKEND_ERRORS_CLS = "auth-form__fail_msg"
+    AVATAR = "avatar__img"
 
     def set_email(self, email):
         input = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -35,7 +36,7 @@ class LoginForm(Component):
     def check_login(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
+                EC.presence_of_element_located((By.CLASS_NAME, self.AVATAR))
             )
         except selenium.common.exceptions.TimeoutException:
             return False

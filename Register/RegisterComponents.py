@@ -15,6 +15,7 @@ class RegisterForm(Component):
     REGISTER_BUTTON = '//input[@class="auth-form__submit"]'
     FRONTEND_ERRORS = '//div[@class="auth-form__invalidities"]'
     BACKEND_ERRORS_CLS = "auth-form__fail_msg"
+    AVATAR = "avatar__img"
 
     def set_nickname(self, nickname):
         input = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -49,7 +50,7 @@ class RegisterForm(Component):
     def check_register(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
+                EC.presence_of_element_located((By.CLASS_NAME, self.AVATAR))
             )
         except selenium.common.exceptions.TimeoutException:
             return False

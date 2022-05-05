@@ -9,6 +9,7 @@ from tests.utils import CHECK_FREQ, TIMEOUT
 
 class PlaylistPage(Page):
     PATH = "playlist/289"
+    PLAYLIST_DESCR = "playlist__description-title"
 
     @property
     def controls(self):
@@ -33,5 +34,5 @@ class PlaylistPage(Page):
     def open(self):
         super().open()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "playlist__description-title"))
+            EC.presence_of_element_located((By.CLASS_NAME, self.PLAYLIST_DESCR))
         )

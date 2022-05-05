@@ -10,6 +10,7 @@ from tests.utils import CHECK_FREQ, TIMEOUT
 
 class FavoritesPage(Page):
     PATH = "favorites"
+    DESCR_TITLE = "favorites__description-title"
 
     @property
     def track_list(self):
@@ -21,7 +22,7 @@ class FavoritesPage(Page):
 
     def _check_opened(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
+            EC.presence_of_element_located((By.CLASS_NAME, self.DESCR_TITLE))
         )
 
     def open(self):

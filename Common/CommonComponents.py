@@ -17,10 +17,12 @@ class Player(Component):
     PLAYER = '//div[@class="player"]'
     MUTE = 'img[class^="mute"]'
     MUTE_XPATH = '//img[@class="mute"]'
+    PLAYER_PAUSED = "pause"
+    IN_FAVORITES = "data-in_favorites"
 
     def paused(self):
         play = self.driver.find_element(by=By.XPATH, value=self.PLAY)
-        return "pause" in play.get_attribute("src")
+        return self.PLAYER_PAUSED in play.get_attribute("src")
 
     def prev_disabled(self):
         return len(self.driver.find_elements(by=By.XPATH, value=self.PREV_TRACK_CLASS)) == 0
@@ -50,19 +52,19 @@ class Player(Component):
     def remove_like(self):
         self.get_like_btn().click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
         )
 
     def add_like(self):
         self.get_like_btn().click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
         )
 
     def track_is_liked(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+                EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
             )
         except selenium.common.exceptions.TimeoutException:
             return False
@@ -71,7 +73,7 @@ class Player(Component):
     def track_is_not_liked(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+                element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
             )
         except selenium.common.exceptions.TimeoutException:
             return False
@@ -103,11 +105,13 @@ class Albums(Component):
     ARTIST = '//div[@class="top-album__artist"]'
     PLAY_ICON = "i[class^=top-album__play]"
     ALBUM_LABEL = '//div[@class="album__description-label"]'
+    PLAYER_STARTED_PLAYING = "0:01"
+    ALBUM_TEXT = "album"
 
     def open_first_album(self):
         self.driver.find_element(by=By.XPATH, value=self.FIRST_ALBUM).click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.ALBUM_LABEL).text == "album"
+            lambda d: d.find_element(by=By.XPATH, value=self.ALBUM_LABEL).text == self.ALBUM_TEXT
         )
 
     def get_first_album_id(self):
@@ -120,7 +124,7 @@ class Albums(Component):
         )
         play.click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=Player.CURRENT_TIME).text == "0:01"
+            lambda d: d.find_element(by=By.XPATH, value=Player.CURRENT_TIME).text == self.PLAYER_STARTED_PLAYING
         )
 
 
@@ -128,6 +132,7 @@ class Topbar(Component):
     SETTINGS = '//i[@class="topbar-icon fa-solid fa-gear"]'
     AVATAR = '//img[@class="avatar__img"]'
     LOGOUT = '//i[@class="topbar-icon js-logout fa-solid fa-right-from-bracket"]'
+    SIGNIN_BUTTON = "signin-button"
 
     def click_settings(self):
         settings = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -147,7 +152,7 @@ class Topbar(Component):
         )
         logout.click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.element_attribute_to_include((By.ID, "signin-button"), "href")
+            EC.element_attribute_to_include((By.ID, self.SIGNIN_BUTTON), "href")
         )
 
     def logged_out(self):
@@ -171,6 +176,7 @@ class Sidebar(Component):
     LOGO = '//a[@class="sidebar__icon__logo"]'
     HOME = '//a[@class="sidebar__icon" and @href="/"]'
     FAVORITES = '//a[@class="sidebar__icon" and @href="/favorites"]'
+    FAVORITES_DESCRIPTION = "favorites__description-title"
 
     def go_home_by_logo(self):
         self.driver.find_element(by=By.XPATH, value=self.LOGO).click()
@@ -178,7 +184,7 @@ class Sidebar(Component):
     def go_favorites(self):
         self.driver.find_element(by=By.XPATH, value=self.FAVORITES).click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
+            EC.presence_of_element_located((By.CLASS_NAME, self.FAVORITES_DESCRIPTION))
         )
 
 
@@ -189,6 +195,10 @@ class Tracks(Component):
     FIRST_TRACK_ARTIST = '//div[@class="track__container__artist"]'
     FIRST_TRACK_ALBUM = '//img[@class="track__artwork__img"]'
     TRACK_LIKE_BTN = '//img[@class="track-fav" and @data-id="{}"]'
+    ALBUM_CLASS = "album"
+    ARTIST_CLASS = "artist"
+    IN_FAVORITES = "data-in_favorites"
+    LOGIN_UI = "login-ui"
 
     def get_track_artist(self, i=0):
         artist = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -232,7 +242,7 @@ class Tracks(Component):
     def album_is_opened(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "album"))
+                EC.presence_of_element_located((By.CLASS_NAME, self.ALBUM_CLASS))
             )
         except selenium.common.exceptions.TimeoutException:
             return False
@@ -247,7 +257,7 @@ class Tracks(Component):
     def artist_is_opened(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "artist"))
+                EC.presence_of_element_located((By.CLASS_NAME, self.ARTIST_CLASS))
             )
         except selenium.common.exceptions.TimeoutException:
             return False
@@ -261,19 +271,19 @@ class Tracks(Component):
     def remove_like(self, track_id):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
+            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), self.IN_FAVORITES)
         )
 
     def add_like(self, track_id):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), "data-in_favorites")
+            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), self.IN_FAVORITES)
         )
 
     def track_is_liked(self, track_id):
-        return bool(self.get_like_btn(track_id).get_attribute("data-in_favorites"))
+        return bool(self.get_like_btn(track_id).get_attribute(self.IN_FAVORITES))
 
     def check_redirect_to_login(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "login-ui"))
+            EC.presence_of_element_located((By.CLASS_NAME, self.LOGIN_UI))
         )

@@ -8,6 +8,7 @@ from tests.utils import CHECK_FREQ, TIMEOUT
 
 class ProfilePage(Page):
     PATH = "profile"
+    PROFILE = "profile-page"
 
     @property
     def profile_form(self):
@@ -16,5 +17,5 @@ class ProfilePage(Page):
     def open(self):
         super().open()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "profile-page"))
+            EC.presence_of_element_located((By.CLASS_NAME, self.PROFILE))
         )
