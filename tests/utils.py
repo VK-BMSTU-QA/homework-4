@@ -2,8 +2,8 @@ from selenium.common.exceptions import InvalidSelectorException, NoSuchElementEx
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-TIMEOUT = 100
-CHECK_FREQ = 0.5
+TIMEOUT = 10
+CHECK_FREQ = 0.25
 
 
 def has_element(driver, xpath):

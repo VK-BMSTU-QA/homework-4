@@ -35,7 +35,7 @@ class PlaylistsTest(unittest.TestCase):
     def test_edit_window_unauthorized(self):
         self.playlists_page.topbar.log_out()
         self.playlists_page.playlist_image.open_edit_window()
-        assert not self.playlists_page.edit_window.is_open(timeout=30)
+        assert not self.playlists_page.edit_window.is_open(timeout=10)
 
     def test_edit_window(self):
         self.playlists_page.playlist_image.open_edit_window()
