@@ -76,8 +76,7 @@ class PlayerTest(unittest.TestCase):
 
     def test_resume(self):
         player = self.home_page.player
-        tracks = self.home_page.tracks
-        tracks.play_track()
+        self.home_page.tracks.play_track()
         player.toggle_play()
         player.toggle_play()
         self.assertFalse(player.paused())
