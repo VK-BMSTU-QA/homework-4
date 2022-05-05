@@ -2,10 +2,10 @@ from tests.search_creator.base import BaseSearchTest
 from page_objects.search_page import SearchPage
 
 
-class AddLevelTest(BaseSearchTest):
+class SearchTest(BaseSearchTest):
 
     def __init__(self, methodName: str = ...):
-        super(AddLevelTest, self).__init__(methodName)
+        super(SearchTest, self).__init__(methodName)
 
         self.search_data = {
             "name": "v",
