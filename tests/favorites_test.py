@@ -26,6 +26,9 @@ class FavoritesTest(unittest.TestCase):
         self.favorites_page = FavoritesPage(self.driver)
         self.favorites_page.open()
 
+        self.home_page = HomePage(self.driver)
+        self.favorites_page = FavoritesPage(self.driver)
+
     def tearDown(self):
         self.driver.quit()
 
@@ -67,7 +70,5 @@ class FavoritesTest(unittest.TestCase):
         self.assertTrue(self.favorites_page.track_list.track_is_liked(track_id))
 
     def test_favorites_opening_from_navbar(self):
-        self.home_page = HomePage(self.driver)
         self.home_page.sidebar.go_favorites()
-        self.favorites_page = FavoritesPage(self.driver)
         self.assertTrue(self.favorites_page.is_open())

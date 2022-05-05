@@ -20,16 +20,16 @@ class PlayerTest(unittest.TestCase):
             options=options
         )
 
-        login_page = LoginPage(self.driver)
-        login_page.login(self.EMAIL, self.PASSWORD)
+        self.login_page = LoginPage(self.driver)
+        self.login_page.login(self.EMAIL, self.PASSWORD)
+        self.home_page = HomePage(self.driver)
 
     def tearDown(self):
         self.driver.quit()
 
     def test_next_track(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
+        player = self.home_page.player
+        tracks = self.home_page.tracks
         second_track = tracks.get_track_id(1)
         tracks.play_track()
         player.next_track()
@@ -37,67 +37,46 @@ class PlayerTest(unittest.TestCase):
         self.assertEqual(second_track, playing_track)
 
     def test_player_hidden(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        self.assertTrue(player.hidden())
+        self.assertTrue(self.home_page.player.hidden())
 
     def test_mute(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track()
+        player = self.home_page.player
+        self.home_page.tracks.play_track()
         player.mute()
         self.assertTrue(player.muted())
 
     def test_unmute(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track()
+        player = self.home_page.player
+        self.home_page.tracks.play_track()
         player.mute()
         player.mute()
         self.assertFalse(player.muted())
 
     def test_prev_disabled(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track()
-        self.assertTrue(player.prev_disabled())
+        self.home_page.tracks.play_track()
+        self.assertTrue(self.home_page.player.prev_disabled())
 
     def test_next_enabled(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track()
-        self.assertFalse(player.next_disabled())
+        self.home_page.tracks.play_track()
+        self.assertFalse(self.home_page.player.next_disabled())
 
     def test_next_disabled(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track(last=True)
-        self.assertTrue(player.next_disabled())
+        self.home_page.tracks.play_track(last=True)
+        self.assertTrue(self.home_page.player.next_disabled())
 
     def test_prev_enabled(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track(last=True)
-        self.assertFalse(player.prev_disabled())
+        self.home_page.tracks.play_track(last=True)
+        self.assertFalse(self.home_page.player.prev_disabled())
 
     def test_pause(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
-        tracks.play_track()
+        self.home_page.tracks.play_track()
+        player = self.home_page.player
         player.toggle_play()
         self.assertTrue(player.paused())
 
     def test_resume(self):
-        home_page = HomePage(self.driver)
-        player = home_page.player
-        tracks = home_page.tracks
+        player = self.home_page.player
+        tracks = self.home_page.tracks
         tracks.play_track()
         player.toggle_play()
         player.toggle_play()
