@@ -50,43 +50,43 @@ class PlaylistsTest(unittest.TestCase):
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.clear_title()
         self.playlists_page.edit_window.save()
-        self.assertTrue(self.playlists_page.edit_window.fail_warning())
+        self.assertTrue(self.playlists_page.edit_window.error())
 
     def test_submit_long_title(self):
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.set_title(self.INVALID_TITLE)
         self.playlists_page.edit_window.save()
-        self.assertTrue(self.playlists_page.edit_window.fail_warning())
+        self.assertTrue(self.playlists_page.edit_window.error())
 
     def test_submit_short_title(self):
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.set_title(self.INVALID_TITLE[0:2])
         self.playlists_page.edit_window.save()
-        self.assertTrue(self.playlists_page.edit_window.fail_warning())
+        self.assertTrue(self.playlists_page.edit_window.error())
 
     def test_confirm_deletion(self):
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.click_on_delete()
-        self.assertTrue(self.playlists_page.edit_window.fail_warning())
+        self.assertTrue(self.playlists_page.edit_window.error())
 
     def test_toggle_publicity(self):
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.toggle_publicity()
-        self.assertTrue(self.playlists_page.edit_window.success_warning())
+        self.assertTrue(self.playlists_page.edit_window.success())
 
         self.playlists_page.edit_window.toggle_publicity()
-        self.assertTrue(self.playlists_page.edit_window.success_warning())
+        self.assertTrue(self.playlists_page.edit_window.success())
         self.assertTrue(self.playlists_page.edit_window.playlist_link())
 
     def test_positive_submit(self):
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.set_title(self.VALID_TITLE)
         self.playlists_page.edit_window.save()
-        self.assertTrue(self.playlists_page.edit_window.success_warning())
+        self.assertTrue(self.playlists_page.edit_window.success())
         self.playlists_page.edit_window.close_by_close_btn()
         self.assertEqual(self.playlists_page.text_block.title(), self.VALID_TITLE)
 
         self.playlists_page.text_block.open_edit_window()
         self.playlists_page.edit_window.set_title(self.SETUP_TITLE)
         self.playlists_page.edit_window.save()
-        self.assertTrue(self.playlists_page.edit_window.success_warning())
+        self.assertTrue(self.playlists_page.edit_window.success())

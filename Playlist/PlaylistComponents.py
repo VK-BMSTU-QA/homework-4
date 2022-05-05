@@ -84,7 +84,7 @@ class PlaylistEditWindow(Component):
         )
         self.driver.find_element(by=By.XPATH, value=self.SAVE_BUTTON).click()
 
-    def fail_warning(self):
+    def error(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
                 EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "fail")
@@ -108,7 +108,7 @@ class PlaylistEditWindow(Component):
         )
         self.driver.find_element(by=By.XPATH, value=self.PUBLICITY_SWITCH).click()
 
-    def success_warning(self):
+    def success(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
                 EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "success")

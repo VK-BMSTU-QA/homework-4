@@ -31,34 +31,34 @@ class LoginTest(unittest.TestCase):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.PASSWORD)
 
-        self.assertFalse(self.login_form.frontend_warnings().text)
-        self.assertFalse(self.login_form.backend_warnings().text)
+        self.assertFalse(self.login_form.frontend_errors().text)
+        self.assertFalse(self.login_form.backend_errors().text)
 
         self.login_form.login()
         self.assertTrue(self.login_form.check_login())
 
     def test_empty_form(self):
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_warnings())
+        self.assertTrue(self.login_form.backend_errors())
 
     def test_empty_password(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_warnings())
+        self.assertTrue(self.login_form.backend_errors())
 
     def test_empty_email(self):
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_warnings())
+        self.assertTrue(self.login_form.backend_errors())
 
     def test_invalid_email(self):
         self.login_form.set_email(self.EMAIL.replace(".", ""))
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        self.assertTrue(self.login_form.frontend_warnings())
+        self.assertTrue(self.login_form.frontend_errors())
 
     def test_wrong_credentials(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.WRONG_PASSWORD)
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_warnings())
+        self.assertTrue(self.login_form.backend_errors())

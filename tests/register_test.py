@@ -35,40 +35,40 @@ class RegisterTest(unittest.TestCase):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.set_confirm_password(self.PASSWORD)
 
-        self.assertFalse(self.register_form.frontend_warnings().text)
-        self.assertFalse(self.register_form.backend_warnings().text)
+        self.assertFalse(self.register_form.frontend_errors().text)
+        self.assertFalse(self.register_form.backend_errors().text)
 
         self.register_form.register()
         self.assertTrue(self.register_form.check_register())
 
     def test_empty_form(self):
         self.register_form.register()
-        self.assertTrue(self.register_form.backend_warnings())
+        self.assertTrue(self.register_form.backend_errors())
 
     def test_empty_password(self):
         self.register_form.set_email(self.EMAIL)
         self.register_form.register()
-        self.assertTrue(self.register_form.backend_warnings())
+        self.assertTrue(self.register_form.backend_errors())
 
     def test_empty_email(self):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.backend_warnings())
+        self.assertTrue(self.register_form.backend_errors())
 
     def test_invalid_email(self):
         self.register_form.set_email(self.EMAIL.replace(".", ""))
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.frontend_warnings())
+        self.assertTrue(self.register_form.frontend_errors())
 
     def test_invalid_password(self):
         self.register_form.set_email(self.EMAIL)
         self.register_form.set_password(self.SHORT_PASSWORD)
         self.register_form.set_confirm_password(self.SHORT_PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.frontend_warnings())
+        self.assertTrue(self.register_form.frontend_errors())
 
     def test_non_similar_passwords(self):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.frontend_warnings())
+        self.assertTrue(self.register_form.frontend_errors())
