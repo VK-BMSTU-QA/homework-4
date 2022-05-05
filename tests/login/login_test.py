@@ -10,7 +10,7 @@ class LoginTest(BaseLoginTest):
 
     def setUp(self):
         super().setUp()
-        default_setup(self)
+        self.loginPage = LoginPage(self.driver)
 
     def tearDown(self):
         super().tearDown()

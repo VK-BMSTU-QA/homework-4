@@ -1,8 +1,3 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from components.base import Component
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-
 from selenium_utils.utils_object import SeleniumBaseObject
 
 
