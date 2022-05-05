@@ -7,6 +7,9 @@ from tests.ProfileTest import ProfileTest
 from tests.MainPageTest import MainPageTest
 from tests.BrowseTest import BrowseTest
 from tests.PlayerTest import PlayerTest
+from tests.NavbarTest import NavbarTest
+from tests.ActorPageTest import ActorPageTest
+from tests.FilmPage import FilmPageTest
 
 if __name__ == '__main__':
     suite = unittest.TestSuite(
@@ -16,7 +19,10 @@ if __name__ == '__main__':
             unittest.makeSuite(ProfileTest),
             unittest.makeSuite(BrowseTest),
             unittest.makeSuite(MainPageTest),
-            unittest.makeSuite(PlayerTest)
+            unittest.makeSuite(NavbarTest),
+            unittest.makeSuite(PlayerTest),
+            unittest.makeSuite(FilmPageTest),
+            unittest.makeSuite(ActorPageTest)
         )
     )
     result = unittest.TextTestRunner().run(suite)

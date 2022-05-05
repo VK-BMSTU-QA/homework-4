@@ -33,11 +33,11 @@ class BrowseTest(BaseTest):
 
     # Поиск. При вводе текста в поле поиска на странице появляются иконки актеров с их именем.
     def test_text_input_actors(self):
-        film_name = "Пол"
-        self.main_page.fill_input(self.main_page.search_input, film_name)
+        actor_name = "Пол"
+        self.main_page.fill_input(self.main_page.search_input, actor_name)
 
-        film_item = self.main_page.wait_render(self.main_page.carousel_item_text)
-        isCorrect = film_item.text is not None
+        actor_item = self.main_page.wait_render(self.main_page.carousel_item_text)
+        isCorrect = actor_item.text is not None
         self.assertTrue(isCorrect, '')
 
     # Поиск. При нажатии на иконку фильма открывается страница фильма.

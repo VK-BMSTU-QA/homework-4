@@ -18,18 +18,13 @@ class PlayerTest(BaseTest):
     def tearDown(self):
         pass
 
-    # # Плеер. При движении мыши появляется панель управления видео.
-    # def test_move_mouse(self):
-    #     pass
-    #     # player_panel = self.main_page.wait_render('.player-panel')
-
     # # Плеер. При нажатии на кнопку Play появляется кнопка Stop
-    # def test_play_toggle(self):
-    #     play_btn = self.main_page.wait_render(".player-start-stop__btn point")
-    #     play_btn.click()
-    #     stop_btn = webdriver.Chrome.find_element(By.XPATH, "//img[@src='https://a06367.ru/pause.png']")
-    #     isCorrect = stop_btn.text is not None
-    #     self.assertTrue(isCorrect, '')
+    def test_play_toggle(self):
+        play_btn = self.main_page.wait_render(".player-start-stop__btn")
+        play_btn.click()
+        stop_btn = self.main_page.wait_render('.play_stop__pic')
+        src = stop_btn.get_attribute("src")
+        self.assertTrue(src == 'https://a06367.ru/pause.png')
 
     # Плеер. При нажатии на кнопку exit (крестик) переход на главную страницу.
     def test_exit(self):
@@ -38,10 +33,8 @@ class PlayerTest(BaseTest):
         start_page = self.main_page.wait_render(".film-first-title__column")
         isCorrect = start_page.text is not None
         self.assertTrue(isCorrect, '')
-    #
+
     # # Плеер. При запуске видео счетчик текущего времени устанавливается в 0.
-    # def test_time_zero_value(self):
-    #     player_panel = self.main_page.wait_render(".player-buttons__holder")
-    #     webdriver.ActionChains(webdriver).move_to_element(player_panel).perform()
-    #     time_cur_row = self.main_page.wait_render(".player-timeline-current__row")
-    #     self.assert_(time_cur_row.value_of_css_property("width"), '0px')
+    def test_time_zero_value(self):
+        time_cur_row = self.main_page.wait_render(".player-timeline-current__row")
+        self.assert_(time_cur_row.value_of_css_property("width"), '0px')
