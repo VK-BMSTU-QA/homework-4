@@ -13,6 +13,29 @@ class BasePage(Urls):
     login_btn = ".login"
     signup_btn = ".signup"
 
+    #
+    search_btn = ".container-new-search__input"
+    player_btn = ".film-first-play__btn"
+    close_search_btn = ".search-icon__ico"
+    root_search = ".root__search"
+
+    new_film = ".films-content__img"
+    popular_film = ".films-content__img"
+
+    film_info_btn = ".film-first-info__btn"
+
+    genre_comedy = ".genres-content__column"
+
+    carousel_item = ".carousel-content__item"
+    carousel_item_text = ".carousel-item__text"
+
+    film_about_item = ".film-about-title__text"
+    actor_about_item = ".actor-title__text"
+
+    search_input = ".container-new-search__input"
+
+    player_panel = ".player-panel"
+
     # кнопки формы регистрации
     auth_submit_btn = ".auth-signup__btn"
     reg_submit_btn = ".auth-registration__btn"
