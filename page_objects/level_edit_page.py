@@ -21,10 +21,10 @@ class LevelEditPage(Page):
         return self.level_form.check_advantage(n)
 
     def fill_form(self, name, price, first_advantage):
-        self.fill_form(name, price, first_advantage)
+        self.level_form.fill_form(name, price, first_advantage)
 
     def delete_level(self):
-        self._click_button(self.LEVEL_SAVE_BUTTON)
+        self._click_button(self.LEVEL_DELETE_BUTTON)
 
     def add_advantage_to_level(self):
         self.level_form.add_advantage()

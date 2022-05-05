@@ -19,4 +19,4 @@ def default_setup(t):
         else:
             t.driver = webdriver.Firefox(service=Service(executable_path=GeckoDriverManager().install()))
 
-    # setup_auth(t)
+    setup_auth(t)

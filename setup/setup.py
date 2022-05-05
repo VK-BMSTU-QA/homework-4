@@ -1,4 +1,5 @@
-TIMEOUT_WAIT = 1
+TIMEOUT_WAIT = 30
+TIMEOUT_DRAWABLE_WAIT = 2
 POLL_FREQUENCY = 0.1
 
 BASE_URL = 'http://pyaterochka-team.site/'

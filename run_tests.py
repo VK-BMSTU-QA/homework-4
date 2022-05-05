@@ -11,6 +11,7 @@ if __name__ == '__main__':
         unittest.makeSuite(LoginTest),
         unittest.makeSuite(AddLevelTest),
         unittest.makeSuite(EditLevelTest),
-        unittest.makeSuite(SearchTest)))
+        unittest.makeSuite(SearchTest))
+    )
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

@@ -23,7 +23,7 @@ class LevelAddPage(Page):
         return self.level_form.check_advantage(n)
 
     def fill_form(self, name, price, first_advantage):
-        self.fill_form(name, price, first_advantage)
+        self.level_form.fill_form(name, price, first_advantage)
 
     def set_level_name(self, value):
         self.level_form.set_name(value)

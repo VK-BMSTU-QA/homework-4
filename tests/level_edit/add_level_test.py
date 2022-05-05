@@ -39,7 +39,7 @@ class AddLevelTest(BaseLevelTest):
         self.add_page.fill_form(self.level_data["name"], self.level_data["price"], self.level_data["first_advantage"])
 
     def fill_empty_form(self):
-        self.add_page.fill_form(self.level_data[""], self.level_data[""], self.level_data[""])
+        self.add_page.fill_form("", "", "")
 
     def test_correct_preview_name(self):
         self.fill_level_form()
@@ -106,7 +106,7 @@ class AddLevelTest(BaseLevelTest):
 
     def test_invalid_price(self):
         self.fill_level_form()
-        for price in self.level_data["incorrect_price"]:
+        for price in self.incorrect_price:
             self.add_page.set_level_price(price)
             self.assertTrue(self.add_page.check_price_error())
 

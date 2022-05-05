@@ -6,10 +6,10 @@ class LevelForm(Component):
 
     LEVEL_NAME_INPUT = 'div[class="edit-level__fields"] > div:nth-child(2) > label > input'
     LEVEL_PRICE_INPUT = 'div[class="edit-level__fields"] > div[class="add-benefit"] + div > label > input'
-    LEVEL_ADVANTAGE_INPUT = 'div[class="edit-level__fields"] > div:nth-child({}}) > div:nth-child(1) > label > input'
+    LEVEL_ADVANTAGE_INPUT = 'div[class="edit-level__fields"] > div:nth-child({}) > div:nth-child(1) > label > input'
 
     LEVEL_NAME_ERROR = 'div[class="edit-level__fields"] > div:nth-child(2) > div[class="input-validation"]'
-    LEVEL_ADVANTAGE_ERROR = 'div[class="edit-level__fields"] > div:nth-child({}}) > div:nth-child(1) > div[' \
+    LEVEL_ADVANTAGE_ERROR = 'div[class="edit-level__fields"] > div:nth-child({}) > div:nth-child(1) > div[' \
                             'class="input-validation"] '
     LEVEL_PRICE_ERROR = 'div[class="edit-level__fields"] > div[class="add-benefit"] + div > div[' \
                         'class="input-validation"] '

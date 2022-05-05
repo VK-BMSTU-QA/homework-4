@@ -4,9 +4,9 @@ from page_objects.base import Page
 
 class AuthorSettingsPage(Page):
     PATH = 'profile/edit/creator_settings'
-    LEVEL_EDIT_BUTTON = 'div[class="level-card "] > button'
+    LEVEL_ADD_BUTTON = 'div[class="profile-edit__levels-container"] img'
 
-    LEVEL_EXIST = 'div[class="level-card "]'
+    LEVEL_EXIST = 'div[class~="level-card"]'
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -17,10 +17,10 @@ class AuthorSettingsPage(Page):
         self.level_card.click_card_button()
 
     def check_exist_level(self):
-        self._check_drawable(self.LEVEL_EXIST)
+        return self._check_drawable(self.LEVEL_EXIST)
 
     def open_add_level_page(self):
-        self._click_button(self.LEVEL_EDIT_BUTTON)
+        self._click_button(self.LEVEL_ADD_BUTTON)
 
     def get_level_name(self):
         return self.level_card.get_level_name()

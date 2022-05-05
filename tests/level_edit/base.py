@@ -21,7 +21,6 @@ class BaseLevelTest(unittest.TestCase):
 
         self.base_page = AuthorSettingsPage(self.driver)
 
-        self.start_page.open()
         self.start_page.open_setting()
         self.settings_page.open_author_setting()
 

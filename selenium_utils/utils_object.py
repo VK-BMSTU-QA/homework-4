@@ -36,8 +36,9 @@ class SeleniumBaseObject(object):
 
     def _check_drawable(self, css_selector):
         try:
-            WebDriverWait(self.driver, 1).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+            self._wait_with_timeout(stp.TIMEOUT_DRAWABLE_WAIT).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
+            )
         except TimeoutException:
             return False
         return True
