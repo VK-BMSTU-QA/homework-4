@@ -10,7 +10,6 @@ from tests.pages.BasePage import BasePage
 
 class ProfilePage(BasePage):
     def __init__(self, driver):
-        self.image_field = ".profile-info-picture__column"
         super().__init__(driver)
 
     def open(self):
@@ -20,6 +19,7 @@ class ProfilePage(BasePage):
         upd = self.wait_render(self.image_field)
         upd.click()
         time.sleep(2)
+
         pyautogui.write(path)
         pyautogui.press('enter')
         pyautogui.write(image)

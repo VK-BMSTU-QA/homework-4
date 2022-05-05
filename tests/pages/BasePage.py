@@ -32,6 +32,7 @@ class BasePage(Urls):
     settings_btn = '.profile-settings__ico'
 
     # кнопка аватарки
+    image_field = ".profile-info-picture__column"
     update_userpic = '.profile-info-avatar'
     update_password = '.profile-info-save__btn'
     update_password_input = '.profile-info-pass__input'
@@ -60,8 +61,3 @@ class BasePage(Urls):
     def fill_input(self, selector, text):
         text_input = self.wait_render(selector)
         text_input.send_keys(text)
-
-    def fill_image_input(self, image):
-        img_input = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.update_userpic)))
-        img_input.send_keys(image)

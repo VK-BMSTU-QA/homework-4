@@ -35,7 +35,7 @@ class ProfileTest(BaseTest):
         btn = self.profile_page.wait_render(self.main_page.settings_btn)
         btn.click()
         isCorrect = self.main_page.wait_redirect(self.main_page.SETTINGS_URL)
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не происходит редирект на страницу настроек')
 
     # проверка редиректа на страницу оплаты
     def test_payments_redirect(self):
@@ -43,8 +43,7 @@ class ProfileTest(BaseTest):
         btn.click()
         # fuzzy match inside
         isCorrect = self.main_page.wait_redirect(self.main_page.PAYMENT_URL)
-        self.assertTrue(isCorrect, '')
-        # проверка редиректа на страницу настройки
+        self.assertTrue(isCorrect, 'Не происходит редирект на страницу оплаты')
 
     # проверка обновления аватара
     def test_settings_userpic(self):
@@ -57,7 +56,7 @@ class ProfileTest(BaseTest):
         self.profile_page.fill_image_input(os.getcwd(), 'test.png')
         message_block = self.profile_page.wait_render(self.profile_page.success_block)
         isCorrect = message_block.text != ''
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не происходит обновление аватара пользователя')
         delete_pic()
 
     # проверка обновления аватара со слишком большим файлом
@@ -71,7 +70,8 @@ class ProfileTest(BaseTest):
         self.profile_page.fill_image_input(os.getcwd(), 'test.png')
         message_block = self.profile_page.wait_render(self.profile_page.error_block)
         isCorrect = message_block.text != ''
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке слишком большого файла')
         delete_pic()
 
     # обновление пароля, пароль слишком короткий
@@ -85,7 +85,9 @@ class ProfileTest(BaseTest):
 
         message_block = self.profile_page.wait_render(self.profile_page.error_block)
         isCorrect = message_block.text != self.message_ok_pass
-        self.assertTrue(isCorrect, '')
+
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке слишком короткого пароля')
 
     # обновление пароля, пароль слишком длинный
     def test_settings_password_long(self):
@@ -93,13 +95,14 @@ class ProfileTest(BaseTest):
         btn = self.profile_page.wait_render(self.main_page.settings_btn)
         btn.click()
         upd = self.profile_page.wait_render(self.main_page.update_password)
-        password = string_generator(5)
+        password = string_generator(50)
         self.profile_page.fill_input(self.main_page.update_password_input, password)
         upd.click()
 
         message_block = self.profile_page.wait_render(self.profile_page.error_block)
         isCorrect = message_block.text != self.message_ok_pass
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке слишком длинного пароля')
 
     # обновление пароля
     def test_settings_password(self):
@@ -113,7 +116,8 @@ class ProfileTest(BaseTest):
 
         message_block = self.profile_page.wait_render(self.profile_page.success_block)
         isCorrect = message_block.text == self.message_ok_pass
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение '
+                                   'об успешном обновлении пароля')
 
     # обновление описания
     def test_settings_description(self):
@@ -128,4 +132,6 @@ class ProfileTest(BaseTest):
 
         message_block = self.profile_page.wait_render(self.profile_page.success_block)
         isCorrect = message_block.text == self.message_ok_desc
-        self.assertTrue(isCorrect, '')
+
+        self.assertTrue(isCorrect, 'Не отображается сообщение '
+                                   'об успешном обновлении описания')

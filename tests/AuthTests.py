@@ -17,30 +17,33 @@ class SignUpTest(BaseTest):
         btn = self.main_page.wait_render(self.main_page.reg_submit_btn)
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None or error_block.text != ''
-        self.assertTrue(isCorrect, '')
+        isCorrect = error_block.text != ''
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с пустыми полями')
 
     # поле логина пустое
     def test_empty_login(self):
         password = string_generator(8)
         btn = self.main_page.wait_render(self.main_page.reg_submit_btn)
         self.main_page.fill_input(self.main_page.auth_password_input, password)
-
         btn.click()
+
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
+        isCorrect = error_block.text != ''
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с пустым логином')
 
     # поле пароля пустое
     def test_empty_password(self):
         login = string_generator(8)
         btn = self.main_page.wait_render(self.main_page.reg_submit_btn)
         self.main_page.fill_input(self.main_page.auth_login_input, login)
-
         btn.click()
+
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
+        isCorrect = error_block.text != ''
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с пустым паролем')
 
     # регистрация с уже занятым логином
     def test_existing_login(self):
@@ -52,21 +55,9 @@ class SignUpTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
-
-    # регистрация с уже занятым логином
-    def test_existing_login(self):
-        password = string_generator(8)
-        login = self.login
-        btn = self.main_page.wait_render(self.main_page.reg_submit_btn)
-        self.main_page.fill_input(self.main_page.auth_password_input, password)
-        self.main_page.fill_input(self.main_page.auth_login_input, login)
-
-        btn.click()
-        error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
+        isCorrect = error_block.text != ''
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с уже занятым логином')
 
     # логин слишком короткий
     def test_short_login(self):
@@ -79,8 +70,8 @@ class SignUpTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
-        # логин слишком короткий
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы со слишком коротким логином')
 
     # пароль слишком короткий
     def test_short_password(self):
@@ -93,7 +84,8 @@ class SignUpTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы со слишком коротким паролем')
 
     # пароль слишком длинный
     def test_too_long_password(self):
@@ -106,7 +98,9 @@ class SignUpTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None
-        self.assertTrue(isCorrect, '')
+
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы со слишком длинным паролем')
 
     # корректный ввод
     def test_valid_latin(self):
@@ -115,10 +109,10 @@ class SignUpTest(BaseTest):
         btn = self.main_page.wait_render(self.main_page.reg_submit_btn)
         self.main_page.fill_input(self.main_page.auth_password_input, password)
         self.main_page.fill_input(self.main_page.auth_login_input, login)
-
         btn.click()
         isCorrect = self.main_page.wait_redirect(self.main_page.BASE_URL)
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не происходит редирект на главную '
+                                   'после успешной регистрации')
 
     # корректный ввод (кириллица)
     def test_valid_cyrillic(self):
@@ -130,7 +124,8 @@ class SignUpTest(BaseTest):
 
         btn.click()
         isCorrect = self.main_page.wait_redirect(self.main_page.BASE_URL)
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не происходит редирект на главную '
+                                   'после успешной регистрации')
 
 
 class LoginTest(BaseTest):
@@ -149,7 +144,8 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с пустыми полями')
 
     # поле логина пустое
     def test_empty_login(self):
@@ -160,7 +156,8 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с пустым логином')
 
     # поле пароля пустое
     def test_empty_password(self):
@@ -171,7 +168,8 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с пустым паролем')
 
     # некорректная пара логин-пароль
     def test_incorrect_pair(self):
@@ -184,7 +182,8 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы с неправильной парой логин-пароль')
 
     # логин слишком короткий
     def test_short_login(self):
@@ -197,7 +196,8 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы со слишком коротким логином')
 
     # пароль слишком короткий
     def test_short_password(self):
@@ -210,7 +210,8 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы со слишком коротким паролем')
 
     # пароль слишком длинный
     def test_too_long_password(self):
@@ -223,7 +224,9 @@ class LoginTest(BaseTest):
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
         isCorrect = error_block.text is not None or error_block.text != ""
-        self.assertTrue(isCorrect, '')
+
+        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
+                                   'при отправке формы со слишком длинным паролем')
 
     # корректный ввод
     def test_valid_latin(self):
@@ -235,7 +238,8 @@ class LoginTest(BaseTest):
 
         btn.click()
         isCorrect = self.main_page.wait_redirect(self.main_page.BASE_URL)
-        self.assertTrue(isCorrect, '')
+        self.assertTrue(isCorrect, 'Не происходит редирект на главную '
+                                   'после успешной авторизации')
 
     # корректный ввод (кириллица)
     def test_valid_cyrillic(self):
@@ -247,4 +251,6 @@ class LoginTest(BaseTest):
 
         btn.click()
         isCorrect = self.main_page.wait_redirect(self.main_page.BASE_URL)
-        self.assertTrue(isCorrect, '')
+
+        self.assertTrue(isCorrect, 'Не происходит редирект на главную '
+                                   'после успешной авторизации')
