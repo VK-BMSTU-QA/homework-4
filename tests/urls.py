@@ -4,7 +4,8 @@ class Urls:
     SETTINGS_URL = 'https://a06367.ru/settings'
     LOGIN_URL = 'https://a06367.ru/login'
     SIGNUP_URL = 'https://a06367.ru/signup'
+    PAYMENT_URL = 'https://yoomoney.ru/'
 
-    # TODO: добавьте сюда свои урлы
-    def get_film_url(self, name):
+    @staticmethod
+    def get_film_url(name):
         return f'https://a06367.ru/film/{name}'

@@ -23,7 +23,20 @@ class BasePage(Urls):
 
     # блок сообщения об ошибке
     error_block = '#error'
+    error_msg = '.error'
+    success_block = '#success'
+    success_msg = '.success'
 
+    # блок оплаты
+    payment_btn = '.subscription__button'
+    settings_btn = '.profile-settings__ico'
+
+    # кнопка аватарки
+    update_userpic = '.profile-info-avatar'
+    update_password = '.profile-info-save__btn'
+    update_password_input = '.profile-info-pass__input'
+    update_description = '.about_save_btn'
+    update_description_input = '.profile-info-bio__textarea'
 
     ignored_exceptions = (NoSuchElementException, StaleElementReferenceException,)
 
@@ -42,8 +55,13 @@ class BasePage(Urls):
 
     def wait_redirect(self, url, timeout=60):
         return WebDriverWait(self.driver, timeout, ignored_exceptions=self.ignored_exceptions).until(
-            EC.url_matches(url))
+            EC.url_contains(url))
 
     def fill_input(self, selector, text):
         text_input = self.wait_render(selector)
         text_input.send_keys(text)
+
+    def fill_image_input(self, image):
+        img_input = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.update_userpic)))
+        img_input.send_keys(image)

@@ -14,6 +14,7 @@ class MainPage(BasePage):
         elem = self.wait_render(self.login_btn)
         elem.click()
 
+    # открывает окно регистрации
     def click_signup(self):
         elem = self.wait_render(self.signup_btn)
         elem.click()

@@ -3,12 +3,14 @@ import sys
 import unittest
 
 from tests.AuthTests import SignUpTest, LoginTest
+from tests.ProfileTest import ProfileTest
 
 if __name__ == '__main__':
     suite = unittest.TestSuite(
         (
             unittest.makeSuite(SignUpTest),
-            unittest.makeSuite(LoginTest)
+            unittest.makeSuite(LoginTest),
+            unittest.makeSuite(ProfileTest),
         )
     )
     result = unittest.TextTestRunner().run(suite)

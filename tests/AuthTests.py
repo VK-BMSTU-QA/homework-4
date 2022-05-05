@@ -12,15 +12,12 @@ class SignUpTest(BaseTest):
         self.main_page.open()
         self.main_page.click_signup()
 
-    def tearDown(self):
-        pass
-
     # все поля пустые
     def test_empty_fields(self):
         btn = self.main_page.wait_render(self.main_page.reg_submit_btn)
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ''
         self.assertTrue(isCorrect, '')
 
     # поле логина пустое
@@ -145,16 +142,13 @@ class LoginTest(BaseTest):
         self.main_page.open()
         self.main_page.click_login()
 
-    def tearDown(self):
-        # ???
-        pass
 
     # все поля пустые
     def test_empty_fields(self):
         btn = self.main_page.wait_render(self.main_page.auth_submit_btn)
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # поле логина пустое
@@ -165,7 +159,7 @@ class LoginTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # поле пароля пустое
@@ -176,7 +170,7 @@ class LoginTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # некорректная пара логин-пароль
@@ -189,7 +183,7 @@ class LoginTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # логин слишком короткий
@@ -202,7 +196,7 @@ class LoginTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # пароль слишком короткий
@@ -215,7 +209,7 @@ class LoginTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # пароль слишком длинный
@@ -228,7 +222,7 @@ class LoginTest(BaseTest):
 
         btn.click()
         error_block = self.main_page.wait_render(self.main_page.error_block)
-        isCorrect = error_block.text is not None
+        isCorrect = error_block.text is not None or error_block.text != ""
         self.assertTrue(isCorrect, '')
 
     # корректный ввод
