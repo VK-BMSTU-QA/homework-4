@@ -2,7 +2,7 @@ import sys
 import unittest
 
 from tests.favorites_test import FavoritesTest
-from tests.home_test import MainPageTest
+from tests.home_test import HomePageTest
 from tests.login_test import LoginTest
 from tests.player_test import PlayerTest
 from tests.playlists_test import PlaylistsTest
@@ -15,7 +15,7 @@ if __name__ == "__main__":
         (
             unittest.makeSuite(LoginTest),
             unittest.makeSuite(RegisterTest),
-            unittest.makeSuite(MainPageTest),
+            unittest.makeSuite(HomePageTest),
             unittest.makeSuite(SearchPageTest),
             unittest.makeSuite(ProfilePageTest),
             unittest.makeSuite(FavoritesTest),

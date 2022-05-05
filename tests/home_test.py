@@ -7,7 +7,8 @@ from Playlist.PlaylistPage import PlaylistPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
 
-class MainPageTest(unittest.TestCase):
+
+class HomePageTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
     PASSWORD = os.environ["TESTPASSWORD"]
 
@@ -18,7 +19,7 @@ class MainPageTest(unittest.TestCase):
         self.driver = Remote(
             command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=getattr(DesiredCapabilities, browser).copy(),
-            options=options
+            options=options,
         )
 
         login_page = LoginPage(self.driver)

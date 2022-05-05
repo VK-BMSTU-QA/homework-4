@@ -144,7 +144,7 @@ class Topbar(Component):
     def logged_out(self):
         try:
             WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                lambda d: len(d.find_element(by=By.XPATH, value=self.AVATAR)) == 0
+                lambda d: len(d.find_elements(by=By.XPATH, value=self.AVATAR)) == 0
             )
         except:
             return False
