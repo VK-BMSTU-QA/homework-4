@@ -51,24 +51,6 @@ class FavoritesTest(unittest.TestCase):
         self.favorites_page.track_list.add_like(track_id)
         self.assertTrue(self.favorites_page.track_list.track_is_liked(track_id))
 
-    def test_player_like(self):
-        track_id = self.favorites_page.track_list.get_track_id()
-
-        self.favorites_page.track_list.play_track()
-        self.favorites_page.track_list.pause_track()
-
-        self.favorites_page.track_list.remove_like(track_id)
-        self.assertTrue(self.favorites_page.player.track_is_not_liked())
-
-        self.favorites_page.track_list.add_like(track_id)
-        self.assertTrue(self.favorites_page.player.track_is_liked())
-
-        self.favorites_page.player.remove_like()
-        self.assertFalse(self.favorites_page.track_list.track_is_liked(track_id))
-
-        self.favorites_page.player.add_like()
-        self.assertTrue(self.favorites_page.track_list.track_is_liked(track_id))
-
     def test_favorites_opening_from_navbar(self):
         self.home_page.sidebar.go_favorites()
         self.assertTrue(self.favorites_page.is_open())
