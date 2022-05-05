@@ -23,6 +23,9 @@ class LevelEditPage(Page):
     def fill_form(self, name, price, first_advantage):
         self.level_form.fill_form(name, price, first_advantage)
 
+    def check_disappear_advantage(self, n):
+        return self.level_form.check_disappear_advantage(n)
+
     def delete_level(self):
         self._click_button(self.LEVEL_DELETE_BUTTON)
 

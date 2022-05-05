@@ -1,4 +1,5 @@
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.common.by import By
@@ -11,9 +12,15 @@ class SeleniumBaseObject(object):
     def __init__(self, driver):
         self.driver = driver
         self._wait = WebDriverWait(self.driver, stp.TIMEOUT_WAIT, stp.POLL_FREQUENCY)
+        self.actions = ActionChains(self.driver)
 
     def _wait_with_timeout(self, timeout):
         return WebDriverWait(self.driver, timeout, stp.POLL_FREQUENCY)
+
+    def _get_dom_element(self, css_selector):
+        return self._wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
+        )
 
     def _click_button(self, css_selector):
         submit = self._wait.until(
@@ -26,7 +33,8 @@ class SeleniumBaseObject(object):
             EC.element_to_be_clickable((By.CSS_SELECTOR, css_selector))
         )
         element.clear()
-        element.send_keys(value)
+        if value != "":
+            element.send_keys(value)
 
     def _get_element(self, css_selector):
         element = self._wait.until(
@@ -38,6 +46,15 @@ class SeleniumBaseObject(object):
         try:
             self._wait_with_timeout(stp.TIMEOUT_DRAWABLE_WAIT).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
+            )
+        except TimeoutException:
+            return False
+        return True
+
+    def _check_disappear(self, css_selector):
+        try:
+            self._wait_with_timeout(stp.TIMEOUT_DRAWABLE_WAIT).until(
+                EC.invisibility_of_element((By.CSS_SELECTOR, css_selector))
             )
         except TimeoutException:
             return False

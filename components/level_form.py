@@ -1,3 +1,5 @@
+from selenium.webdriver import ActionChains
+
 from components.base import Component
 
 
@@ -14,7 +16,7 @@ class LevelForm(Component):
     LEVEL_PRICE_ERROR = 'div[class="edit-level__fields"] > div[class="add-benefit"] + div > div[' \
                         'class="input-validation"] '
 
-    LEVEL_DELETE_ADVANTAGE = 'div[class="edit-level__fields"] > div:nth-child(5) > div:nth-child(2)'
+    LEVEL_DELETE_ADVANTAGE = 'div[class="edit-level__fields"] > div:nth-child({}) > div:nth-child(2)'
 
     START_NUMBER_ADVANTAGE = 4
 
@@ -42,7 +44,13 @@ class LevelForm(Component):
     def check_price_error(self):
         return self._check_drawable(self.LEVEL_PRICE_ERROR)
 
+    def check_disappear_advantage(self, n):
+        return self._check_disappear(self.LEVEL_ADVANTAGE_INPUT.format(self.START_NUMBER_ADVANTAGE + n))
+
     def delete_advantage(self, n):
+        hover = self.actions.move_to_element(self._get_dom_element(self.LEVEL_ADVANTAGE_INPUT.
+                                                                   format(self.START_NUMBER_ADVANTAGE + n)))
+        hover.perform()
         self._click_button(self.LEVEL_DELETE_ADVANTAGE.format(self.START_NUMBER_ADVANTAGE + n))
 
     def fill_form(self, name, price, first_advantage):
