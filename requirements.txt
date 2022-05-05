@@ -1,0 +1,4 @@
+PyAutoGUI==0.9.53
+pypng==0.0.21
+python-dotenv==0.20.0
+selenium==4.1.5
