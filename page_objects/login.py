@@ -8,7 +8,7 @@ from page_objects.base import Page
 
 class LoginPage(Page):
     BASE_URL = 'http://pyaterochka-team.site/'
-    PATH = 'login'
+    PATH = 'signin'
 
     USERNAME = 'input[type="email"]'
     PASSWORD = 'input[type="password"]'
@@ -19,21 +19,25 @@ class LoginPage(Page):
     BTN_LOGOUT_NAVBAR = '.navbar__popup > a[router-go="/logout"]'
     PAGE_NAME = '.auth-block > h1[key="null"]'
 
+    def __init__(self, driver):
+        super().__init__(driver)
+
     def fill_login(self, login):
-        username = WebDriverWait(self.driver, 30, 0.1).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.USERNAME))
+        element = self._wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, self.USERNAME))
         )
-        username.send_keys(login)
+        element.clear()
+        element.send_keys(login)
 
     def fill_password(self, password):
         pswd_elem = WebDriverWait(self.driver, 30, 0.1).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.PASSWORD))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, self.PASSWORD))
         )
         pswd_elem.send_keys(password)
 
     def submit(self):
         submit = WebDriverWait(self.driver, 30, 0.1).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.SUBMIT))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, self.SUBMIT))
         )
         submit.click()
 
@@ -42,54 +46,3 @@ class LoginPage(Page):
         self.fill_password(password)
         self.submit()
 
-
-
-
-
-
-
-# public async fillLogin(username: string) {
-# await this.inputUsername.waitForDisplayed();
-# await this.inputUsername.setValue(username);
-# }
-#
-# public async fillPassword(password: string) {
-# await this.inputPassword.waitForDisplayed();
-# await this.inputPassword.setValue(password);
-# await this.btnSubmit.click();
-# }
-#
-# public async login(username: string, password: string) {
-# await this.fillLogin(username);
-# await this.fillPassword(password);
-# }
-#
-# public async logout()
-# {
-# await this.btnOpenNavBar.click();
-# await this.btnNavBarLogout.click();
-# }
-#
-# public async getEmail()
-# {
-# await this.userEmailHeader.waitForDisplayed();
-# return this.userEmailHeader.getText();
-# }
-#
-# public async getPageName()
-# {
-# await this.pageName.waitForDisplayed();
-# return this.pageName.getText();
-# }
-#
-# public async getError()
-# {
-# await this.invalidLoginOrPassword.waitForDisplayed();
-# return this.invalidLoginOrPassword.getText();
-# }
-#
-# public
-# open()
-# {
-# return super.open('signin');
-# }
