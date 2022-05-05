@@ -6,6 +6,7 @@ from Register.RegisterPage import RegisterPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
 
+
 class RegisterTest(unittest.TestCase):
     NICKNAME = "test_{}".format(random.randint(0, 1000))
     EMAIL = "test{}@test.com".format(random.randint(0, 1000))
@@ -34,40 +35,40 @@ class RegisterTest(unittest.TestCase):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.set_confirm_password(self.PASSWORD)
 
-        assert not self.register_form.frontend_warnings().text
-        assert not self.register_form.backend_warnings().text
+        self.assertFalse(self.register_form.frontend_warnings().text)
+        self.assertFalse(self.register_form.backend_warnings().text)
 
         self.register_form.register()
-        self.register_form.check_register()
+        self.assertTrue(self.register_form.check_register())
 
     def test_empty_form(self):
         self.register_form.register()
-        assert self.register_form.backend_warnings()
+        self.assertTrue(self.register_form.backend_warnings())
 
     def test_empty_password(self):
         self.register_form.set_email(self.EMAIL)
         self.register_form.register()
-        assert self.register_form.backend_warnings()
+        self.assertTrue(self.register_form.backend_warnings())
 
     def test_empty_email(self):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        assert self.register_form.backend_warnings()
+        self.assertTrue(self.register_form.backend_warnings())
 
     def test_invalid_email(self):
         self.register_form.set_email(self.EMAIL.replace(".", ""))
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        assert self.register_form.frontend_warnings()
+        self.assertTrue(self.register_form.frontend_warnings())
 
     def test_invalid_password(self):
         self.register_form.set_email(self.EMAIL)
         self.register_form.set_password(self.SHORT_PASSWORD)
         self.register_form.set_confirm_password(self.SHORT_PASSWORD)
         self.register_form.register()
-        assert self.register_form.frontend_warnings()
+        self.assertTrue(self.register_form.frontend_warnings())
 
     def test_non_similar_passwords(self):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        assert self.register_form.frontend_warnings()
+        self.assertTrue(self.register_form.frontend_warnings())

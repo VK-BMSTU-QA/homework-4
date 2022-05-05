@@ -85,12 +85,16 @@ class PlaylistEditWindow(Component):
         self.driver.find_element(by=By.XPATH, value=self.SAVE_BUTTON).click()
 
     def fail_warning(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "fail")
-        )
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "visible")
-        )
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "fail")
+            )
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "visible")
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def click_on_delete(self):
         button = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -105,17 +109,25 @@ class PlaylistEditWindow(Component):
         self.driver.find_element(by=By.XPATH, value=self.PUBLICITY_SWITCH).click()
 
     def success_warning(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "success")
-        )
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "visible")
-        )
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "success")
+            )
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, self.WARNING_CLS), "class", "visible")
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def playlist_link(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.text_to_be_present_in_element_attribute((By.XPATH, self.LINK), "style", "visibility: visible;")
-        )
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.text_to_be_present_in_element_attribute((By.XPATH, self.LINK), "style", "visibility: visible;")
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
 
 class PlaylistPageControls(Component):

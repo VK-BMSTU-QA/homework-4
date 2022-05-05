@@ -5,6 +5,7 @@ from Login.LoginPage import LoginPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
 
+
 class LoginTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
     PASSWORD = os.environ["TESTPASSWORD"]
@@ -30,34 +31,34 @@ class LoginTest(unittest.TestCase):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.PASSWORD)
 
-        assert not self.login_form.frontend_warnings().text
-        assert not self.login_form.backend_warnings().text
+        self.assertFalse(self.login_form.frontend_warnings().text)
+        self.assertFalse(self.login_form.backend_warnings().text)
 
         self.login_form.login()
-        self.login_form.check_login()
+        self.assertTrue(self.login_form.check_login())
 
     def test_empty_form(self):
         self.login_form.login()
-        assert self.login_form.backend_warnings()
+        self.assertTrue(self.login_form.backend_warnings())
 
     def test_empty_password(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.login()
-        assert self.login_form.backend_warnings()
+        self.assertTrue(self.login_form.backend_warnings())
 
     def test_empty_email(self):
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        assert self.login_form.backend_warnings()
+        self.assertTrue(self.login_form.backend_warnings())
 
     def test_invalid_email(self):
         self.login_form.set_email(self.EMAIL.replace(".", ""))
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        assert self.login_form.frontend_warnings()
+        self.assertTrue(self.login_form.frontend_warnings())
 
     def test_wrong_credentials(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.WRONG_PASSWORD)
         self.login_form.login()
-        assert self.login_form.backend_warnings()
+        self.assertTrue(self.login_form.backend_warnings())

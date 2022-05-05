@@ -31,20 +31,22 @@ class FavoritesTest(unittest.TestCase):
 
     def test_album_opening(self):
         self.favorites_page.track_list.open_first_album()
+        self.assertTrue(self.favorites_page.track_list.album_is_opened())
 
     def test_artist_opening(self):
         self.favorites_page.track_list.open_first_artist()
+        self.assertTrue(self.favorites_page.track_list.artist_is_opened())
 
     def test_like(self):
         track_id = self.favorites_page.track_list.get_track_id()
 
         self.favorites_page.track_list.remove_like(track_id)
-        assert not self.favorites_page.track_list.track_is_liked(track_id)
+        self.assertFalse(self.favorites_page.track_list.track_is_liked(track_id))
 
         self.favorites_page.track_list.get_like_btn(track_id)
 
         self.favorites_page.track_list.add_like(track_id)
-        assert self.favorites_page.track_list.track_is_liked(track_id)
+        self.assertTrue(self.favorites_page.track_list.track_is_liked(track_id))
 
     def test_player_like(self):
         track_id = self.favorites_page.track_list.get_track_id()
@@ -53,17 +55,19 @@ class FavoritesTest(unittest.TestCase):
         self.favorites_page.track_list.pause_track()
 
         self.favorites_page.track_list.remove_like(track_id)
-        self.favorites_page.player.track_is_not_liked()
+        self.assertTrue(self.favorites_page.player.track_is_not_liked())
 
         self.favorites_page.track_list.add_like(track_id)
-        self.favorites_page.player.track_is_liked()
+        self.assertTrue(self.favorites_page.player.track_is_liked())
 
         self.favorites_page.player.remove_like()
-        assert not self.favorites_page.track_list.track_is_liked(track_id)
+        self.assertFalse(self.favorites_page.track_list.track_is_liked(track_id))
 
         self.favorites_page.player.add_like()
-        assert self.favorites_page.track_list.track_is_liked(track_id)
+        self.assertTrue(self.favorites_page.track_list.track_is_liked(track_id))
 
     def test_favorites_opening_from_navbar(self):
         self.home_page = HomePage(self.driver)
         self.home_page.sidebar.go_favorites()
+        self.favorites_page = FavoritesPage(self.driver)
+        self.assertTrue(self.favorites_page.is_open())

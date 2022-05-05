@@ -1,3 +1,4 @@
+import selenium.common.exceptions
 from Base.BaseComponent import Component
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -59,14 +60,22 @@ class Player(Component):
         )
 
     def track_is_liked(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
-        )
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def track_is_not_liked(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
-        )
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), "data-in_favorites")
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def prev_track(self):
         prev = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -219,16 +228,30 @@ class Tracks(Component):
             lambda d: d.find_element(by=By.XPATH, value=self.FIRST_TRACK_ALBUM)
         )
         album.click()
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(EC.presence_of_element_located((By.CLASS_NAME, "album")))
+
+    def album_is_opened(self):
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "album"))
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def open_first_artist(self):
         artist = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             lambda d: d.find_element(by=By.XPATH, value=self.FIRST_TRACK_ARTIST)
         )
         artist.click()
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "artist"))
-        )
+
+    def artist_is_opened(self):
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "artist"))
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def get_like_btn(self, track_id):
         return WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(

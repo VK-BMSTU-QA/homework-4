@@ -1,3 +1,5 @@
+import selenium.common.exceptions
+
 from Base.BasePage import Page
 from Common.CommonComponents import Player, Tracks
 from selenium.webdriver.common.by import By
@@ -17,8 +19,18 @@ class FavoritesPage(Page):
     def player(self):
         return Player(self.driver)
 
-    def open(self):
-        super().open()
+    def _check_opened(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             EC.presence_of_element_located((By.CLASS_NAME, "favorites__description-title"))
         )
+
+    def open(self):
+        super().open()
+        self._check_opened()
+
+    def is_open(self):
+        try:
+            self._check_opened()
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True

@@ -1,3 +1,5 @@
+import selenium.common.exceptions
+
 from Base.BaseComponent import Component
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -31,9 +33,13 @@ class LoginForm(Component):
         button.click()
 
     def check_login(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
-        )
+        try:
+            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "avatar__img"))
+            )
+        except selenium.common.exceptions.TimeoutException:
+            return False
+        return True
 
     def frontend_warnings(self):
         warnings = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
