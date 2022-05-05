@@ -1,9 +1,10 @@
+import os
+
 from setup.default_setup import default_setup
 from tests.login.base import BaseLoginTest
 
 
 class LoginTest(BaseLoginTest):
-
     def __init__(self, methodName: str = ...):
         super(LoginTest, self).__init__(methodName)
 
@@ -14,4 +15,10 @@ class LoginTest(BaseLoginTest):
     def tearDown(self):
         super().tearDown()
 
-        self.driver.close()
+    def test_success_login(self):
+        self.loginPage.open()
+        self.loginPage.login(self.EMAIL, self.PASSWORD)
+
+        receive = self.loginPage.get_email().text
+        expected = self.EMAIL.split("@")[0]
+        self.assertEqual(receive, expected)

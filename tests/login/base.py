@@ -11,7 +11,7 @@ class BaseLoginTest(unittest.TestCase):
 
     def setUp(self):
         default_setup(self)
-        self.loginPage = LoginPage(self)
+        self.loginPage = LoginPage(self.driver)
 
     def tearDown(self):
         self.driver.close()
