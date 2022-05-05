@@ -22,20 +22,20 @@ class Player(Component):
         return "pause" in play.get_attribute("src")
 
     def prev_disabled(self):
-        return len(self.driver.find_element(by=By.XPATH, value=self.PREV_TRACK_CLASS)) == 0
+        return len(self.driver.find_elements(by=By.XPATH, value=self.PREV_TRACK_CLASS)) == 0
 
     def next_disabled(self):
-        return len(self.driver.find_element(by=By.XPATH, value=self.NEXT_TRACK_CLASS)) == 0
+        return len(self.driver.find_elements(by=By.XPATH, value=self.NEXT_TRACK_CLASS)) == 0
 
     def mute(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.MUTE)))
         self.driver.find_element_by_css_selector(self.MUTE).click()
 
     def muted(self):
-        return len(self.driver.find_element(by=By.XPATH, value=self.MUTE_XPATH)) == 0
+        return len(self.driver.find_elements(by=By.XPATH, value=self.MUTE_XPATH)) == 0
 
     def hidden(self):
-        return len(self.driver.find_element(by=By.XPATH, value=self.PLAYER)) == 0
+        return len(self.driver.find_elements(by=By.XPATH, value=self.PLAYER)) == 0
 
     def get_playing_track_id(self):
         id = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -189,7 +189,7 @@ class Tracks(Component):
 
     def play_track(self, i=0, last=False):
         play = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.PLAY)
+            lambda d: d.find_elements(by=By.XPATH, value=self.PLAY)
         )
         if last:
             i = len(play) - 1
@@ -201,7 +201,7 @@ class Tracks(Component):
 
     def get_track_id(self, i=0):
         return WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.PLAY)[i].get_attribute("data-id")
+            lambda d: d.find_elements(by=By.XPATH, value=self.PLAY)[i].get_attribute("data-id")
         )
 
     def open_first_add_to_playlist(self):
