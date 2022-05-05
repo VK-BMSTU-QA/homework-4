@@ -183,7 +183,7 @@ class Tracks(Component):
 
     def get_track_artist(self, i=0):
         artist = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.FIRST_TRACK_ARTIST)[i].text
+            lambda d: d.find_elements(by=By.XPATH, value=self.FIRST_TRACK_ARTIST)[i].text
         )
         return artist
 

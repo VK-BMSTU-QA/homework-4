@@ -14,7 +14,7 @@ class SearchBar(Component):
         )
         bar.click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: len(d.find_element(by=By.XPATH, value=MainLayout.LAY_CHILDREN)) == 0
+            lambda d: len(d.find_elements(by=By.XPATH, value=MainLayout.LAY_CHILDREN)) == 0
         )
 
     def query(self, query):
@@ -24,11 +24,11 @@ class SearchBar(Component):
         input.send_keys(" ")
         input.send_keys(Keys.BACKSPACE)
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: len(d.find_element(by=By.XPATH, value=MainLayout.LAY_CHILDREN)) == 0
+            lambda d: len(d.find_elements(by=By.XPATH, value=MainLayout.LAY_CHILDREN)) == 0
         )
         input.send_keys(query)
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: len(d.find_element(by=By.XPATH, value=MainLayout.LAY_CHILDREN)) != 0
+            lambda d: len(d.find_elements(by=By.XPATH, value=MainLayout.LAY_CHILDREN)) != 0
         )
 
 
@@ -38,7 +38,7 @@ class MainLayout(Component):
     NOT_FOUND = '//div[@class="search__content__not-found"]'
 
     def has_no_content(self):
-        return len(self.driver.find_element(by=By.XPATH, value=self.LAY_CHILDREN)) == 0
+        return len(self.driver.find_elements(by=By.XPATH, value=self.LAY_CHILDREN)) == 0
 
     def not_found(self):
-        return len(self.driver.find_element(by=By.XPATH, value=self.NOT_FOUND)) == 1
+        return len(self.driver.find_elements(by=By.XPATH, value=self.NOT_FOUND)) == 1
