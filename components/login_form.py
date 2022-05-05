@@ -25,6 +25,9 @@ class LoginForm(SeleniumBaseObject):
     def get_email_header(self):
         return self._get_element(self.EMAIL_HEADER)
 
+    def get_error(self):
+        return self._get_element(self.INVALID_LOGIN_OR_PASSWORD)
+
     def fill_login(self, login):
         return self._set_text(self.USERNAME, login)
 

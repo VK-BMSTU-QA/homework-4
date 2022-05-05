@@ -22,3 +22,10 @@ class LoginTest(BaseLoginTest):
         receive = self.loginPage.get_email().text
         expected = self.EMAIL.split("@")[0]
         self.assertEqual(receive, expected)
+
+    def test_empty_login_form(self):
+        exp_err = 'Введите логин и пароль';
+        self.loginPage.open()
+        self.loginPage.login("", "")
+
+        self.assertEqual(self.loginPage.get_error().text, exp_err)

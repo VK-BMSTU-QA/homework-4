@@ -17,3 +17,6 @@ class LoginPage(Page):
 
     def get_email(self):
         return self.login_form.get_email_header()
+
+    def get_error(self):
+        return self.login_form.get_error()
