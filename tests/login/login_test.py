@@ -1,5 +1,6 @@
 import os
 
+from page_objects.login import LoginPage
 from setup.default_setup import default_setup
 from tests.login.base import BaseLoginTest
 
