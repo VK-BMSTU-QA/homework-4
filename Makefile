@@ -2,8 +2,8 @@ SHELL := /bin/bash
 MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 PROJECT_DIR := $(patsubst %/,%,$(dir $(MAKEFILE_PATH)))
 DRIVER_PATH ?= ${PROJECT_DIR}/bin
-PLATFORM ?= MACOS
-ARCH ?= "x64"
+PLATFORM ?= $(uname -a | grep -E -o 'Darwin|Linux')
+ARCH ?= $(uname -a | grep -E -o 'x86_64|arm64')
 CHROME_VERSION ?= 101
 
 ${DRIVER_PATH}/chromedriver:
