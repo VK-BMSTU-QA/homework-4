@@ -19,6 +19,9 @@ class LevelAddPage(Page):
     def add_advantage_to_level(self):
         self.level_form.add_advantage()
 
+    def check_disappear_advantage(self, n):
+        return self.level_form.check_disappear_advantage(n)
+
     def check_advantage(self, n):
         return self.level_form.check_advantage(n)
 
