@@ -15,6 +15,11 @@ class LoginPage(Page):
         self.login_form.fill_password(password)
         self.login_form.submit()
 
+    def logout(self):
+        self.login_form.open_navbar()
+        self.login_form.click_logout_navbar()
+        self.login_form.click_logout_confirm()
+
     def get_email(self):
         return self.login_form.get_email_header()
 
