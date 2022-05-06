@@ -24,8 +24,6 @@ class ProfileTest(BaseProfileTest):
         self.profilePage.go_to_switch_password()
         self.profilePage.click_button_change_password()
 
-        self.assertEqual(self.profilePage.get_validation_err().text, exp_err)
+        res = self.profilePage.get_validation_err()
+        self.assertNotEqual(res, exp_err)
 
-
-        # self.driver.get(stp.BASE_URL)
-        # self.loginPage.open()
