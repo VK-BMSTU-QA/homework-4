@@ -4,7 +4,7 @@ PROJECT_DIR := $(patsubst %/,%,$(dir $(MAKEFILE_PATH)))
 DRIVER_PATH ?= ${PROJECT_DIR}/bin
 PLATFORM ?= $(uname -a | grep -E -o 'Darwin|Linux')
 ARCH ?= $(uname -a | grep -E -o 'x86_64|arm64')
-CHROME_VERSION ?= 101
+CHROME_VERSION ?= $(/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version | grep -E -o '[0-9]+' | head -n 1)
 
 ${DRIVER_PATH}/chromedriver:
 	if ! [ -e ${PROJECT_DIR}/bin ]; then mkdir ${PROJECT_DIR}/bin && \

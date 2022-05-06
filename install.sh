@@ -3,6 +3,7 @@ echo "chrome version ${CHROME_VERSION}"
 echo "arch ${ARCH}"
 echo "platform ${PLATFORM}"
 
+CHROME_VERSION=$(/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version | grep -E -o '[0-9]+' | head -n 1)
 ARCH=$(uname -a | grep -E -o 'x86_64|arm64')
 
 if ! [ -e chromedriver ]; then
