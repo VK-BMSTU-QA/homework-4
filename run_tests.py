@@ -4,7 +4,8 @@ import subprocess
 import sys
 import unittest
 
-from tests.LoginAndSignUpTest import LoginAndSignUpTest
+from tests.LoginTest import LoginTest
+from tests.SignUpTest import SignUpTest
 from tests.MainTest import MainTest
 from tests.PromotionTest import PromotionTest
 from tests.SalesmanTest import SalesmanTest
@@ -20,7 +21,8 @@ if __name__ == '__main__':
         subprocess.Popen(["bash", "./hub.sh"])
         subprocess.Popen(["bash", "./node.sh"])
     suite = unittest.TestSuite((
-        unittest.makeSuite(LoginAndSignUpTest),
+        unittest.makeSuite(LoginTest),
+        unittest.makeSuite(SignUpTest),
         # unittest.makeSuite(AdvertTest),
         # unittest.makeSuite(MainTest),
         # unittest.makeSuite(PromotionTest),

@@ -68,7 +68,7 @@ class MainPage(BasePage):
         self.fill_input(self.reg_email_input, value)
 
     def fill_reg_name(self, value):
-        self.fill_input(self.reg_name_div, value)
+        self.fill_input(self.reg_name_input, value)
 
     def fill_reg_surname(self, value):
         self.fill_input(self.reg_surname_input, value)
@@ -87,3 +87,44 @@ class MainPage(BasePage):
     def click_reg_button(self):
         reg_btn = self.wait_render(self.reg_btn)
         reg_btn.click()
+
+    def check_error(self):
+        return self.is_exist(self.input_err)
+    
+    def check_reg_email_correct(self):
+        email_div = self.wait_render(self.reg_email_div)
+        return "text-input_correct" in email_div.get_attribute("class")
+    
+    def check_reg_name_correct(self):
+        div = self.wait_render(self.reg_name_div)
+        return "text-input_correct" in div.get_attribute("class")
+
+    def check_reg_surname_correct(self):
+        div = self.wait_render(self.reg_surname_div)
+        return "text-input_correct" in div.get_attribute("class")
+    
+    def check_reg_password_correct(self):
+        div = self.wait_render(self.reg_password_div)
+        return "text-input_correct" in div.get_attribute("class")
+
+    def is_logged(self):
+        return self.is_exist(self.header_profile)
+
+    def clear_log_inputs(self):
+        self.wait_render(self.login_email_input).clear()
+        self.wait_render(self.login_password_input).clear()
+
+    def switch_to_reg(self):
+        self.wait_render(self.swith_to_reg_btn).click()
+
+    def clear_reg_email(self):
+        self.wait_render(self.reg_email_input).clear()
+    
+    def clear_reg_name(self):
+        self.wait_render(self.reg_name_input).clear()
+
+    def clear_reg_surname(self):
+        self.wait_render(self.reg_surname_input).clear()
+
+    def clear_reg_password(self):
+        self.wait_render(self.reg_password_input).clear()
