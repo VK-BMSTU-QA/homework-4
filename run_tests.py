@@ -15,16 +15,14 @@ from tests.ProfileTest import ProfileTest
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
-        # unittest.makeSuite(LoginTest),
-        # unittest.makeSuite(SignUpTest),
-        # unittest.makeSuite(SalesmanTest),
-        # unittest.makeSuite(MainTest),
-        # unittest.makeSuite(AdvertTest),
-        # unittest.makeSuite(EditTest),
+        unittest.makeSuite(LoginTest),
+        unittest.makeSuite(SignUpTest),
+        unittest.makeSuite(SalesmanTest),
+        unittest.makeSuite(MainTest),
+        unittest.makeSuite(AdvertTest),
+        unittest.makeSuite(EditTest),
         unittest.makeSuite(NewAdvertTest),
-
-        
-        # unittest.makeSuite(ProfileTest)
+        unittest.makeSuite(ProfileTest)
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

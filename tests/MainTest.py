@@ -59,7 +59,7 @@ class MainTest(BaseTest):
                          'Инпут в поиск и страница поиска отличаются')
         self.main_page.clear_search_input()
 
-        some_value_for_empty_search = 'paskdpasjdauewvbzxcjzlxkcweqoejqeov'
+        some_value_for_empty_search = 'sometextthatsupposedtobeneverfoundbyanyone'
         self.main_page.search_by_value_in_input(some_value_for_empty_search)
         is_empty = self.main_page.is_search_empty()
         self.assertTrue(is_empty, 'Элемент пустой сетки отсутствует')

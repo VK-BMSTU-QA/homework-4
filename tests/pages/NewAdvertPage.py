@@ -19,6 +19,7 @@ class NewAdvertPage(BasePage):
     submit_btn = '#newAdForm'
     cancel_btn = '.button-container > button'
     title = '.advertisment-detail__main-info__main__text__name'
+    map_mark = '.ymaps-2-1-79-placemark-overlay'
 
     def __init__(self, driver) -> None:
         super().__init__(driver)
@@ -102,3 +103,6 @@ class NewAdvertPage(BasePage):
 
     def fill_description(self, value):
         self.fill_input(self.text_area, value)
+    
+    def is_card_loaded(self):
+        return self.is_exist(self.map_mark)

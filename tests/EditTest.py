@@ -23,6 +23,7 @@ class EditTest(BaseTest):
         title = self.adv_page.get_advert_title()
         self.adv_page.click_edit_button()
         self.new_adv_page.change_advert_title('bbb')
+        self.new_adv_page.is_card_loaded()
         self.new_adv_page.submit_changes()
         page_title = self.adv_page.get_advert_title()
         self.assertNotEqual(title, page_title, 'Название не изменилось')
