@@ -17,9 +17,6 @@ from tests.ProfileTest import ProfileTest
 from tests.config import config
 
 if __name__ == '__main__':
-    if (not config.DRIVER):
-        subprocess.Popen(["bash", "./hub.sh"])
-        subprocess.Popen(["bash", "./node.sh"])
     suite = unittest.TestSuite((
         unittest.makeSuite(LoginTest),
         unittest.makeSuite(SignUpTest),
