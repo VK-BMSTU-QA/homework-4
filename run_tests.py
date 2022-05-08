@@ -17,10 +17,10 @@ from tests.config import config
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
-        # unittest.makeSuite(LoginTest),
-        # unittest.makeSuite(SignUpTest),
-        # unittest.makeSuite(SalesmanTest),
-        # unittest.makeSuite(MainTest),
+        unittest.makeSuite(LoginTest),
+        unittest.makeSuite(SignUpTest),
+        unittest.makeSuite(SalesmanTest),
+        unittest.makeSuite(MainTest),
         unittest.makeSuite(AdvertTest),
         # unittest.makeSuite(NewAdvertTest),
 
