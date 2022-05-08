@@ -10,8 +10,7 @@ class LoginAndSignUpTest(BaseTest):
         self.main_page.click_login()
 
     def test_log_empty_email(self):
-        login_btn = self.main_page.wait_render(self.main_page.login_btn)
-        login_btn.click()
+        self.main_page.click_login_button()
         login_email_div = self.main_page.wait_render(self.main_page.login_email_div)
         is_error = "text-input_wrong" in login_email_div.get_attribute("class")
         self.assertTrue(is_error,

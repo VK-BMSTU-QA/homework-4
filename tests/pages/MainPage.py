@@ -57,3 +57,33 @@ class MainPage(BasePage):
     def click_new_adv(self):
         elem = self.wait_render(self.new_advert_btn)
         elem.click()
+
+    def fill_login_email(self, value):
+        self.fill_input(self.login_email_input, value)
+    
+    def fill_login_password(self, value):
+        self.fill_input(self.login_password_input, value)
+
+    def fill_reg_email(self, value):
+        self.fill_input(self.reg_email_input, value)
+
+    def fill_reg_name(self, value):
+        self.fill_input(self.reg_name_div, value)
+
+    def fill_reg_surname(self, value):
+        self.fill_input(self.reg_surname_input, value)
+
+    def fill_reg_password(self, value):
+        self.fill_input(self.reg_password_input, value)
+
+    def fill_reg_passwordRep(self, value):
+        self.fill_input(self.reg_reppassword_input, value)
+
+    def click_login_button(self):
+        login_btn = self.wait_render(
+            self.login_btn)
+        login_btn.click()
+
+    def click_reg_button(self):
+        reg_btn = self.wait_render(self.reg_btn)
+        reg_btn.click()
