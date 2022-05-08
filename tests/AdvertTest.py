@@ -3,140 +3,104 @@ from tests.pages.AdvertPage import AdvertPage
 
 
 class AdvertTest(BaseTest):
+    advert_test_id = 8
+    advert_owner_test_id = 13
     def setUp(self):
         super(AdvertTest, self).setUp()
         self.adv_page = AdvertPage(self.driver)
-        self.adv_page.open(8)
+        self.adv_page.open(self.advert_test_id)
 
-    def test_nav_to_main(self):
-        self.adv_page.wait_click(self.adv_page.nav_to_main)
-        is_main = self.adv_page.wait_redirect('https://volchock.ru/')
-        self.assertTrue(is_main, 'Редирект на главную не произошел')
+    def tearDown(self):
+        is_not_logged = self.adv_page.check_log()
+        if not is_not_logged:
+            self.adv_page.clearCart()
+            self.adv_page.clearFav()
+        super(AdvertTest, self).tearDown()
 
-    def test_nav_to_category(self):
-        self.adv_page.wait_click(self.adv_page.nav_to_category)
-        self.adv_page.wait_any_redirect('category')
-        is_category = (len(list(filter(lambda x: x == 'category', self.driver.current_url.split('/')))) > 0)
-        self.assertTrue(is_category, 'Редирект на категорию не произошел')
-
-    def test_nav_to_elem(self):
-        self.adv_page.wait_click(self.adv_page.nav_to_elem)
-        self.adv_page.wait_any_redirect('ad')
-        is_adv = (len(list(filter(lambda x: x == 'ad', self.driver.current_url.split('/')))) > 0)
-        self.assertTrue(is_adv, 'Редирект на страницу товара не произошел')
+    def test_map_togle(self):
+        self.adv_page.toggle_map()
+        is_visible = self.adv_page.is_map_visible()
+        self.assertTrue(is_visible, 'Карта не показывается по клику')
 
     def test_image_slider(self):
-        first_visible = self.adv_page.is_exist(self.adv_page.active_image)
-        self.adv_page.wait_click(self.adv_page.next_btn)
-        second_visible = self.adv_page.is_exist(self.adv_page.active_image)
+        first_visible = self.adv_page.is_first_image_visible()
+        self.adv_page.change_image_by_clicking_pointer()
+        second_visible = self.adv_page.is_first_image_visible()
         self.assertNotEqual(first_visible, second_visible, 'Изображения не меняются по клику на стрелки')
 
     def test_image_num_switch(self):
-        first_visible = self.adv_page.is_exist(self.adv_page.active_image)
-        self.adv_page.wait_click(self.adv_page.second_dot)
-        second_visible = self.adv_page.is_exist(self.adv_page.active_image)
+        first_visible = self.adv_page.is_first_image_visible()
+        self.adv_page.change_image_by_clicking_dot()
+        second_visible = self.adv_page.is_first_image_visible()
         self.assertNotEqual(first_visible, second_visible, 'Изображения не меняются по клику на точки внизу')
 
-    def test_map_togle(self):
-        self.adv_page.wait_click(self.adv_page.show_map)
-        is_visible = self.adv_page.is_exist(self.adv_page.ymap)
-        self.assertTrue(is_visible, 'Карта не показывается по клику')
-
-    def test_not_auth_fav(self):
-        self.adv_page.wait_click(self.adv_page.fav_btn)
-        is_visible = self.adv_page.is_exist(self.adv_page.modal_window)
+    def test_not_auth_actions(self):
+        self.adv_page.click_fav()
+        is_visible = self.adv_page.is_modal_active()
         self.assertTrue(is_visible, 'Модальное окно не открывается при попытке добавить в избранное')
+        self.adv_page.close_modal()
 
-    def test_not_auth_cart(self):
-        self.adv_page.wait_click(self.adv_page.cart_btn)
-        is_visible = self.adv_page.is_exist(self.adv_page.modal_window)
+        self.adv_page.click_cart()
+        is_visible = self.adv_page.is_modal_active()
         self.assertTrue(is_visible, 'Модальное окно не открывается при попытке добавить в корзину')
+        self.adv_page.close_modal()
 
-    def test_not_auth_chat(self):
-        self.adv_page.wait_click(self.adv_page.chat_btn)
-        is_visible = self.adv_page.is_exist(self.adv_page.modal_window)
-        self.assertTrue(is_visible, 'Модальное окно не открывается при попытке добавить в избранное')
+        self.adv_page.click_chat()
+        is_visible = self.adv_page.is_modal_active()
+        self.assertTrue(is_visible, 'Модальное окно не открывается при попытке добавить в корзину')
+        self.adv_page.close_modal()
 
-    def test_nav_to_salesman_img(self):
-        self.adv_page.wait_click(self.adv_page.salesman_avatar)
-        self.adv_page.wait_any_redirect('salesman')
-        is_adv = (len(list(filter(lambda x: x == 'salesman', self.driver.current_url.split('/')))) > 0)
-        self.assertTrue(is_adv, 'Редирект на страницу продавца не произошел по клику на аватар')
-
-    def test_nav_to_salesman_name(self):
-        self.adv_page.wait_click(self.adv_page.salesman_name)
-        self.adv_page.wait_any_redirect('salesman')
-        is_adv = (len(list(filter(lambda x: x == 'salesman', self.driver.current_url.split('/')))) > 0)
-        self.assertTrue(is_adv, 'Редирект на страницу товара не произошел по клику на имя')
-
-    def test_adv_owner_cart(self):
+    def test_owner_actions(self):
         self.login()
-        self.adv_page.open(13)
-        is_visible = self.adv_page.is_exist(self.adv_page.cart_btn)
-        self.assertFalse(is_visible, 'Есть кнопка добавить в корзину, когда объявление принадлежит пользователю')
+        self.adv_page.open(self.advert_owner_test_id)
 
-    def test_adv_owner_chat(self):
-        self.login()
-        self.adv_page.open(13)
-        is_visible = self.adv_page.is_exist(self.adv_page.chat_btn)
-        self.assertFalse(is_visible, 'Есть кнопка чата, когда объявление принадлежит пользователю')
+        is_cart = self.adv_page.is_cart_btn_exist()
+        self.assertFalse(is_cart, 'Есть кнопка добавить в корзину, когда объявление принадлежит пользователю')
 
-    def test_adv_owner_fav(self):
-        self.login()
-        self.adv_page.open(13)
-        self.adv_page.wait_click(self.adv_page.fav_btn)
-        is_redirected_correctly = self.adv_page.wait_redirect('https://volchock.ru/profile')
-        self.assertTrue(is_redirected_correctly, 'Некорректный редирект при нажатии на избранное')
+        is_chat = self.adv_page.is_chat_btn_exist()
+        self.assertFalse(is_chat, 'Есть кнопка чата, когда объявление принадлежит пользователю')
 
-    def test_adv_owner_edit(self):
-        self.login()
-        self.adv_page.open(13)
-        self.adv_page.wait_click(self.adv_page.edit_btn)
-        self.adv_page.wait_any_redirect('edit')
-        is_edit = (len(list(filter(lambda x: x == 'edit', self.driver.current_url.split('/')))) > 0)
-        self.assertTrue(is_edit, 'Некорректный редирект при нажатии на редактировать')
+        is_profile_after_fav = self.adv_page.is_fav_redirect_to_profile()
+        self.assertTrue(is_profile_after_fav, 'Некорректный редирект при нажатии на избранное')
+        self.adv_page.open(self.advert_owner_test_id)
 
-    def test_one_fav_click(self):
-        self.login()
-        self.adv_page.open(8)
-        first_text = self.adv_page.get_innerhtml(self.adv_page.fav_btn)
-        self.adv_page.wait_until_innerhtml_changes_after_click(self.adv_page.fav_btn)
-        second_text = self.adv_page.get_innerhtml(self.adv_page.fav_btn)
-        self.assertNotEqual(first_text, second_text, 'Нажатие по кнопке добавить в избранное не изменяет текст')
-        self.adv_page.clearFav()
+        is_edit_after_click = self.adv_page.is_edit_after_click()
+        self.assertTrue(is_edit_after_click, 'Некорректный редирект при нажатии на редактировать')
 
-    def test_two_fav_click(self):
+    
+    def test_login_chat_click(self):
         self.login()
-        self.adv_page.open(8)
-        self.adv_page.wait_until_innerhtml_changes_after_click(self.adv_page.fav_btn)
-        self.adv_page.wait_click(self.adv_page.fav_btn)
-        is_redirected_correctly = self.adv_page.wait_redirect('https://volchock.ru/profile/favorite')
-        self.assertTrue(is_redirected_correctly,
-                         'Нажатие по кнопке добавить в избранное повторно не редиректит')
-        self.adv_page.clearFav()
+        self.adv_page.open(self.advert_test_id)
 
-    def test_one_cart_click(self):
-        self.login()
-        self.adv_page.open(8)
-        first_text = self.adv_page.get_innerhtml(self.adv_page.cart_btn)
-        self.adv_page.wait_until_innerhtml_changes_after_click(self.adv_page.cart_btn)
-        second_text = self.adv_page.get_innerhtml(self.adv_page.cart_btn)
-        self.assertNotEqual(first_text, second_text, 'Нажатие по кнопке добавить в корзину не изменяет текст')
-        self.adv_page.clearCart()
-
-    def test_two_cart_click(self):
-        self.login()
-        self.adv_page.open(8)
-        self.adv_page.wait_until_innerhtml_changes_after_click(self.adv_page.cart_btn)
-        self.adv_page.wait_click(self.adv_page.cart_btn)
-        is_redirected_correctly = self.adv_page.wait_redirect('https://volchock.ru/profile/cart')
-        self.assertTrue(is_redirected_correctly,
-                         'Нажатие по кнопке добавить в корзину повторно не редиректит')
-        self.adv_page.clearCart()
-
-    def test_one_chat_click(self):
-        self.login()
-        self.adv_page.open(8)
-        self.adv_page.wait_click(self.adv_page.chat_btn)
-        is_redirected = self.adv_page.wait_redirect('https://volchock.ru/profile/chat/2/8')
+        self.adv_page.click_chat()
+        is_redirected = self.adv_page.is_redirected_to_chat()
         self.assertTrue(is_redirected, 'Нет редиректа в чат')
+
+
+    def test_login_fav_click(self):
+        self.login()
+        self.adv_page.open(self.advert_test_id)
+
+        first_text = self.adv_page.fav_btn_text()
+        self.adv_page.change_fav_text()
+        second_text = self.adv_page.fav_btn_text()
+        self.assertNotEqual(first_text, second_text, 'Нажатие по кнопке добавить в избранное не изменяет текст')
+        
+        self.adv_page.click_fav()
+        is_redirected = self.adv_page.is_redirected_to_fav()
+        self.assertTrue(is_redirected,
+                         'Нажатие по кнопке добавить в избранное повторно не редиректит')
+
+    def test_login_cart_click(self):
+        self.login()
+        self.adv_page.open(self.advert_test_id)
+
+        first_text = self.adv_page.cart_btn_text()
+        self.adv_page.change_cart_text()
+        second_text = self.adv_page.cart_btn_text()
+        self.assertNotEqual(first_text, second_text, 'Нажатие по кнопке добавить в корзину не изменяет текст')
+        
+        self.adv_page.click_cart()
+        is_redirected = self.adv_page.is_redirected_to_cart()
+        self.assertTrue(is_redirected,
+                         'Нажатие по кнопке добавить в корзину повторно не редиректит')
