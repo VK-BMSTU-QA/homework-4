@@ -16,3 +16,6 @@ class SalesmanPage(BasePage):
         elem = self.wait_render(selector)
         hover = ActionChains(self.driver).move_to_element(elem)
         hover.perform()
+
+    def grid_is_not_empty(self):
+        return self.is_exist(self.card)

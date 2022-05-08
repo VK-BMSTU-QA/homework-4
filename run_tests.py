@@ -19,7 +19,7 @@ if __name__ == '__main__':
     suite = unittest.TestSuite((
         unittest.makeSuite(LoginTest),
         unittest.makeSuite(SignUpTest),
-        # unittest.makeSuite(SalesmanTest),
+        unittest.makeSuite(SalesmanTest),
 
         # unittest.makeSuite(NewAdvertTest),
         # unittest.makeSuite(EditTest),
