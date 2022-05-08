@@ -27,7 +27,7 @@ class NewAdvertPage(BasePage):
         self.driver.get('https://volchock.ru/newAd')
 
     def fill_image_input(self, image):
-        text_input = WebDriverWait(self.driver, 20).until(
+        text_input = WebDriverWait(self.driver, 2).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.image_input)))
         text_input.send_keys(image)
 
@@ -44,9 +44,25 @@ class NewAdvertPage(BasePage):
         self.wait_redirect('https://volchock.ru/ad/13')
 
     def input_images(self):
-        for _ in range(2):
+        for i in range(2):
             self.driver.get('https://volchock.ru/ad/13/edit')
-            self.fill_image_input(os.getcwd()+"/tests/images/test.jpeg")
-            self.is_exist(self.inputed_image)
+            self.fill_image_input(os.getcwd()+f'/tests/images/test{i}.jpeg')
             self.wait_click(self.submit_btn)
-            self.wait_redirect('https://volchock.ru/ad/13')
+            self.wait_visible(self.title)
+
+    def change_advert_title(self, value):
+        self.fill_input(self.name_input, value)
+
+    def submit_changes(self):
+        self.wait_click(self.submit_btn)
+        self.wait_redirect('https://volchock.ru/ad/13')
+
+    def cancel_changes(self):
+        self.wait_click(self.cancel_btn)
+        self.wait_redirect('https://volchock.ru/ad/13')
+
+    def set_title_to_default(self):
+        self.driver.get('https://volchock.ru/ad/13/edit')
+        self.wait_render(self.name_input).clear()
+        self.fill_input(self.name_input, 'Тест')
+        self.submit_changes()

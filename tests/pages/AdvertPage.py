@@ -118,3 +118,13 @@ class AdvertPage(BasePage):
 
     def check_log(self):
         return self.is_exist(self.open_modal_btn)
+
+    def get_advert_title(self):
+        self.wait_render(self.title)
+        return self.get_innerhtml(self.title).strip()
+
+    def click_edit_button(self):
+        self.wait_click(self.edit_btn)
+
+    def is_paginatable(self):
+        return self.is_exist(self.next_btn)

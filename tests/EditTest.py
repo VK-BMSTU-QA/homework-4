@@ -5,37 +5,41 @@ from tests.pages.AdvertPage import AdvertPage
 
 
 class EditTest(BaseTest):
+    edit_advert_id = 13
+    is_image_uploaded = False
     def setUp(self):
         super(EditTest, self).setUp()
         self.login()
         self.new_adv_page = NewAdvertPage(self.driver)
         self.adv_page = AdvertPage(self.driver)
-        self.adv_page.open(13)
-        self.adv_page.wait_click(self.adv_page.edit_btn)
+        self.adv_page.open(self.edit_advert_id)
+    
+    def tearDown(self):
+        self.new_adv_page.set_title_to_default()
+        if self.is_image_uploaded:
+             self.new_adv_page.delete_images()
+        super(EditTest, self).tearDown()
 
-    def test_title_input(self):
-        title = self.new_adv_page.get_input_value(self.new_adv_page.name_input)
-        self.assertGreater(len(title), 0, 'Название пустое')
-
-    def test_price_input(self):
-        price = self.new_adv_page.get_input_value(self.new_adv_page.price_input)
-        self.assertGreater(len(price), 0, 'Цена пустая')
+    def test_name_change(self):
+        title = self.adv_page.get_advert_title()
+        self.adv_page.click_edit_button()
+        self.new_adv_page.change_advert_title('bbb')
+        self.new_adv_page.submit_changes()
+        page_title = self.adv_page.get_advert_title()
+        self.assertNotEqual(title, page_title, 'Название не изменилось')
 
     def test_name_notchange(self):
-        self.adv_page.open(13)
-        self.adv_page.wait_render(self.adv_page.title)
-        title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-        self.adv_page.wait_click(self.adv_page.edit_btn)
-        self.new_adv_page.fill_input(self.new_adv_page.name_input, 'bbb')
-        self.new_adv_page.wait_click(self.new_adv_page.cancel_btn)
-        self.new_adv_page.wait_redirect('https://volchock.ru/ad/13')
-        self.adv_page.wait_render(self.adv_page.title)
-        page_title = self.adv_page.get_innerhtml(self.adv_page.title).strip()
-        self.assertEqual(len(title), len(page_title), 'Название изменилось')
+        title = self.adv_page.get_advert_title()
+        self.adv_page.click_edit_button()
+        self.new_adv_page.change_advert_title('bbb')
+        self.new_adv_page.cancel_changes()
+        page_title = self.adv_page.get_advert_title()
+        self.assertEqual(title, page_title, 'Название изменилось')
 
     def test_add_image(self):
+        self.adv_page.click_edit_button()
         self.new_adv_page.input_images()
-        self.adv_page.wait_render(self.adv_page.next_btn)
-        is_paginatable = self.adv_page.is_exist(self.adv_page.next_btn)
+        self.is_image_uploaded = True
+        is_paginatable = self.adv_page.is_paginatable()
         self.assertTrue(is_paginatable, 'Изображений не 2')
-        self.new_adv_page.delete_images()
+       
