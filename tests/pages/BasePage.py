@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.action_chains import ActionChains
 
 from ..urls import Urls
 
@@ -63,6 +64,12 @@ class BasePage(Urls):
     def wait_click(self, selector):
         elem = self.wait_render(selector)
         elem.click()
+
+    def click_at_position(self, selector, x, y):
+        elem = self.wait_render(selector)
+        action = ActionChains(self.driver).move_to_element_with_offset(elem, x, y).click()
+        action.perform()
+
 
     def get_innerhtml(self, selector):
         return self.wait_render(selector).get_attribute('innerHTML')

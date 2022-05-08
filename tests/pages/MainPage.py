@@ -19,6 +19,7 @@ class MainPage(BasePage):
     modal_window = '.modal-window'
     new_adv_btn = '.new-advert-capture-container'
     expand_menu = '.expand-menu__content'
+    modal_backgroud = '.blackout'
 
     profile_link = '.expand-menu__sublabel:nth-of-type(1)'
     fav_link = '.expand-menu__sublabel:nth-of-type(2)'
@@ -128,3 +129,44 @@ class MainPage(BasePage):
 
     def clear_reg_password(self):
         self.wait_render(self.reg_password_input).clear()
+
+    def clear_search_input(self):
+        self.wait_render(self.search_input).clear()
+
+    def is_categories_exist(self):
+        return self.is_exist(self.categories)
+
+    def is_card_grid_exist(self):
+        return self.is_exist(self.card)
+
+    def get_login_btn_text(self):
+        return self.wait_render(self.open_modal_btn).get_attribute('innerHTML')
+
+    def change_language(self):
+        self.wait_click(self.lang_btn)
+
+    def is_modal_active(self):
+        return self.is_exist(self.modal_window)
+
+    def close_modal(self):
+        self.click_at_position(self.modal_backgroud, 1, 1)
+
+    def open_profile_menu(self):
+        self.wait_click(self.header_profile)
+
+    def is_profile_menu_active(self):
+        return self.is_exist(self.expand_menu)
+    
+    def click_logout_btn(self):
+        self.wait_click(self.logout_btn)
+
+    def is_login_btn_exist(self):
+        return self.is_exist(self.open_modal_btn)
+
+    def search_by_value_in_input(self, value):
+        self.fill_input(self.search_input, value)
+        self.wait_click(self.search_btn)
+        self.wait_any_redirect('search')
+
+    def is_search_empty(self):
+        return self.is_exist(self.empty)

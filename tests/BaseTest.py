@@ -21,19 +21,16 @@ class BaseTest(unittest.TestCase):
         self.reg_surname = os.getenv('REG_SURNAME')
         self.reg_password = os.getenv('REG_PASSWORD')
 
-        chrome_options = webdriver.ChromeOptions()
-
         if (config.ON_DRIVER):
-            self.driver = webdriver.Chrome(config.DRIVER, chrome_options=chrome_options)
+            self.driver = webdriver.Chrome(config.DRIVER)
             # self.driver = webdriver.Firefox(executable_path=config.MOZILA_DRIVER)
         else:
-            nodeUrl = 'http://localhost:4444/wd/hub'
+            nodeUrl = config.NODE_URL
             self.driver = webdriver.Remote(
                 command_executor=nodeUrl,
                 desired_capabilities={
                     'browserName': config.BROWSER,
-                },
-                options=chrome_options
+                }
             )
     def tearDown(self):
         self.driver.quit()
