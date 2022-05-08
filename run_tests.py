@@ -7,7 +7,6 @@ import unittest
 from tests.LoginTest import LoginTest
 from tests.SignUpTest import SignUpTest
 from tests.MainTest import MainTest
-from tests.PromotionTest import PromotionTest
 from tests.SalesmanTest import SalesmanTest
 from tests.AdvertTest import AdvertTest
 from tests.NewAdvertTest import NewAdvertTest
@@ -20,12 +19,13 @@ if __name__ == '__main__':
     suite = unittest.TestSuite((
         unittest.makeSuite(LoginTest),
         unittest.makeSuite(SignUpTest),
-        # unittest.makeSuite(AdvertTest),
-        # unittest.makeSuite(MainTest),
-        # unittest.makeSuite(PromotionTest),
         # unittest.makeSuite(SalesmanTest),
+
         # unittest.makeSuite(NewAdvertTest),
         # unittest.makeSuite(EditTest),
+
+        # unittest.makeSuite(AdvertTest),
+        # unittest.makeSuite(MainTest),
         # unittest.makeSuite(ProfileTest)
     ))
     result = unittest.TextTestRunner().run(suite)
