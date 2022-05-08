@@ -13,8 +13,6 @@ from tests.NewAdvertTest import NewAdvertTest
 from tests.EditTest import EditTest
 from tests.ProfileTest import ProfileTest
 
-from tests.config import config
-
 if __name__ == '__main__':
     suite = unittest.TestSuite((
         # unittest.makeSuite(LoginTest),
@@ -22,8 +20,8 @@ if __name__ == '__main__':
         # unittest.makeSuite(SalesmanTest),
         # unittest.makeSuite(MainTest),
         # unittest.makeSuite(AdvertTest),
-        unittest.makeSuite(EditTest),
-        # unittest.makeSuite(NewAdvertTest),
+        # unittest.makeSuite(EditTest),
+        unittest.makeSuite(NewAdvertTest),
 
         
         # unittest.makeSuite(ProfileTest)

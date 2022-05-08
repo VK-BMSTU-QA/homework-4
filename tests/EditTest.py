@@ -1,4 +1,3 @@
-import string
 from tests.BaseTest import BaseTest
 from tests.pages.NewAdvertPage import NewAdvertPage
 from tests.pages.AdvertPage import AdvertPage

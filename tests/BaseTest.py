@@ -4,7 +4,7 @@ import unittest
 from selenium import webdriver
 from dotenv import load_dotenv
 
-from tests.config import config
+from .config import config
 from tests.pages.MainPage import MainPage
 
 

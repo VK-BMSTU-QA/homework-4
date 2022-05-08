@@ -66,3 +66,39 @@ class NewAdvertPage(BasePage):
         self.wait_render(self.name_input).clear()
         self.fill_input(self.name_input, 'Тест')
         self.submit_changes()
+
+    def press_sumbit_button(self):
+        self.wait_click(self.submit_btn)
+
+    def is_error_in_title_input(self):
+        name_div = self.wait_render(self.name_div)
+        return "text-input_wrong" in name_div.get_attribute("class")
+
+    def change_price_value(self, value):
+        self.fill_input(self.price_input, value)
+
+    def is_error_in_price_input(self):
+        price_div = self.wait_render(self.price_div)
+        return "text-input_wrong" in price_div.get_attribute("class")
+    
+    def is_error_in_addres_input(self):
+        adr_div = self.wait_visible(self.addres_div)
+        return "text-input_wrong" in adr_div.get_attribute("class")
+    
+    def clear_price_input(self):
+        self.wait_render(self.price_input).clear()
+
+    def is_image_exist(self):
+        return self.is_exist(self.inputed_image)
+
+    def delete_added_image(self):
+        self.wait_click(self.delete_image)
+
+    def click_map(self):
+         self.wait_click(self.clickable_map)
+
+    def is_redirected_to_updrage_page(self):
+        return self.wait_any_redirect('upgrade')
+
+    def fill_description(self, value):
+        self.fill_input(self.text_area, value)
