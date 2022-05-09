@@ -7,8 +7,13 @@ class SearchPage(Page):
 
     CREATOR_NAME = 'div[class="creator-card__header"]'
 
+    def __init__(self, driver):
+        super().__init__(driver)
+
+        self.search_field = SearchField(driver)
+
     def fill_form(self, name):
-        self.fill_form(name)
+        self.search_field.fill_form(name)
 
     def get_creators(self):
-        return self._get_element(self.CREATOR_NAME).text.charAt(0)
+        return self._get_element(self.CREATOR_NAME).text[0].lower()
