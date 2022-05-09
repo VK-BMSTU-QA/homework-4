@@ -17,4 +17,10 @@ deps: ${DRIVER_PATH}/chromedriver
 	if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
 
 test: deps
+	LIME_LOGIN=ktlh \
+	LIME_PASSWORD=ktlhktlh \
+	LIME_LOGIN_CYRILLIC='ктулха2' \
+	LIME_PASSWORD_CYRILLIC='ктулхактулха' \
+	PASS_OK_MESSAGE='Пароль обновлен' \
+	DESC_OK_MESSAGE='Сохранено' \
 	python3 ${PROJECT_DIR}/run_tests.py
