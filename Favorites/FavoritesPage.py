@@ -1,5 +1,4 @@
 import selenium.common.exceptions
-
 from Base.BasePage import Page
 from Common.CommonComponents import Player, Tracks
 from selenium.webdriver.common.by import By

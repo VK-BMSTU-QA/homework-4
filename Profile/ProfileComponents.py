@@ -49,30 +49,4 @@ class ProfileForm(Component):
         input = self.driver.find_element(by=By.XPATH, value=self.CONFIRM_PASSWORD)
         input.clear()
         input.send_keys(confirm_password)
-
-    def requires_to_fill_remaining_fields(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.ERROR_FILL_REMAINING_FIELDS)) == 1
-
-    def requires_name_at_least_3_characters(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.ERROR_NAME_LT3)) == 1
-
-    def invalid_chars_in_nickname(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.INVALID_NICKNAME_CHARS)) == 1
-
-    def invalid_email(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.INVALID_EMAIL)) == 1
-
-    def weak_password(self):
-        return (
-            len(self.driver.find_elements(by=By.XPATH, value=self.WEAK_PASSWORD_LENGTH)) == 1
-            and len(self.driver.find_elements(by=By.XPATH, value=self.WEAK_PASSWORD_NUMBERS)) == 1
-        )
-
-    def password_mismatch(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.PASSWORD_MISMATCH)) == 1
-
-    def wrong_old_password(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.WRONG_OLD_PASSWORD)
-        )
-        return True
+    

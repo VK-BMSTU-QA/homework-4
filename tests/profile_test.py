@@ -2,9 +2,14 @@ import os
 import unittest
 
 from Login.LoginPage import LoginPage
+from Profile.ProfileComponents import ProfileForm
 from Profile.ProfilePage import ProfilePage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
+
 
 class ProfilePageTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
@@ -33,31 +38,32 @@ class ProfilePageTest(unittest.TestCase):
         form = self.profile_page.profile_form
         form.set_nickname("")
         form.submit()
-        self.assertTrue(form.requires_to_fill_remaining_fields())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.ERROR_FILL_REMAINING_FIELDS)), 1)
 
     def test_nickname_lt_3(self):
         form = self.profile_page.profile_form
         form.set_nickname("ta")
         form.submit()
-        self.assertTrue(form.requires_name_at_least_3_characters())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.ERROR_NAME_LT3)), 1)
 
     def test_nickname_allowed_characters(self):
         form = self.profile_page.profile_form
         form.set_nickname("Привет =)")
         form.submit()
-        self.assertTrue(form.invalid_chars_in_nickname())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.INVALID_NICKNAME_CHARS)), 1)
 
     def test_wrong_email_error(self):
         form = self.profile_page.profile_form
         form.set_email("testing.com")
         form.submit()
-        self.assertTrue(form.invalid_email())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.INVALID_EMAIL)), 1)
 
     def test_password_requires_8chars_and_1_letter(self):
         form = self.profile_page.profile_form
         form.set_new_password("baNaNa")
         form.submit()
-        self.assertTrue(form.weak_password())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.WEAK_PASSWORD_LENGTH)), 1)
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.WEAK_PASSWORD_NUMBERS)), 1)
 
     def test_confirm_password_error(self):
         form = self.profile_page.profile_form
@@ -65,7 +71,7 @@ class ProfilePageTest(unittest.TestCase):
         form.set_new_password(new_password)
         form.set_confirm_password(new_password + "a")
         form.submit()
-        self.assertTrue(form.password_mismatch())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=ProfileForm.PASSWORD_MISMATCH)), 1)
 
     def test_wrong_current_password_error(self):
         form = self.profile_page.profile_form
@@ -74,4 +80,7 @@ class ProfilePageTest(unittest.TestCase):
         form.set_confirm_password(new_password)
         form.set_old_password("mysecretpassword")
         form.submit()
-        self.assertTrue(form.wrong_old_password())
+        error_present = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=ProfileForm.WRONG_OLD_PASSWORD)
+        )
+        self.assertTrue(error_present)

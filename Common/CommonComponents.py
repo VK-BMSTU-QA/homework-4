@@ -3,7 +3,7 @@ from Base.BaseComponent import Component
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from tests.utils import CHECK_FREQ, TIMEOUT, element_attribute_not_to_include, has_element
+from tests.utils import CHECK_FREQ, TIMEOUT, element_attribute_not_to_include
 
 
 class Player(Component):
@@ -20,25 +20,9 @@ class Player(Component):
     PLAYER_PAUSED = "pause"
     IN_FAVORITES = "data-in_favorites"
 
-    def paused(self):
-        play = self.driver.find_element(by=By.XPATH, value=self.PLAY)
-        return self.PLAYER_PAUSED in play.get_attribute("src")
-
-    def prev_disabled(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.PREV_TRACK_CLASS)) == 0
-
-    def next_disabled(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.NEXT_TRACK_CLASS)) == 0
-
     def mute(self):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.MUTE)))
         self.driver.find_element_by_css_selector(self.MUTE).click()
-
-    def muted(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.MUTE_XPATH)) == 0
-
-    def hidden(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.PLAYER)) == 0
 
     def get_playing_track_id(self):
         id = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -60,24 +44,6 @@ class Player(Component):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
         )
-
-    def track_is_liked(self):
-        try:
-            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
-            )
-        except selenium.common.exceptions.TimeoutException:
-            return False
-        return True
-
-    def track_is_not_liked(self):
-        try:
-            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                element_attribute_not_to_include((By.XPATH, self.TRACK_LIKE), self.IN_FAVORITES)
-            )
-        except selenium.common.exceptions.TimeoutException:
-            return False
-        return True
 
     def prev_track(self):
         prev = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -134,18 +100,6 @@ class Topbar(Component):
     LOGOUT = '//i[@class="topbar-icon js-logout fa-solid fa-right-from-bracket"]'
     SIGNIN_BUTTON = "signin-button"
 
-    def click_settings(self):
-        settings = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.SETTINGS)
-        )
-        settings.click()
-
-    def click_avatar(self):
-        avatar = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.AVATAR)
-        )
-        avatar.click()
-
     def log_out(self):
         logout = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             lambda d: d.find_element(by=By.XPATH, value=self.LOGOUT)
@@ -154,15 +108,6 @@ class Topbar(Component):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             EC.element_attribute_to_include((By.ID, self.SIGNIN_BUTTON), "href")
         )
-
-    def logged_out(self):
-        try:
-            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                lambda d: len(d.find_elements(by=By.XPATH, value=self.AVATAR)) == 0
-            )
-        except:
-            return False
-        return True
 
 
 class TopArtists(Component):
@@ -180,12 +125,6 @@ class Sidebar(Component):
 
     def go_home_by_logo(self):
         self.driver.find_element(by=By.XPATH, value=self.LOGO).click()
-
-    def go_favorites(self):
-        self.driver.find_element(by=By.XPATH, value=self.FAVORITES).click()
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, self.FAVORITES_DESCRIPTION))
-        )
 
 
 class Tracks(Component):
@@ -230,38 +169,11 @@ class Tracks(Component):
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(EC.element_to_be_clickable((By.XPATH, self.PLAYLIST)))
         playlist.click()
 
-    def playlist_menu_exists(self):
-        return has_element(self.driver, self.PLAYLISTS_MENU)
-
     def open_first_album(self):
         album = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             lambda d: d.find_element(by=By.XPATH, value=self.FIRST_TRACK_ALBUM)
         )
         album.click()
-
-    def album_is_opened(self):
-        try:
-            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.presence_of_element_located((By.CLASS_NAME, self.ALBUM_CLASS))
-            )
-        except selenium.common.exceptions.TimeoutException:
-            return False
-        return True
-
-    def open_first_artist(self):
-        artist = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.FIRST_TRACK_ARTIST)
-        )
-        artist.click()
-
-    def artist_is_opened(self):
-        try:
-            WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-                EC.presence_of_element_located((By.CLASS_NAME, self.ARTIST_CLASS))
-            )
-        except selenium.common.exceptions.TimeoutException:
-            return False
-        return True
 
     def get_like_btn(self, track_id):
         return WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
@@ -278,12 +190,4 @@ class Tracks(Component):
         self.get_like_btn(track_id).click()
         WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             EC.element_attribute_to_include((By.XPATH, self.TRACK_LIKE_BTN.format(track_id)), self.IN_FAVORITES)
-        )
-
-    def track_is_liked(self, track_id):
-        return bool(self.get_like_btn(track_id).get_attribute(self.IN_FAVORITES))
-
-    def check_redirect_to_login(self):
-        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            EC.presence_of_element_located((By.CLASS_NAME, self.LOGIN_UI))
         )

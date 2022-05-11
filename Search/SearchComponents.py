@@ -36,9 +36,3 @@ class MainLayout(Component):
     LAY = '//div[@class="main-layout__content"]'
     LAY_CHILDREN = LAY + "/*"
     NOT_FOUND = '//div[@class="search__content__not-found"]'
-
-    def has_no_content(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.LAY_CHILDREN)) == 0
-
-    def not_found(self):
-        return len(self.driver.find_elements(by=By.XPATH, value=self.NOT_FOUND)) == 1

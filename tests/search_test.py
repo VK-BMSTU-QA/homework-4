@@ -3,9 +3,13 @@ import re
 import unittest
 
 from Login.LoginPage import LoginPage
+from Search.SearchComponents import MainLayout
 from Search.SearchPage import SearchPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from tests.utils import has_element
+
 
 class SearchPageTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
@@ -31,7 +35,7 @@ class SearchPageTest(unittest.TestCase):
 
     def test_search_hides_content(self):
         self.search_page.search_bar.click()
-        self.assertTrue(self.search_page.main_layout.has_no_content())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=MainLayout.LAY_CHILDREN)), 0)
 
     def test_search_ignores_case_and_returns_results(self):
         search_artist = "tWenTY           onE pilots"
@@ -50,11 +54,11 @@ class SearchPageTest(unittest.TestCase):
         tracks = self.search_page.tracks
         self.search_page.search_bar.query("tWenTY           onE pilots")
         tracks.open_first_add_to_playlist()
-        self.assertTrue(tracks.playlist_menu_exists())
+        self.assertTrue(has_element(self.driver, tracks.PLAYLISTS_MENU))
 
     def test_search_shows_not_found(self):
         self.search_page.search_bar.query("Fhu3u8nf87#Gfd73Odhn8#HD78NG#Dn783gdo78g#")
-        self.assertTrue(self.search_page.main_layout.not_found())
+        self.assertTrue(self.driver.find_element(by=By.XPATH, value=MainLayout.NOT_FOUND))
 
     def test_search_plays_first_album(self):
         albums = self.search_page.albums

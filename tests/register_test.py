@@ -2,9 +2,14 @@ import os
 import random
 import unittest
 
+from Register.RegisterComponents import RegisterForm
 from Register.RegisterPage import RegisterPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class RegisterTest(unittest.TestCase):
@@ -35,40 +40,58 @@ class RegisterTest(unittest.TestCase):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.set_confirm_password(self.PASSWORD)
 
-        self.assertFalse(self.register_form.frontend_errors().text)
-        self.assertFalse(self.register_form.backend_errors().text)
+        self.assertFalse(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=RegisterForm.FRONTEND_ERRORS)
+        ))
+        self.assertFalse(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(RegisterForm.BACKEND_ERRORS_CLS)
+        ))
 
         self.register_form.register()
-        self.assertTrue(self.register_form.check_register())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+                EC.presence_of_element_located((By.CLASS_NAME, self.AVATAR))
+            ))
 
     def test_empty_form(self):
         self.register_form.register()
-        self.assertTrue(self.register_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(RegisterForm.BACKEND_ERRORS_CLS)
+        ))
 
     def test_empty_password(self):
         self.register_form.set_email(self.EMAIL)
         self.register_form.register()
-        self.assertTrue(self.register_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(RegisterForm.BACKEND_ERRORS_CLS)
+        ))
 
     def test_empty_email(self):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(RegisterForm.BACKEND_ERRORS_CLS)
+        ))
 
     def test_invalid_email(self):
         self.register_form.set_email(self.EMAIL.replace(".", ""))
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.frontend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=RegisterForm.FRONTEND_ERRORS)
+        ))
 
     def test_invalid_password(self):
         self.register_form.set_email(self.EMAIL)
         self.register_form.set_password(self.SHORT_PASSWORD)
         self.register_form.set_confirm_password(self.SHORT_PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.frontend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=RegisterForm.FRONTEND_ERRORS)
+        ))
 
     def test_non_similar_passwords(self):
         self.register_form.set_password(self.PASSWORD)
         self.register_form.register()
-        self.assertTrue(self.register_form.frontend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=RegisterForm.FRONTEND_ERRORS)
+        ))

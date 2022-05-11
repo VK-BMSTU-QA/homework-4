@@ -1,11 +1,15 @@
 import os
 import unittest
 
+from Common.CommonComponents import Tracks
 from Favorites.FavoritesPage import FavoritesPage
 from Home.HomePage import HomePage
 from Login.LoginPage import LoginPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class FavoritesTest(unittest.TestCase):
@@ -32,25 +36,13 @@ class FavoritesTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def test_album_opening(self):
-        self.favorites_page.track_list.open_first_album()
-        self.assertTrue(self.favorites_page.track_list.album_is_opened())
-
-    def test_artist_opening(self):
-        self.favorites_page.track_list.open_first_artist()
-        self.assertTrue(self.favorites_page.track_list.artist_is_opened())
-
     def test_like(self):
         track_id = self.favorites_page.track_list.get_track_id()
 
         self.favorites_page.track_list.remove_like(track_id)
-        self.assertFalse(self.favorites_page.track_list.track_is_liked(track_id))
+        self.assertFalse(self.favorites_page.track_list.get_like_btn(track_id).get_attribute(Tracks.IN_FAVORITES))
 
         self.favorites_page.track_list.get_like_btn(track_id)
 
         self.favorites_page.track_list.add_like(track_id)
-        self.assertTrue(self.favorites_page.track_list.track_is_liked(track_id))
-
-    def test_favorites_opening_from_navbar(self):
-        self.home_page.sidebar.go_favorites()
-        self.assertTrue(self.favorites_page.is_open())
+        self.assertTrue(self.favorites_page.track_list.get_like_btn(track_id).get_attribute(Tracks.IN_FAVORITES))

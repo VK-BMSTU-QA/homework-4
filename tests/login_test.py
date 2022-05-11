@@ -1,9 +1,13 @@
 import os
 import unittest
 
+from Login.LoginComponents import LoginForm
 from Login.LoginPage import LoginPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class LoginTest(unittest.TestCase):
@@ -30,35 +34,48 @@ class LoginTest(unittest.TestCase):
     def test_positive(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.PASSWORD)
-
-        self.assertFalse(self.login_form.frontend_errors().text)
-        self.assertFalse(self.login_form.backend_errors().text)
+        self.assertFalse(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=LoginForm.FRONTEND_ERRORS)
+        ).text)
+        self.assertFalse(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.CLASS_NAME, value=LoginForm.BACKEND_ERRORS_CLS)
+        ).text)
 
         self.login_form.login()
         self.assertTrue(self.login_form.check_login())
 
     def test_empty_form(self):
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(LoginForm.BACKEND_ERRORS_CLS)
+        ))
 
     def test_empty_password(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(LoginForm.BACKEND_ERRORS_CLS)
+        ))
 
     def test_empty_email(self):
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(LoginForm.BACKEND_ERRORS_CLS)
+        ))
 
     def test_invalid_email(self):
         self.login_form.set_email(self.EMAIL.replace(".", ""))
         self.login_form.set_password(self.PASSWORD)
         self.login_form.login()
-        self.assertTrue(self.login_form.frontend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=LoginForm.FRONTEND_ERRORS)
+        ))
 
     def test_wrong_credentials(self):
         self.login_form.set_email(self.EMAIL)
         self.login_form.set_password(self.WRONG_PASSWORD)
         self.login_form.login()
-        self.assertTrue(self.login_form.backend_errors())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element_by_class_name(LoginForm.BACKEND_ERRORS_CLS)
+        ))

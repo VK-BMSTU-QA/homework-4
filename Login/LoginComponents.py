@@ -1,5 +1,4 @@
 import selenium.common.exceptions
-
 from Base.BaseComponent import Component
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -41,15 +40,3 @@ class LoginForm(Component):
         except selenium.common.exceptions.TimeoutException:
             return False
         return True
-
-    def frontend_errors(self):
-        warnings = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element(by=By.XPATH, value=self.FRONTEND_ERRORS)
-        )
-        return warnings
-
-    def backend_errors(self):
-        warnings = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
-            lambda d: d.find_element_by_class_name(self.BACKEND_ERRORS_CLS)
-        )
-        return warnings

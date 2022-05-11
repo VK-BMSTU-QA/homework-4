@@ -1,10 +1,15 @@
 import os
 import unittest
 
+from Common.CommonComponents import Player
 from Home.HomePage import HomePage
 from Login.LoginPage import LoginPage
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from tests.utils import CHECK_FREQ, TIMEOUT
+
 
 class PlayerTest(unittest.TestCase):
     EMAIL = os.environ["TESTUSERNAME"]
@@ -36,47 +41,36 @@ class PlayerTest(unittest.TestCase):
         playing_track = player.get_playing_track_id()
         self.assertEqual(second_track, playing_track)
 
-    def test_player_hidden(self):
-        self.assertTrue(self.home_page.player.hidden())
-
-    def test_mute(self):
+    def test_mute_unmute(self):
         player = self.home_page.player
         self.home_page.tracks.play_track()
         player.mute()
-        self.assertTrue(player.muted())
-
-    def test_unmute(self):
-        player = self.home_page.player
-        self.home_page.tracks.play_track()
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=Player.MUTE_XPATH)), 0)
         player.mute()
-        player.mute()
-        self.assertFalse(player.muted())
+        self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=Player.MUTE_XPATH)), 1)
 
-    def test_prev_disabled(self):
+    def test_no_prev_for_first_track(self):
         self.home_page.tracks.play_track()
-        self.assertTrue(self.home_page.player.prev_disabled())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: len(d.find_elements(by=By.XPATH, value=Player.PREV_TRACK_CLASS)) == 0
+        ))
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=Player.NEXT_TRACK_CLASS)
+        ))
 
-    def test_next_enabled(self):
-        self.home_page.tracks.play_track()
-        self.assertFalse(self.home_page.player.next_disabled())
-
-    def test_next_disabled(self):
+    def test_no_next_for_last_track(self):
         self.home_page.tracks.play_track(last=True)
-        self.assertTrue(self.home_page.player.next_disabled())
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: len(d.find_elements(by=By.XPATH, value=Player.NEXT_TRACK_CLASS)) == 0
+        ))
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=Player.PREV_TRACK_CLASS)
+        ))
 
-    def test_prev_enabled(self):
-        self.home_page.tracks.play_track(last=True)
-        self.assertFalse(self.home_page.player.prev_disabled())
-
-    def test_pause(self):
+    def test_play_pause(self):
         self.home_page.tracks.play_track()
         player = self.home_page.player
         player.toggle_play()
-        self.assertTrue(player.paused())
-
-    def test_resume(self):
-        player = self.home_page.player
-        self.home_page.tracks.play_track()
+        self.assertTrue(Player.PLAYER_PAUSED in self.driver.find_element(by=By.XPATH, value=Player.PLAY).get_attribute("src"))
         player.toggle_play()
-        player.toggle_play()
-        self.assertFalse(player.paused())
+        self.assertFalse(Player.PLAYER_PAUSED in self.driver.find_element(by=By.XPATH, value=Player.PLAY).get_attribute("src"))
