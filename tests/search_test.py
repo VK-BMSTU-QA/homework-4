@@ -2,6 +2,8 @@ import os
 import re
 import unittest
 
+from parameterized import parameterized
+
 from Login.LoginPage import LoginPage
 from Search.SearchComponents import MainLayout
 from Search.SearchPage import SearchPage
@@ -33,22 +35,40 @@ class SearchPageTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def test_search_artist(self):
-        search_artist = "Linkin Park"
+    @parameterized.expand([
+        ("Linkin Park", ),
+        ("Lana del rey", ),
+        ("toby fox", ),
+        ("armin van buuren", ),
+        ("nirvana", ),
+    ])
+    def test_search_artist(self, search_artist):
         artists = self.search_page.artists
         self.search_page.search_bar.query(search_artist)
         artists.open_first_artist()
         self.assertEqual(search_artist.lower(), artists.get_artist_title().lower())
 
-    def test_search_album(self):
-        search_album = "Лучшее"
+    @parameterized.expand([
+        ("Лучшее", ),
+        ("the hunting party", ),
+        ("nevermind", ),
+        ("zaba", ),
+        ("starboy", ),
+    ])
+    def test_search_album(self, search_album):
         albums = self.search_page.albums
         self.search_page.search_bar.query(search_album)
         result_album = albums.get_first_album_title()
         self.assertEqual(search_album.lower(), result_album.lower())
 
-    def test_search_track(self):
-        search_track = "Давай-наяривай"
+    @parameterized.expand([
+        ("one more light", ),
+        ("Давай-наяривай", ),
+        ("Cheri cheri lady", ),
+        ("sleepwalking", ),
+        ("know my name", ),
+    ])
+    def test_search_track(self, search_track):
         tracks = self.search_page.tracks
         self.search_page.search_bar.query(search_track)
         result_track = tracks.get_first_track_title()
