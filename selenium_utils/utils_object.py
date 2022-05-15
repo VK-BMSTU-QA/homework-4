@@ -48,6 +48,18 @@ class SeleniumBaseObject(object):
         )
         return element
 
+    def _get_element_by_xpath(self, x_path):
+        element = self._wait.until(
+            EC.visibility_of_element_located((By.XPATH, x_path))
+        )
+        return element
+
+    def _get_input(self, css_selector):
+        element = self._wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
+        )
+        return element
+
     def _check_elem_not_exists(self, css_selector):
         try:
             self._wait_with_timeout(stp.TIMEOUT_DRAWABLE_WAIT).\
@@ -69,6 +81,15 @@ class SeleniumBaseObject(object):
         try:
             self._wait_with_timeout(stp.TIMEOUT_DRAWABLE_WAIT).until(
                 EC.invisibility_of_element((By.CSS_SELECTOR, css_selector))
+            )
+        except TimeoutException:
+            return False
+        return True
+
+    def _check_disappear_by_xpath(self, x_path):
+        try:
+            self._wait_with_timeout(stp.TIMEOUT_DRAWABLE_WAIT).until(
+                EC.invisibility_of_element((By.XPATH, x_path))
             )
         except TimeoutException:
             return False

@@ -9,8 +9,10 @@ from setup.auth import setup_auth
 
 
 def default_setup(t):
-    t.EMAIL = os.environ['LOGIN']
-    t.PASSWORD = os.environ['PASSWORD']
+    t.EMAIL = str.strip(os.environ['LOGIN'])
+    t.PASSWORD = str.strip(os.environ['PASSWORD'])
+    t.ROOT = str.strip(os.environ['ROOT'])
+
 
     browser = os.environ.get('BROWSER', 'CHROME')
     if t.driver is None:
@@ -18,5 +20,4 @@ def default_setup(t):
             t.driver = webdriver.Chrome(service=Service(executable_path=ChromeDriverManager().install()))
         else:
             t.driver = webdriver.Firefox(service=Service(executable_path=GeckoDriverManager().install()))
-
     setup_auth(t)
