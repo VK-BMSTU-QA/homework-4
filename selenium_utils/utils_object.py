@@ -93,4 +93,16 @@ class SeleniumBaseObject(object):
             )
         except TimeoutException:
             return False
+
         return True
+
+    def _check_request_errors(self, end_of_url):
+        is_error = False
+        for request in self.driver.requests:
+            end_req_url = str.split(request.url, "/")[-1]
+            if request.response and end_req_url == end_of_url:
+                first_symbol = str(request.response.status_code)[0]
+                if first_symbol != "2" or first_symbol != "3":
+                   is_error = True
+
+        return is_error

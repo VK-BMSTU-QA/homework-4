@@ -53,7 +53,8 @@ class ProfileTest(BaseProfileTest):
         self.recover_change_password(new_password)
 
     def test_change_avatar(self):
-        new_img_path = str.strip(self.ROOT)+"/files/profile_avatar.png"
+        new_img_path = self.ROOT+"/files/profile_avatar.png"
+
         self.loginPage.open()
         self.loginPage.login(self.EMAIL, self.PASSWORD)
         self.profilePage.go_to_profile_settings()
@@ -64,3 +65,17 @@ class ProfileTest(BaseProfileTest):
         new_name = self.profilePage.get_avatar_filename().get_attribute("style")
         self.recover_change_avatar()
         self.assertNotEqual(old_name, new_name)
+
+    def test_change_avatar_invalid_file(self):
+        new_img_path = self.ROOT+"/files/not_image"
+
+        self.loginPage.open()
+        self.loginPage.login(self.EMAIL, self.PASSWORD)
+        self.profilePage.go_to_profile_settings()
+        avatar_input = self.profilePage.get_avatar_input()
+        old_name = self.profilePage.get_avatar_filename().get_attribute("style")
+        self.profilePage.set_new_avatar(avatar_input, new_img_path)
+
+        new_name = self.profilePage.get_avatar_filename().get_attribute("style")
+        self.assertEqual(old_name, new_name)
+
