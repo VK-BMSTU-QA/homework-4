@@ -1,10 +1,11 @@
 import os
 import unittest
 
+import selenium
+
 from Login.LoginPage import LoginPage
 from Playlist.PlaylistComponents import PlaylistEditWindow
 from Playlist.PlaylistPage import PlaylistPage
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import DesiredCapabilities, Remote
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -44,7 +45,6 @@ class PlaylistsTest(unittest.TestCase):
         self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
                 lambda d: PlaylistEditWindow.IS_OPEN not in d.find_element(by=By.XPATH, value=PlaylistEditWindow.EDIT_WINDOW).get_attribute('style')
         ))
-            
 
     def test_edit_window(self):
         self.playlists_page.playlist_image.open_edit_window()
@@ -104,6 +104,37 @@ class PlaylistsTest(unittest.TestCase):
         self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
                 EC.text_to_be_present_in_element_attribute((By.XPATH, PlaylistEditWindow.LINK), "style", "visibility: visible;")
         ))
+
+    def test_public_playlist_unauthorized_access(self):
+        self.playlists_page.text_block.open_edit_window()
+        self.playlists_page.edit_window.toggle_publicity()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
+        ))
+        self.playlists_page.edit_window.close_by_close_btn()
+
+        self.playlists_page.topbar.log_out()
+        self.playlists_page = PlaylistPage(self.driver)
+        self.playlists_page.open()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "playlist__description-title"))
+        ))
+
+        self.login_page = LoginPage(self.driver)
+        self.login_page.login(self.EMAIL, self.PASSWORD)
+
+        self.playlists_page = PlaylistPage(self.driver)
+        self.playlists_page.open()
+        self.playlists_page.text_block.open_edit_window()
+        self.playlists_page.edit_window.toggle_publicity()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
+        ))
+
+    def test_private_playlist_unauthorized_access(self):
+        self.playlists_page.topbar.log_out()
+        self.playlists_page = PlaylistPage(self.driver)
+        self.assertRaises(selenium.common.exceptions.TimeoutException, self.playlists_page.open)
 
     def test_positive_submit(self):
         self.playlists_page.text_block.open_edit_window()

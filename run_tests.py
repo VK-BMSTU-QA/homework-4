@@ -13,13 +13,13 @@ from tests.search_test import SearchPageTest
 if __name__ == "__main__":
     suite = unittest.TestSuite(
         (
-            unittest.makeSuite(LoginTest),
-            unittest.makeSuite(RegisterTest),
-            unittest.makeSuite(HomePageTest),
-            unittest.makeSuite(SearchPageTest),
-            unittest.makeSuite(ProfilePageTest),
-            unittest.makeSuite(FavoritesTest),
-            unittest.makeSuite(PlayerTest),
+            # unittest.makeSuite(LoginTest),
+            # unittest.makeSuite(RegisterTest),
+            # unittest.makeSuite(HomePageTest),
+            # unittest.makeSuite(SearchPageTest),
+            # unittest.makeSuite(ProfilePageTest),
+            # unittest.makeSuite(FavoritesTest),
+            # unittest.makeSuite(PlayerTest),
             unittest.makeSuite(PlaylistsTest),
         )
     )
