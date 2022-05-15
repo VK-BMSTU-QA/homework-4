@@ -40,6 +40,7 @@ class PlaylistEditWindow(Component):
     TITLE_INPUT = '//input[@class="editwindow__form-input"]'
     SAVE_BUTTON = '//input[@class="editwindow__form-submit"]'
     DELETE_BUTTON = '//img[@class="editwindow__delete"]'
+    DELETE_CONFIRM_BUTTON = '//img[@class="editwindow__delete confirm"]'
     WARNING_CLS = "editwindow__form-msg"
     LINK = '//div[@class="editwindow__link"]'
     PUBLICITY_SWITCH = '//span[@class="slider"]'
@@ -80,6 +81,12 @@ class PlaylistEditWindow(Component):
     def click_on_delete(self):
         button = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
             lambda d: d.find_element(by=By.XPATH, value=self.DELETE_BUTTON)
+        )
+        button.click()
+
+    def click_on_delete_confirm(self):
+        button = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.DELETE_CONFIRM_BUTTON)
         )
         button.click()
 

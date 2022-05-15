@@ -1,3 +1,5 @@
+import os
+
 from Base.BasePage import Page
 from Common.CommonComponents import Topbar
 from Playlist.PlaylistComponents import PlaylistEditWindow, PlaylistImage, PlaylistPageControls, PlaylistTextBlock
@@ -8,7 +10,7 @@ from tests.utils import CHECK_FREQ, TIMEOUT
 
 
 class PlaylistPage(Page):
-    PATH = "playlist/289"
+    PATH = "playlist"
     PLAYLIST_DESCR = "playlist__description-title"
 
     @property
@@ -30,6 +32,10 @@ class PlaylistPage(Page):
     @property
     def edit_window(self):
         return PlaylistEditWindow(self.driver)
+
+    def __init__(self, driver, playlist_id):
+        super().__init__(driver)
+        self.PATH = os.path.join(self.PATH, playlist_id)
 
     def open(self):
         super().open()

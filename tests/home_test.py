@@ -31,14 +31,9 @@ class HomePageTest(unittest.TestCase):
         login_page = LoginPage(self.driver)
         login_page.login(self.EMAIL, self.PASSWORD)
         self.home_page = HomePage(self.driver)
-        self.playlist_page = PlaylistPage(self.driver)
 
     def tearDown(self):
         self.driver.quit()
-
-    def test_create_new_playlist(self):
-        self.home_page.playlists.create_new_playlist()
-        self.assertTrue(has_element(self.driver, PlaylistPageControls.EDIT_BUTTON))
 
     def test_play_first_track_unauthorized(self):
         self.home_page.topbar.log_out()
