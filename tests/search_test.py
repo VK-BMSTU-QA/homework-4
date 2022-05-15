@@ -33,6 +33,27 @@ class SearchPageTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
+    def test_search_artist(self):
+        search_artist = "Linkin Park"
+        artists = self.search_page.artists
+        self.search_page.search_bar.query(search_artist)
+        artists.open_first_artist()
+        self.assertEqual(search_artist.lower(), artists.get_artist_title().lower())
+
+    def test_search_album(self):
+        search_album = "Лучшее"
+        albums = self.search_page.albums
+        self.search_page.search_bar.query(search_album)
+        result_album = albums.get_first_album_title()
+        self.assertEqual(search_album.lower(), result_album.lower())
+
+    def test_search_track(self):
+        search_track = "Давай-наяривай"
+        tracks = self.search_page.tracks
+        self.search_page.search_bar.query(search_track)
+        result_track = tracks.get_first_track_title()
+        self.assertEqual(search_track.lower(), result_track.lower())
+
     def test_search_hides_content(self):
         self.search_page.search_bar.click()
         self.assertEqual(len(self.driver.find_elements(by=By.XPATH, value=MainLayout.LAY_CHILDREN)), 0)

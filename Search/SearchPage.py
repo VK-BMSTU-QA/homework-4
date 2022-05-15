@@ -1,5 +1,5 @@
 from Base.BasePage import Page
-from Common.CommonComponents import Albums, Player, Tracks
+from Common.CommonComponents import Albums, Player, Tracks, TopArtists
 from Search.SearchComponents import MainLayout, SearchBar
 
 
@@ -21,6 +21,10 @@ class SearchPage(Page):
     @property
     def albums(self):
         return Albums(self.driver)
+
+    @property
+    def artists(self):
+        return TopArtists(self.driver)
 
     @property
     def player(self):

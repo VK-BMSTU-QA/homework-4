@@ -80,6 +80,9 @@ class Albums(Component):
             lambda d: d.find_element(by=By.XPATH, value=self.ALBUM_LABEL).text == self.ALBUM_TEXT
         )
 
+    def get_first_album_title(self):
+        return self.driver.find_element(by=By.XPATH, value=self.TITLE).text
+
     def get_first_album_id(self):
         id = self.driver.find_element_by_css_selector(self.PLAY_ICON).get_attribute("data-id")
         return id
@@ -111,7 +114,17 @@ class Topbar(Component):
 
 
 class TopArtists(Component):
+    ARTIST_LABEL = '//div[@class="artist__description"]'
     FIRST_ARTIST = '//img[@class="suggested-artist__img"]'
+
+    def open_first_artist(self):
+        self.driver.find_element(by=By.XPATH, value=self.FIRST_ARTIST).click()
+        WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.ARTIST_LABEL)
+        )
+
+    def get_artist_title(self):
+        return self.driver.find_element(by=By.XPATH, value=self.ARTIST_LABEL).text
 
     def get_first_artist_id(self):
         return self.driver.find_element(by=By.XPATH, value=self.FIRST_ARTIST).get_attribute("data-id")
@@ -132,6 +145,7 @@ class Tracks(Component):
     PLAYLIST = '//img[@class="track-list-item-playlist"]'
     PLAYLISTS_MENU = '//div[@class="menu"]'
     FIRST_TRACK_ARTIST = '//div[@class="track__container__artist"]'
+    FIRST_TRACK_TITLE = '//div[@class="track__container__name"]'
     FIRST_TRACK_ALBUM = '//img[@class="track__artwork__img"]'
     TRACK_LIKE_BTN = '//img[@class="track-fav" and @data-id="{}"]'
     ALBUM_CLASS = "album"
@@ -144,6 +158,12 @@ class Tracks(Component):
             lambda d: d.find_elements(by=By.XPATH, value=self.FIRST_TRACK_ARTIST)[i].text
         )
         return artist
+
+    def get_first_track_title(self):
+        track_title = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            lambda d: d.find_element(by=By.XPATH, value=self.FIRST_TRACK_TITLE).text
+        )
+        return track_title
 
     def play_track(self, i=0, last=False):
         play = WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
