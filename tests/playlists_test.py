@@ -19,6 +19,8 @@ class PlaylistsTest(unittest.TestCase):
     PASSWORD = os.environ["TESTPASSWORD"]
     INVALID_TITLE = "dalwhdfpqjedlqwjedlwejflaiuwehf;efj;oWJDALEFNAKLWEHFLAEWHF"
     VALID_TITLE = "test Playlist"
+    NUMERIC_TITLE = "1234567890"
+    CYRILLIC_TITLE = "тест плейлист"
     SETUP_TITLE = "playlist test"
 
     def setUp(self):
@@ -152,3 +154,37 @@ class PlaylistsTest(unittest.TestCase):
         self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
                 EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
             ))
+
+    def test_submit_numeric_title(self):
+        self.playlists_page.text_block.open_edit_window()
+        self.playlists_page.edit_window.set_title(self.NUMERIC_TITLE)
+        self.playlists_page.edit_window.save()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
+        ))
+        self.playlists_page.edit_window.close_by_close_btn()
+        self.assertEqual(self.playlists_page.text_block.title(), self.NUMERIC_TITLE)
+
+        self.playlists_page.text_block.open_edit_window()
+        self.playlists_page.edit_window.set_title(self.SETUP_TITLE)
+        self.playlists_page.edit_window.save()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
+        ))
+
+    def test_submit_cyrillic_title(self):
+        self.playlists_page.text_block.open_edit_window()
+        self.playlists_page.edit_window.set_title(self.CYRILLIC_TITLE)
+        self.playlists_page.edit_window.save()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
+        ))
+        self.playlists_page.edit_window.close_by_close_btn()
+        self.assertEqual(self.playlists_page.text_block.title(), self.CYRILLIC_TITLE)
+
+        self.playlists_page.text_block.open_edit_window()
+        self.playlists_page.edit_window.set_title(self.SETUP_TITLE)
+        self.playlists_page.edit_window.save()
+        self.assertTrue(WebDriverWait(self.driver, TIMEOUT, CHECK_FREQ).until(
+            EC.text_to_be_present_in_element_attribute((By.CLASS_NAME, PlaylistEditWindow.WARNING_CLS), "class", "success visible")
+        ))
