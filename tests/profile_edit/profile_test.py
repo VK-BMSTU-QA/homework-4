@@ -1,5 +1,3 @@
-import os
-
 from page_objects.login import LoginPage
 from page_objects.profile_page import ProfilePage
 from tests.profile_edit.base import BaseProfileTest
@@ -22,11 +20,16 @@ class ProfileTest(BaseProfileTest):
         fields = self.profilePage.get_password_fields()
         self.profilePage.set_new_password(fields, cur_password, self.PASSWORD)
         self.profilePage.click_button_change_password()
+        ok = self.profilePage.wait_confirm_change_password()
+        self.driver.refresh()
+        return ok
+
 
     def recover_change_avatar(self):
         self.profilePage.redirect_to_profile_settings()
         field = self.profilePage.get_avatar_input()
         self.profilePage.set_new_avatar(field, self.ROOT + self.profilePage.DEFAULT_AVATAR)
+
 
     def test_change_password_on_empty_fail(self):
         self.loginPage.open()
@@ -37,20 +40,20 @@ class ProfileTest(BaseProfileTest):
         res = self.profilePage.get_validation_err()
         self.assertTrue(res)
 
-    def test_change_password_on_not_valid_fail(self):
-        new_password = "qwerty"
-        self.loginPage.open()
-        self.loginPage.login(self.EMAIL, self.PASSWORD)
-        self.profilePage.go_to_switch_password()
-        fields = self.profilePage.get_password_fields()
-        self.profilePage.set_new_password(fields, self.PASSWORD, new_password)
-        self.profilePage.click_button_change_password()
-        self.loginPage.logout()
-
-        self.loginPage.login(self.EMAIL, new_password)
-        err = self.loginPage.get_error()
-        self.assertFalse(err)
-        self.recover_change_password(new_password)
+    # def test_change_password_on_valid(self):
+    #     new_password = "qwerty"
+    #     self.loginPage.open()
+    #     self.loginPage.login(self.EMAIL, self.PASSWORD)
+    #     self.profilePage.go_to_switch_password()
+    #     fields = self.profilePage.get_password_fields()
+    #     self.profilePage.set_new_password(fields, self.PASSWORD, new_password)
+    #     self.profilePage.click_button_change_password()
+    #     self.loginPage.logout()
+    #
+    #     self.loginPage.login(self.EMAIL, new_password)
+    #     err = self.loginPage.get_error()
+    #     self.assertFalse(err)
+    #     self.assertTrue(self.recover_change_password(new_password))
 
     def test_change_avatar(self):
         new_img_path = self.ROOT+"/files/profile_avatar.png"

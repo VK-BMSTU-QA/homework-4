@@ -14,6 +14,7 @@ class ProfilePage(Page):
     PASSWORD_FIELDS = 'input[type="password"]'
     PROFILE_IMAGE_FORM = 'input[class="image-uploader__file-upload"]'
     PROFILE_AVATAR_NAME = '//*[@id="root"]/div/div[1]/div[2]/div/div/div[2]/div/div[1]'
+    CONFIRM_CHANGE_PASSWORD = '#root > div > div:nth-child(1) > div:nth-child(2) > div > div > div.tabs-container__wrapper > div > div'
 
 
     def __init__(self, driver):
@@ -22,6 +23,10 @@ class ProfilePage(Page):
 
     def click_button_change_password(self):
         return self._click_button(self.BTN_CHANGE_PASSWORD)
+
+    def wait_confirm_change_password(self):
+        self._check_drawable(self.CONFIRM_CHANGE_PASSWORD)
+        return not self._check_elem_not_exists(self.CONFIRM_CHANGE_PASSWORD)
 
     def fill_change_password_form(self):
         return self._click_button(self.BTN_CHANGE_PASSWORD)

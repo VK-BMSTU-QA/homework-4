@@ -31,7 +31,8 @@ class LoginForm(SeleniumBaseObject):
         return self._get_element(self.EMAIL_HEADER)
 
     def get_error(self):
-        return not self._check_elem_not_exists(self.INVALID_LOGIN_OR_PASSWORD)
+        return self._check_drawable(self.INVALID_LOGIN_OR_PASSWORD)
+        # return not self._check_elem_not_exists(self.INVALID_LOGIN_OR_PASSWORD)
 
     def fill_login(self, login):
         return self._set_text(self.USERNAME, login)
