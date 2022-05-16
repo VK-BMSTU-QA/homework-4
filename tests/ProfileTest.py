@@ -45,35 +45,6 @@ class ProfileTest(BaseTest):
         isCorrect = self.main_page.wait_redirect(self.main_page.PAYMENT_URL)
         self.assertTrue(isCorrect, 'Не происходит редирект на страницу оплаты')
 
-    # проверка обновления аватара
-    def test_settings_userpic(self):
-        generate_pic()
-        btn = self.profile_page.wait_render(self.main_page.settings_btn)
-        btn.click()
-
-        isCorrect = self.main_page.wait_redirect(self.main_page.SETTINGS_URL)
-        self.assertTrue(isCorrect, '')
-        self.profile_page.fill_image_input(os.getcwd(), 'test.png')
-        message_block = self.profile_page.wait_render(self.profile_page.success_block)
-        isCorrect = message_block.text != ''
-        self.assertTrue(isCorrect, 'Не происходит обновление аватара пользователя')
-        delete_pic()
-
-    # проверка обновления аватара со слишком большим файлом
-    def test_settings_userpic_too_big(self):
-        generate_pic('test.png', 1000, 1000)
-        btn = self.profile_page.wait_render(self.main_page.settings_btn)
-        btn.click()
-
-        isCorrect = self.main_page.wait_redirect(self.main_page.SETTINGS_URL)
-        self.assertTrue(isCorrect, '')
-        self.profile_page.fill_image_input(os.getcwd(), 'test.png')
-        message_block = self.profile_page.wait_render(self.profile_page.error_block)
-        isCorrect = message_block.text != ''
-        self.assertTrue(isCorrect, 'Не отображается сообщение об ошибке '
-                                   'при отправке слишком большого файла')
-        delete_pic()
-
     # обновление пароля, пароль слишком короткий
     def test_settings_password_short(self):
         btn = self.profile_page.wait_render(self.main_page.settings_btn)
