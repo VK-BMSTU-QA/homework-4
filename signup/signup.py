@@ -22,7 +22,8 @@ PASSWORD_CONFIRM_NOT_MATCH = '12346'
 
 class Signup(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        EXE_PATH = r'C:\chromedriver.exe'
+        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
         self.signinPage = SignInPage(self.driver)
         self.profilePage = ProfilePage(self.driver)
         self.signupPage = SignUpPage(self.driver)
@@ -53,7 +54,7 @@ class Signup(unittest.TestCase):
         self.assertEqual(error, 'Заполните все поля')
 
     def test_signup_user_exists(self):
-        self.testUtils.fill_login(LOGIN)
+        self.testUtils.fill_login(LOGIN_USER_EXISTS)
 
         self.testUtils.fill_email(EMAIL)
 

@@ -14,7 +14,8 @@ SEARCH_STRING_INCORRECT = "incorrect_string_for_search"
 
 class Search(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        EXE_PATH = r'C:\chromedriver.exe'
+        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
         self.testUtils = TestUtils(self.driver)
         self.driver.get(url=url)
 

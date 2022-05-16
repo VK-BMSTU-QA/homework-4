@@ -20,7 +20,8 @@ POST_OPTION = 2
 
 class Basket(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        EXE_PATH = r'C:\chromedriver.exe'
+        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
 
         self.product_id = 0
         self.utils = Utils(driver=self.driver)
@@ -194,11 +195,16 @@ class Basket(unittest.TestCase):
 
         self.testUtils.click_go_to_basket_button()
 
+        order_sum = self.testUtils.wait_order_sum()
+
         self.testUtils.click_on_confirm_order_button()
 
         profile_orders_title = self.testUtils.wait_redirect_to_profile_orders()
 
-        self.assertEqual(profile_orders_title, 'Мои заказы')
+        order_sum_last = self.testUtils.basketPage.get_last_sum_order()
+
+        self.assertEqual(f'{order_sum} ₽', order_sum_last)
+        #self.assertEqual(profile_orders_title, 'Мои заказы')
 
     def tearDown(self):
 

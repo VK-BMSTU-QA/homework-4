@@ -21,7 +21,8 @@ PASSWORD_SHORT = '123'
 
 class SignIn(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        EXE_PATH = r'C:\chromedriver.exe'
+        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
         self.signinPage = SignInPage(self.driver)
         self.profilePage = ProfilePage(self.driver)
         self.signupPage = SignUpPage(self.driver)

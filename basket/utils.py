@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 
@@ -50,6 +52,7 @@ class TestUtils:
     def remove_product_from_basket(self, product_id):
         remover = self.basketPage.get_product_to_remove(product_id=product_id)
         remover.click()
+        self.basketPage.wait_product_remove_from_basket(product_id=product_id)
 
     def wait_product_in_basket(self, product_id):
         return self.basketPage.get_basket_product(product_id)
@@ -113,4 +116,5 @@ class TestUtils:
     def wait_redirect_to_profile_orders(self):
         return self.profilePage.get_profile_orders_title().text
 
-
+    def wait_order_with_sum(self, sum):
+        self.basketPage.wait_order_with_sum(sum)
