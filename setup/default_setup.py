@@ -13,11 +13,12 @@ def default_setup(t):
     t.PASSWORD = str.strip(os.environ['PASSWORD'])
     t.ROOT = str.strip(os.environ['ROOT'])
 
-
     browser = os.environ.get('BROWSER', 'CHROME')
     if t.driver is None:
         if browser == "CHROME":
-            t.driver = webdriver.Chrome(service=Service(executable_path=ChromeDriverManager().install()))
+            op = webdriver.ChromeOptions()
+            op.add_argument('headless')
+            t.driver = webdriver.Chrome(service=Service(executable_path=ChromeDriverManager().install()), options=op)
         else:
             t.driver = webdriver.Firefox(service=Service(executable_path=GeckoDriverManager().install()))
     setup_auth(t)

@@ -16,7 +16,8 @@ class LoginForm(SeleniumBaseObject):
     BTN_SUBMIT_LOGOUT = "button.btn.btn_primary"
 
     def open_navbar(self):
-        return self._click_button(self.BTN_OPEN_NAVBAR)
+        hover = self.actions.move_to_element(self._get_dom_element(self.BTN_OPEN_NAVBAR))
+        hover.perform()
 
     def click_logout_navbar(self):
         return self._click_button(self.BTN_LOGOUT_NAVBAR)

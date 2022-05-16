@@ -13,7 +13,6 @@ class AuthorSettingsPage(Page):
     PROFILE_AVATAR_NAME = '//*[@id="root"]/div/div[1]/div[2]/div/div/div[2]/div/div[1]/div[1]'
     EMAIL_HEADER = '.profile-card__username'
 
-
     def __init__(self, driver):
         super().__init__(driver)
 

@@ -1,6 +1,7 @@
 from page_objects.approve_delete_level_page import ApproveDeleteLevelPage
 from page_objects.level_create_page import LevelAddPage
 from page_objects.level_edit_page import LevelEditPage
+from page_objects.login import LoginPage
 from tests.level_edit.base import BaseLevelTest
 
 
@@ -46,6 +47,8 @@ class EditLevelTest(BaseLevelTest):
             self.edit_page.delete_level()
             self.approve_delete_level_page.delete_level()
 
+        loginPage = LoginPage(self.driver)
+        loginPage.logout()
         super().tearDown()
 
     def fill_level_form(self):
@@ -152,13 +155,6 @@ class EditLevelTest(BaseLevelTest):
         self.edit_page.set_level_advantage(self.level_data["third_advantage"], 2)
 
         self.assertTrue(self.edit_page.check_advantage_error(2))
-
-    def test_empty_form(self):
-        self.fill_empty_form()
-
-        self.edit_page.save_level()
-
-        self.assertTrue(self.edit_page.check_error())
 
     def test_cancel_delete(self):
         self.fill_level_form()

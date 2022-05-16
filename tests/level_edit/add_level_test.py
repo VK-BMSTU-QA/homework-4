@@ -1,6 +1,7 @@
 from page_objects.approve_delete_level_page import ApproveDeleteLevelPage
 from page_objects.level_create_page import LevelAddPage
 from page_objects.level_edit_page import LevelEditPage
+from page_objects.login import LoginPage
 from tests.level_edit.base import BaseLevelTest
 
 
@@ -33,6 +34,8 @@ class AddLevelTest(BaseLevelTest):
             approve_delete_level_page = ApproveDeleteLevelPage(self.driver)
             approve_delete_level_page.delete_level()
 
+        loginPage = LoginPage(self.driver)
+        loginPage.logout()
         super().tearDown()
 
     def fill_level_form(self):
