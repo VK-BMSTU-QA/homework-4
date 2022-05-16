@@ -6,6 +6,7 @@ from tests.creator_edit.creator_edit_test import CreatorEditTest
 from tests.level_edit.add_level_test import AddLevelTest
 from tests.level_edit.edit_level_test import EditLevelTest
 from tests.search_creator.search_test import SearchTest
+from tests.creator.creator_test import CreatorTest
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
@@ -15,7 +16,7 @@ if __name__ == '__main__':
         unittest.makeSuite(AddLevelTest),
         unittest.makeSuite(EditLevelTest),
         unittest.makeSuite(SearchTest),
+        unittest.makeSuite(CreatorTest)
     ))
-
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

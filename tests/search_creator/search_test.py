@@ -1,5 +1,6 @@
 from tests.search_creator.base import BaseSearchTest
 from page_objects.search_page import SearchPage
+from page_objects.creator_page import CreatorPage
 
 
 class SearchTest(BaseSearchTest):
@@ -26,4 +27,5 @@ class SearchTest(BaseSearchTest):
     def test_correct_creator(self):
         self.fill_search_form()
 
-        self.assertEqual(self.search_page.get_creators(), self.search_data["name"])
+        self.assertEqual(self.search_page.get_creators()[0].text[0].lower(), self.search_data["name"])
+        self.assertEqual(self.search_page.get_creators()[1].text[0].lower(), self.search_data["name"])

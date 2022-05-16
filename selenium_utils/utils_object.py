@@ -106,3 +106,14 @@ class SeleniumBaseObject(object):
                    is_error = True
 
         return is_error
+    def _check_current_url(self, desired_url):
+        try:
+            self._wait_with_timeout(stp.TIMEOUT_WAIT).until(
+                EC.url_changes(desired_url)
+            )
+        except TimeoutException:
+            return False
+        return True
+
+    def _go_to_previous_page(self):
+        self.driver.back()
