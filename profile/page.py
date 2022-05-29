@@ -46,6 +46,9 @@ class ProfilePage:
         css_locator = f'div[href="/product?id={product_id}"]'
         return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_locator)))
 
-    def get_review(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.comments-container:last-child > li .e2u6')))
+    def get_fav_product_by_id(self, product_id):
+        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'div[href="/product?id={product_id}"]')))
+
+    def get_product_by_id(self, product_id):
+        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'a[href="/product?id={product_id}"]')))
 

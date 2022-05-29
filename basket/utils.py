@@ -11,13 +11,6 @@ from all_products.page import AllProductsPage
 from one_product.page import OneProductPage
 from basket.page import BasketPage
 
-url = "https://goodvibesazot.tk/signup"
-
-LOGIN = '12345'
-PASSWORD = '12345'
-LOGIN_NO_USER = 'adasdasdasd'
-PASSWORD_INCORRECT = 'sdfsdfsdfsf'
-PASSWORD_SHORT = '123'
 
 class TestUtils:
     def __init__(self, driver):
@@ -69,9 +62,6 @@ class TestUtils:
         count = int(int(product_sum.text) / int(product_price.text))
         return count
 
-    def check_product_absence(self, product):
-        return self.basketPage.wait_basket_product_remove(product)
-
     def wait_for_empty_basket_notification(self):
         return self.basketPage.get_empty_basket_text().text
 
@@ -115,6 +105,3 @@ class TestUtils:
 
     def wait_redirect_to_profile_orders(self):
         return self.profilePage.get_profile_orders_title().text
-
-    def wait_order_with_sum(self, sum):
-        self.basketPage.wait_order_with_sum(sum)

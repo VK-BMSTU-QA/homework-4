@@ -3,13 +3,6 @@ from profile.page import ProfilePage
 from signin.page import SignInPage
 from signup.page import SignUpPage
 
-url = "https://goodvibesazot.tk/signin"
-
-LOGIN = '12345'
-PASSWORD = '12345'
-LOGIN_NO_USER = 'adasdasdasd'
-PASSWORD_INCORRECT = 'sdfsdfsdfsf'
-PASSWORD_SHORT = '123'
 
 class TestUtils:
     def __init__(self, driver):

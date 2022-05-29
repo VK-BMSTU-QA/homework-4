@@ -20,3 +20,10 @@ class AllProductsPage:
     def get_category_name(self):
         self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'search-left')))
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'product-table__title')))
+
+    def get_category_list_button(self):
+        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'header__aside')))
+
+    def get_category_list(self):
+        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.categories__span-fa')))
+        return self.driver.find_elements_by_css_selector(".categories__span-fa")

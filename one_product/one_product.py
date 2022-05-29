@@ -22,8 +22,9 @@ REVIEW_TEXT = 'Хороший товар'
 
 class OneProduct(unittest.TestCase):
     def setUp(self):
-        EXE_PATH = r'C:\chromedriver.exe'
-        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
+        # EXE_PATH = r'C:\chromedriver.exe'
+        # self.driver = webdriver.Chrome(executable_path=EXE_PATH)
+        self.driver = webdriver.Chrome()
         self.product_id = 0
         self.utils = Utils(driver=self.driver)
         self.allProductsPage = AllProductsPage(self.driver)
@@ -45,23 +46,6 @@ class OneProduct(unittest.TestCase):
 
         def finalizer():
             self.testUtils.click_go_to_basket_button()
-            self.testUtils.remove_product_from_basket(self.product_id)
-
-        finalizer()
-
-    def test_one_product_redirect_to_basket(self):
-        self.product_id = self.testUtils.click_on_product()
-
-        self.testUtils.click_add_to_basket_button()
-
-        self.testUtils.click_go_to_basket_button()
-
-        self.testUtils.wait_for_redirect_to_basket()
-
-        title = self.testUtils.wait_for_redirect_to_basket()
-        self.assertEqual(title, 'Корзина')
-
-        def finalizer():
             self.testUtils.remove_product_from_basket(self.product_id)
 
         finalizer()
@@ -93,10 +77,7 @@ class OneProduct(unittest.TestCase):
 
         self.assertEqual(delete_from_favourite_button.text, 'УДАЛИТЬ ИЗ ИЗБРАННОГО')
 
-        def finalizer():
-            self.testUtils.click_delete_from_favourite_button()
-
-        finalizer()
+        self.testUtils.click_delete_from_favourite_button()
 
     def test_one_product_add_favourite_product(self):
         self.product_id = self.testUtils.click_on_product()
@@ -109,7 +90,13 @@ class OneProduct(unittest.TestCase):
 
         self.testUtils.wait_for_product_in_favourites(self.product_id)
 
-    def test_one_product_review_under(self):
+        def finalizer():
+            self.testUtils.click_on_certain_fav_product(self.product_id)
+            self.testUtils.click_delete_from_favourite_button()
+
+        finalizer()
+
+    def test_one_product_review_appears(self):
         self.product_id = self.testUtils.click_on_product()
 
         self.testUtils.write_review_text(REVIEW_TEXT)
@@ -118,25 +105,20 @@ class OneProduct(unittest.TestCase):
 
         self.testUtils.click_review_button()
 
-        review = self.testUtils.wait_for_page_last_review()
+        received_review = ''
 
-        self.assertEqual(review, REVIEW_TEXT)
+        reviews = self.testUtils.wait_for_reviews_on_page()
+        for review in reviews:
+            if review.text == REVIEW_TEXT:
+                received_review = review
 
-    def test_one_product_review_users(self):
-        self.product_id = self.testUtils.click_on_product()
-
-        self.testUtils.write_review_text(REVIEW_TEXT)
-
-        self.testUtils.click_rating()
-
-        self.testUtils.click_review_button()
+        self.assertEqual(received_review.text, REVIEW_TEXT)
 
         self.testUtils.click_on_profile_icon()
 
         self.testUtils.click_on_profile_reviews_link()
 
-        review = self.testUtils.wait_for_profile_last_review()
-        self.assertEqual(review, REVIEW_TEXT)
+        self.testUtils.wait_product_review(self.product_id)
 
     def test_one_product_review_error_no_rating(self):
         self.product_id = self.testUtils.click_on_product()

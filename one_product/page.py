@@ -26,17 +26,8 @@ class OneProductPage:
     def get_product_count_input(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'product-page-spinner__count')))
 
-    def get_any_field(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-card__name')))
-
-    def get_add_favourite_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-favorite-btn__favorite')))
-
     def get_favourite_button(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-favorite-btn__favorite')))
-
-    def get_delete_from_favourite_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'flagIsFavorite_true')))
 
     def get_review_text_field(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'add-comment-text')))
@@ -47,8 +38,9 @@ class OneProductPage:
     def get_rating_item(self):
         return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.rating__items')))
 
-    def get_review(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.comments-container:last-child > li > div > p')))
+    def get_reviews(self):
+        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.feedback__content')))
+        return self.driver.find_elements_by_css_selector(".feedback__content")
 
     def get_review_error(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'new-comment-alert-label')))
@@ -58,3 +50,4 @@ class OneProductPage:
 
     def get_product_name(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-card__name')))
+

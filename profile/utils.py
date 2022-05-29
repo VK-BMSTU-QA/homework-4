@@ -9,13 +9,6 @@ from all_products.page import AllProductsPage
 from one_product.page import OneProductPage
 from basket.page import BasketPage
 
-url = "https://goodvibesazot.tk/signup"
-
-LOGIN = '12345'
-PASSWORD = '12345'
-LOGIN_NO_USER = 'adasdasdasd'
-PASSWORD_INCORRECT = 'sdfsdfsdfsf'
-PASSWORD_SHORT = '123'
 
 class TestUtils:
     def __init__(self, driver):

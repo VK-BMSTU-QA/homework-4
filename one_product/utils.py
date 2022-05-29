@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 
@@ -9,13 +11,6 @@ from all_products.page import AllProductsPage
 from one_product.page import OneProductPage
 from basket.page import BasketPage
 
-url = "https://goodvibesazot.tk/signup"
-
-LOGIN = '12345'
-PASSWORD = '12345'
-LOGIN_NO_USER = 'adasdasdasd'
-PASSWORD_INCORRECT = 'sdfsdfsdfsf'
-PASSWORD_SHORT = '123'
 
 class TestUtils:
     def __init__(self, driver):
@@ -50,9 +45,6 @@ class TestUtils:
         remover = self.basketPage.get_product_to_remove(product_id=product_id)
         remover.click()
 
-    def wait_for_redirect_to_basket(self):
-        return self.basketPage.get_page_title().text
-
     def choose_products_count(self, count):
         product_count_input = self.oneProductPage.get_product_count_input()
         product_count_input.send_keys(Keys.ARROW_RIGHT)
@@ -69,11 +61,8 @@ class TestUtils:
         add_favourite_button = self.oneProductPage.get_favourite_button()
         add_favourite_button.click()
 
-    def wait_add_favourite_button(self):
-        return self.oneProductPage.get_favourite_button()
-
     def wait_delete_from_favourite_button(self):
-        return self.oneProductPage.get_delete_from_favourite_button()
+        return self.oneProductPage.get_favourite_button()
 
     def click_delete_from_favourite_button(self):
         delete_from_favourite_button = self.oneProductPage.get_favourite_button()
@@ -103,25 +92,25 @@ class TestUtils:
         review_button = self.oneProductPage.get_add_review_button()
         review_button.click()
 
-    def wait_for_page_last_review(self):
-        return self.oneProductPage.get_review().text
+    def wait_for_reviews_on_page(self):
+        return self.oneProductPage.get_reviews()
 
     def click_on_profile_reviews_link(self):
         reviews_link = self.navbarPage.get_reviews_link()
         reviews_link.click()
 
-    def wait_for_profile_last_review(self):
-        return self.profilePage.get_review().text
-
     def wait_review_error(self):
         return self.oneProductPage.get_review_error().text
 
-    def click_on_back_to_catalog_link(self):
-        back_to_catalog_link = self.oneProductPage.get_back_to_catalog_link()
-        back_to_catalog_link.click()
-
     def wait_for_redirect_to_catalog(self):
         return self.allProductsPage.get_product_trends_title().text
+
+    def click_on_certain_fav_product(self, product_id):
+        product = self.profilePage.get_fav_product_by_id(product_id)
+        product.click()
+
+    def wait_product_review(self, product_id):
+        self.profilePage.get_product_by_id(product_id)
 
 
 

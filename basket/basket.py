@@ -1,13 +1,8 @@
-import time
-
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 import unittest
 
 from basket.utils import TestUtils
 from utils.utils import Utils
-from selenium.webdriver.support.ui import Select
 from all_products.page import AllProductsPage
 from one_product.page import OneProductPage
 from basket.page import BasketPage
@@ -20,8 +15,9 @@ POST_OPTION = 2
 
 class Basket(unittest.TestCase):
     def setUp(self):
-        EXE_PATH = r'C:\chromedriver.exe'
-        self.driver = webdriver.Chrome(executable_path=EXE_PATH)
+        # EXE_PATH = r'C:\chromedriver.exe'
+        # self.driver = webdriver.Chrome(executable_path=EXE_PATH)
+        self.driver = webdriver.Chrome()
 
         self.product_id = 0
         self.utils = Utils(driver=self.driver)
@@ -64,35 +60,6 @@ class Basket(unittest.TestCase):
 
         finalizer()
 
-    def test_basket_refresh(self):
-        self.product_id = self.testUtils.click_on_product()
-
-        self.testUtils.click_add_to_basket_button()
-
-        self.testUtils.click_go_to_basket_button()
-
-        self.driver.refresh()
-
-        self.testUtils.wait_product_in_basket(self.product_id)
-
-        def finalizer():
-            self.testUtils.remove_product_from_basket(self.product_id)
-
-        finalizer()
-
-    def test_basket_delete_product(self):
-        self.product_id = self.testUtils.click_on_product()
-
-        self.testUtils.click_add_to_basket_button()
-
-        self.testUtils.click_go_to_basket_button()
-
-        product_in_basket = self.testUtils.wait_product_in_basket(self.product_id)
-
-        self.testUtils.remove_product_from_basket(self.product_id)
-
-        self.testUtils.check_product_absence(product_in_basket)
-
     def test_basket_empty(self):
         self.product_id = self.testUtils.click_on_product()
 
@@ -105,25 +72,6 @@ class Basket(unittest.TestCase):
         empty_basket_text = self.testUtils.wait_for_empty_basket_notification()
 
         self.assertEqual(empty_basket_text, "Ваша корзина пуста. Вернуться к покупкам")
-
-    def test_basket_increase_in_basket(self):
-        self.product_id = self.testUtils.click_on_product()
-
-        self.testUtils.click_add_to_basket_button()
-
-        self.testUtils.click_go_to_basket_button()
-
-        self.testUtils.choose_products_count_in_basket(PRODUCT_COUNT.__str__())
-
-        self.testUtils.click_anywhere()
-
-        count = self.testUtils.check_product_count_in_basket(self.product_id)
-        self.assertEqual(count, PRODUCT_COUNT)
-
-        def finalizer():
-            self.testUtils.remove_product_from_basket(self.product_id)
-
-        finalizer()
 
     def test_basket_change_sum_of_one_product(self):
         self.product_id = self.testUtils.click_on_product()
@@ -204,7 +152,6 @@ class Basket(unittest.TestCase):
         order_sum_last = self.testUtils.basketPage.get_last_sum_order()
 
         self.assertEqual(f'{order_sum} ₽', order_sum_last)
-        #self.assertEqual(profile_orders_title, 'Мои заказы')
 
     def tearDown(self):
 

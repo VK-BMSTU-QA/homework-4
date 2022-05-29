@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 
 
-class wait_for_the_attribute_value(object):
+class WaitForTheAttributeValue(object):
     def __init__(self, locator, attribute, value):
         self.locator = locator
         self.attribute = attribute
@@ -19,6 +19,7 @@ class wait_for_the_attribute_value(object):
             return element_attribute == self.value
         except StaleElementReferenceException:
             return False
+
 
 class BasketPage:
     def __init__(self, driver):
@@ -57,16 +58,10 @@ class BasketPage:
     def get_any_field(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'coupon-row')))
 
-
-
-
     def get_order_sum(self):
-        element = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'basket-order-total__number')))
-        print(self.driver.find_element(By.CLASS_NAME, 'basket-order-total__number').text)
-
-        self.wait.until_not(wait_for_the_attribute_value('basket-order-total__number', "textContent", "0₽"))
+        self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'basket-order-total__number')))
+        self.wait.until_not(WaitForTheAttributeValue('basket-order-total__number', "textContent", "0₽"))
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'basket-order-total__number')))
-
 
     def get_back_in_catalog_link(self):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'back-to-result__link')))
