@@ -33,6 +33,8 @@ class AddLevelTest(BaseLevelTest):
 
             approve_delete_level_page = ApproveDeleteLevelPage(self.driver)
             approve_delete_level_page.delete_level()
+        loginPage = LoginPage(self.driver)
+        loginPage.logout()
         super().tearDown()
 
     def fill_level_form(self):

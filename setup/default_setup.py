@@ -17,7 +17,7 @@ def default_setup(t):
     if t.driver is None:
         if browser == "CHROME":
             op = webdriver.ChromeOptions()
-            op.add_argument('headless')
+            # op.add_argument('headless')
             t.driver = webdriver.Chrome(service=Service(executable_path="./chromedriver"), options=op)
         else:
             t.driver = webdriver.Firefox(service=Service(executable_path=GeckoDriverManager().install()))
