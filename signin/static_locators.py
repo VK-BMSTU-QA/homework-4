@@ -1,0 +1,8 @@
+login_input_locator = 'user-box__login'
+email_input_locator = 'user-box__email'
+password_input_locator = 'user-box__password'
+password_confirm_input_locator = 'user-box__confirm-password'
+auth_button_locator = 'auth-btn'
+auth_error_locator = 'auth-content-inner__error'
+signup_link_locator = 'auth-content-form-registration__link'
+signin_title_locator = '.auth-box h2'

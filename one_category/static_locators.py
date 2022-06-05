@@ -1,0 +1,7 @@
+filters_field_locator = 'search-left'
+category_title_locator = 'product-table__title'
+sort_by_price_button_locator = 'sort-price-toggle'
+product_price_locator = '.sc-fweGeb'
+filter_price_from_locator = 'search-filter-amount__from'
+filter_price_to_locator = 'search-filter-amount__to'
+no_products_notification_locator = 'product-table-body'

@@ -1,53 +1,67 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import *
+from selenium.webdriver import Keys
+
+from base_page import BasePage
 
 
-class OneProductPage:
+class OneProductPage(BasePage):
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10, poll_frequency=1,
-                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException, StaleElementReferenceException])
+        super().__init__(driver)
 
-    def get_product_card(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'slider-preview__picture')))
+    def get_product_id(self):
+        self.get_element_by_class('slider-preview__picture')
+        current_url = self.driver.current_url
+        return int(current_url[current_url.rfind('=') + 1:len(current_url)])
 
-    def get_product_card_by_id(self, product_id):
-        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'div[href="/product?id={product_id}"]')))
+    def click_add_to_basket_button(self):
+        add_to_basket_button = self.get_element_by_class('info-card-btn__cart')
+        add_to_basket_button.click()
 
-    def get_add_to_basket_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-card-btn__cart')))
+    def click_go_to_basket_button(self):
+        go_to_basket_button = self.get_element_by_class('info-card-btn__wrap')
+        go_to_basket_button.click()
 
-    def get_go_to_basket_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-card-btn__wrap')))
+    def wait_go_to_basket_button(self):
+        return self.get_element_by_class('info-card-btn__wrap')
 
-    def get_product_count_input(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'product-page-spinner__count')))
+    def choose_products_count(self, count):
+        product_count_input = self.get_element_by_class('product-page-spinner__count')
+        product_count_input.send_keys(Keys.ARROW_RIGHT)
+        product_count_input.send_keys(Keys.BACK_SPACE)
+        product_count_input.send_keys(count)
 
-    def get_favourite_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-favorite-btn__favorite')))
+    def click_add_favourite_button(self):
+        add_favourite_button = self.get_element_by_class('info-favorite-btn__favorite')
+        add_favourite_button.click()
 
-    def get_review_text_field(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'add-comment-text')))
+    def wait_delete_from_favourite_button(self):
+        return self.get_element_by_class('info-favorite-btn__favorite')
 
-    def get_add_review_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'add-comment-btn')))
+    def click_delete_from_favourite_button(self):
+        delete_from_favourite_button = self.get_element_by_class('info-favorite-btn__favorite')
+        delete_from_favourite_button.click()
 
-    def get_rating_item(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.rating__items')))
+    def write_review_text(self, text):
+        review_text_field = self.get_element_by_class('add-comment-text')
+        review_text_field.click()
+        review_text_field.send_keys(text)
 
-    def get_reviews(self):
-        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.feedback__content')))
-        return self.driver.find_elements_by_css_selector(".feedback__content")
+    def click_rating(self):
+        rating_item = self.get_element_by_class('rating__items')
+        rating_item.click()
 
-    def get_review_error(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'new-comment-alert-label')))
+    def click_review_button(self):
+        review_button = self.get_element_by_class('add-comment-btn')
+        review_button.click()
 
-    def get_back_to_catalog_link(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'back-to-result__link')))
+    def wait_for_reviews_on_page(self):
+        return self.get_elements_by_css_selector('.feedback__content')
 
-    def get_product_name(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'info-card__name')))
+    def wait_review_error(self):
+        return self.get_element_by_class('new-comment-alert-label').text
 
+    def click_back_to_catalog_link(self):
+        back_to_catalog_link = self.get_element_by_class('back-to-result__link')
+        back_to_catalog_link.click()
+
+    def get_product_title(self):
+        return self.get_element_by_class('info-card__name')

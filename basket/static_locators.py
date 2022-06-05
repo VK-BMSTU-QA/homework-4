@@ -1,0 +1,6 @@
+count_spinner_locator = 'spinner__count'
+coupon_locator = 'coupon-row'
+order_total_sum_locator = 'basket-order-total__number'
+delivery_method_locator = 'orderform-delivery_method'
+confirm_button_locator = 'confirm-btn'
+empty_basket_notification_locator = 'basket-empty-text'

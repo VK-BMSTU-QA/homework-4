@@ -1,29 +1,32 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import *
+from all_products.static_locators import *
+from base_page import BasePage
 
 
-class AllProductsPage:
+class AllProductsPage(BasePage):
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10, poll_frequency=1,
-                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException, StaleElementReferenceException])
-
-    def get_product_card(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'product-card')))
+        super().__init__(driver)
 
     def get_product_trends_title(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#product-tabletrends > div > span')))
+        return self.get_element_by_css_selector(trends_title_locator).text
 
-    def get_category_name(self):
-        self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'search-left')))
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'product-table__title')))
+    def click_on_product_card(self):
+        product_card = self.get_element_by_class(product_card_locator)
+        product_card.click()
 
-    def get_category_list_button(self):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'header__aside')))
+    def click_on_product_by_id(self, product_id):
+        product_card = self.get_element_by_css_selector(f'div[href="/product?id={product_id}"]')
+        product_card.click()
 
-    def get_category_list(self):
-        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.categories__span-fa')))
-        return self.driver.find_elements_by_css_selector(".categories__span-fa")
+    def click_on_category_list_button(self):
+        category_list_button = self.get_element_by_class(category_list_button_locator)
+        category_list_button.click()
+
+    def click_on_category(self, category_name):
+        all_categories = self.get_elements_by_css_selector(category_list_locator)
+        category_need = ''
+        for category in all_categories:
+            if category.text == category_name:
+                category_need = category
+                break
+
+        category_need.click()
