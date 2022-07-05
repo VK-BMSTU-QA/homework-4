@@ -6,8 +6,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from letter.page import LetterPage
 from utils.utils import Utils
 
-from time import sleep
-
 class Letter(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
@@ -179,80 +177,6 @@ class Letter(unittest.TestCase):
         _, signed_letter = self.letterPage.get_letter()
         self.assertNotEqual(signed_letter.text, cleared_letter)
         self.assertEqual(signed_letter.text, ex_letter)
-
-
-
-
-
-
-    # def test_letter_update_notification(self):
-    #     self.navbarPage.click_letter_icon()
-
-    #     self.navbarPage.click_letter_link()
-
-    #     self.letterPage.click_on_change_letter_link()
-
-    #     self.assertEqual(self.letterPage.wait_for_update_button().text, 'ОБНОВИТЬ')
-
-    #     self.letterPage.click_on_update_button()
-
-    #     self.assertEqual(self.letterPage.wait_for_update_notification(), 'Данные обновлены!')
-
-    # def test_update_all_positive(self):
-    #     self.navbarPage.click_letter_icon()
-
-    #     self.navbarPage.click_letter_link()
-
-    #     self.letterPage.click_on_change_letter_link()
-
-    #     # fill data
-
-    #     self.letterPage.fill_name(NEW_NAME)
-
-    #     self.letterPage.fill_surname(NEW_SURNAME)
-
-    #     self.letterPage.fill_email(NEW_EMAIL)
-
-    #     self.letterPage.select_sex(MALE_SEX)
-
-    #     self.letterPage.fill_birthday(NEW_DATE)
-
-    #     # click update
-
-    #     self.letterPage.click_on_update_button()
-
-    #     self.letterPage.refresh_page()
-
-    #     # assert
-
-    #     self.assertEqual(self.letterPage.get_updated_name(), NEW_NAME)
-
-    #     self.assertEqual(self.letterPage.get_updated_surname(), NEW_SURNAME)
-
-    #     self.assertEqual(self.letterPage.get_updated_email(), NEW_EMAIL)
-
-    #     self.assertEqual(self.letterPage.get_updated_sex(), "Мужской")
-
-    #     self.assertEqual(self.letterPage.get_updated_birthday(), NEW_DATE_COMPARE)
-
-    #     def finalizer():
-    #         self.letterPage.click_on_change_letter_link()
-    #         self.letterPage.fill_name(OLD_NAME)
-
-    #         self.letterPage.click_on_change_letter_link()
-    #         self.letterPage.fill_surname(OLD_SURNAME)
-
-    #         self.letterPage.click_on_change_letter_link()
-    #         self.letterPage.fill_email(OLD_EMAIL)
-
-    #         self.letterPage.select_sex(NO_SEX)
-
-    #         self.letterPage.click_on_change_letter_link()
-    #         self.letterPage.fill_birthday(OLD_DATE)
-
-    #         self.letterPage.click_on_update_button()
-
-    #     finalizer()
 
     def tearDown(self):
         self.driver.quit()

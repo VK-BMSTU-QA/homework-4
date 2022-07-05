@@ -18,6 +18,3 @@ class SignInPage(BasePage):
     def click_button(self):
         element_button = self.get_element_by_class(auth_button_locator)
         element_button.click()
-
-    # def wait_error(self):
-    #     return self.get_element_by_class(auth_error_locator).text
