@@ -1,8 +1,3 @@
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-
 from base_page import BasePage
 from letter.static_locators import *
 
@@ -127,7 +122,7 @@ class LetterPage(BasePage):
         self.driver.get('https://e.mail.ru/inbox/')
         letter = self.get_element_by_class(letter_locator)
         letter.click()
-        return len(self.get_elements_by_class(importance_indicator_locator)) == 1
+        return self.get_elements_by_class(importance_indicator_locator)
 
     def toggle_notification(self):
         toggle_notification_button = self.get_elements_by_class(toggle_notification_button_locator)[1]
@@ -144,10 +139,9 @@ class LetterPage(BasePage):
         self.driver.get('https://e.mail.ru/inbox/')
         letter = self.get_element_by_class(letter_locator)
         letter.click()
-        return self.get_element_by_class(notification_topic_locator).text == 'Подтверждение прочтения'
+        return self.get_element_by_class(notification_topic_locator)
     
-    def translate_letter(self):
-        text = 'тест'
+    def translate_letter(self, text):
         letter_input = self.get_element_by_class(letter_text_locator)
         letter_input.send_keys(text)
 
@@ -157,10 +151,9 @@ class LetterPage(BasePage):
         confirm_translation_button.click()
 
         letter = self.get_element_by_class(letter_text_locator)
-        return letter.text.split()[0] == 'test'
+        return letter.text.split()[0]
 
-    def cancel_translation(self):
-        text = 'тест'
+    def cancel_translation(self, text):
         letter_input = self.get_element_by_class(letter_text_locator)
         letter_input.send_keys(text)
 
@@ -170,7 +163,7 @@ class LetterPage(BasePage):
         cancel_translation_button.click()
 
         letter = self.get_element_by_class(letter_text_locator)
-        return letter.text.split()[0] == 'test'
+        return letter.text.split()[0]
 
     def clear_format(self):
         clear_format_button = self.get_elements_by_class(clear_button_locator)[23]

@@ -1,15 +1,23 @@
 import unittest
+import os
 
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 from letter.page import LetterPage
 from utils.utils import Utils
+import utils.constants as constants
 
 class Letter(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
-        # self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        BROWSER = os.environ.get("BROWSER")
+        if BROWSER not in constants.browsers_list.keys():
+            raise ValueError("Wrong browser set")
+        
+        self.driver = webdriver.Remote( command_executor="http://localhost:4444",
+                                        options=constants.browsers_list[BROWSER]
+        )
+
+        # self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
 
         self.utils = Utils(driver=self.driver)
         self.letterPage = LetterPage(self.driver)
@@ -138,8 +146,8 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_letter()
         self.letterPage.toggle_importance()
         self.letterPage.send_letter()
-        is_important = self.letterPage.check_importance()
-        self.assertTrue(is_important)
+        importance_badge = self.letterPage.check_importance()
+        self.assertEqual(len(importance_badge), 1)
 
     def test_notification_letter(self):
         self.letterPage.click_on_new_letter_button()
@@ -148,20 +156,22 @@ class Letter(unittest.TestCase):
         self.letterPage.toggle_notification()
         self.letterPage.send_letter()
         self.letterPage.mark_letter_as_read()
-        is_read = self.letterPage.check_read_status()
-        self.assertTrue(is_read)
+        notification_topic = self.letterPage.check_read_status()
+        self.assertEqual(notification_topic.text, 'Подтверждение прочтения')
     
     def test_translate_letter(self):
+        text_for_translation = 'тест'
         self.letterPage.click_on_new_letter_button()
         self.letterPage.fill_header()
-        is_translated = self.letterPage.translate_letter()
-        self.assertTrue(is_translated)
+        translated_text = self.letterPage.translate_letter(text_for_translation)
+        self.assertEqual(translated_text, 'test')
     
     def test_cancel_translation(self):
+        text_for_translation = 'тест'
         self.letterPage.click_on_new_letter_button()
         self.letterPage.fill_header()
-        is_translated = self.letterPage.cancel_translation()
-        self.assertFalse(is_translated)
+        not_translated_text = self.letterPage.cancel_translation(text_for_translation)
+        self.assertEqual(not_translated_text, 'тест')
     
     def test_insert_signature(self):
         self.letterPage.click_on_new_letter_button()

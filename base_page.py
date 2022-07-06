@@ -16,40 +16,12 @@ class BasePage:
     def get_element_by_class(self, locator):
         return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
 
-    def get_element_seen_by_selector(self, locator):
-        return self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, locator)))
-
-    def get_element_by_id(self, locator):
-        return self.wait.until(EC.element_to_be_clickable((By.ID, locator)))
-
-    def get_element_by_css_selector(self, locator):
-        return self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, locator)))
-
-    def get_elements_by_css_selector(self, locator):
-        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, locator)))
-        return self.driver.find_elements_by_css_selector(locator)
-    
     def get_elements_by_class(self, locator):
         self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
-        # return self.driver.find_elements_by_class_name(locator)
         return self.driver.find_elements(By.CLASS_NAME, locator)
 
     def wait_item_disappear(self, locator):
         return self.wait.until_not(EC.visibility_of_all_elements_located((By.CLASS_NAME, locator)))
 
-    def wait_item_appear(self, locator):
-        return self.wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, locator)))
-
-    def wait_elements_disappear(self, locator):
-        return self.wait.until_not(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
-
-    def wait_element_staleness(self, element):
-        return self.wait.until(EC.staleness_of(element))
-
-    def wait_product_invisibility(self, locator):
-        self.wait.until(EC.invisibility_of_element_located((By.CLASS_NAME, locator)))
-
-
     def wait_for_text_to_appear(self, locator, text):
-        # WebDriverWait(self.driver, 10).until(EC.text_to_be_present_in_element((By.CLASS_NAME, locator), text))
         return self.wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, locator), text))
