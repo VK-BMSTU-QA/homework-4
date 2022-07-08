@@ -15,7 +15,10 @@ class BasePage:
         return self.wait.until(EC.element_to_be_clickable((By.NAME, locator)))
 
     def get_element_by_class(self, locator):
-        return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
+        try:
+            return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
+        except UnexpectedAlertPresentException:
+            return self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
 
     def get_elements_by_class(self, locator):
         self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, locator)))
