@@ -10,15 +10,16 @@ import utils.constants as constants
 
 class Letter(unittest.TestCase):
     def setUp(self):
-        BROWSER = os.environ.get("BROWSER")
-        if BROWSER not in constants.browsers_list.keys():
-            raise ValueError("Wrong browser set")
+        # BROWSER = os.environ.get("BROWSER")
+        # if BROWSER not in constants.browsers_list.keys():
+        #     raise ValueError("Wrong browser set")
+        #
+        # self.driver = webdriver.Remote(command_executor="http://localhost:4444",
+        #                                options=constants.browsers_list[BROWSER])
 
-        self.driver = webdriver.Remote(command_executor="http://localhost:4444",
-                                       options=constants.browsers_list[BROWSER])
+        self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
+
         self.driver.implicitly_wait(10)
-
-        # self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
 
         self.utils = Utils(driver=self.driver)
         self.letterPage = LetterPage(self.driver)
@@ -29,7 +30,7 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_header()
         self.letterPage.fill_letter()
         self.letterPage.send_letter()
-        self.driver.refresh()
+        # self.driver.refresh()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, 'SAMPLE TEXT')
         self.assertEqual(letter.text, 'SAMPLETEXT SAMPLETEXT SAMPLETEXT SAMPLETEXT\n  ')

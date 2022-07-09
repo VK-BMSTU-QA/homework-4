@@ -34,6 +34,9 @@ class LetterPage(BasePage):
     def send_letter(self):
         send_button = self.get_element_by_class(send_button_locator)
         send_button.click()
+        close_button = self.get_elements_by_class('button2_close')
+        print(len(close_button))
+        close_button[0].click()
 
     def cancel_letter(self):
         cancel_button = self.get_elements_by_class(cancel_button_locator)[2]
@@ -44,10 +47,12 @@ class LetterPage(BasePage):
         confirm_button.click()
 
     def get_letter_by_inbox(self):
-        try:
-            self.driver.get('https://e.mail.ru/inbox/')
-        except UnexpectedAlertPresentException:
-            self.driver.get('https://e.mail.ru/inbox/')
+        # try:
+        #     self.driver.get('https://e.mail.ru/inbox/')
+        # except UnexpectedAlertPresentException:
+        #     self.driver.get('https://e.mail.ru/inbox/')
+        inbox_button = self.get_elements_by_class('nav__item')[0]
+        inbox_button.click()
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         topic = self.get_element_by_class(check_topic_locator)
@@ -55,10 +60,12 @@ class LetterPage(BasePage):
         return topic, letter
 
     def get_letter_by_sent(self):
-        try:
-            self.driver.get('https://e.mail.ru/sent/')
-        except UnexpectedAlertPresentException:
-            self.driver.get('https://e.mail.ru/sent/')
+        # try:
+        #     self.driver.get('https://e.mail.ru/sent/')
+        # except UnexpectedAlertPresentException:
+        #     self.driver.get('https://e.mail.ru/sent/')
+        inbox_button = self.get_elements_by_class('nav__item')[4]
+        inbox_button.click()
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         topic = self.get_element_by_class(check_topic_locator)
