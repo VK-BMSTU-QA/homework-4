@@ -16,6 +16,7 @@ class Letter(unittest.TestCase):
 
         self.driver = webdriver.Remote(command_executor="http://localhost:4444",
                                        options=constants.browsers_list[BROWSER])
+        self.driver.implicitly_wait(10)
 
         # self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
 

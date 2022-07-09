@@ -1,5 +1,6 @@
 from base_page import BasePage
 from letter.static_locators import *
+from selenium.common.exceptions import UnexpectedAlertPresentException
 
 import os
 
@@ -43,7 +44,10 @@ class LetterPage(BasePage):
         confirm_button.click()
 
     def get_letter_by_inbox(self):
-        self.driver.get('https://e.mail.ru/inbox/')
+        try:
+            self.driver.get('https://e.mail.ru/inbox/')
+        except UnexpectedAlertPresentException:
+            self.driver.get('https://e.mail.ru/inbox/')
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         topic = self.get_element_by_class(check_topic_locator)
@@ -51,7 +55,10 @@ class LetterPage(BasePage):
         return topic, letter
 
     def get_letter_by_sent(self):
-        self.driver.get('https://e.mail.ru/sent/')
+        try:
+            self.driver.get('https://e.mail.ru/sent/')
+        except UnexpectedAlertPresentException:
+            self.driver.get('https://e.mail.ru/sent/')
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         topic = self.get_element_by_class(check_topic_locator)
