@@ -31,3 +31,9 @@ class BasePage:
 
     def wait_for_text_to_appear(self, locator, text):
         return self.wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, locator), text))
+
+    def wait_for_navigate_button_appear(self, element):
+        return self.wait.until(EC.visibility_of(element))
+
+    # def wait_for_element_to_appear(self, locator):
+    #     return self.wait.until_not(EC.visibility_of_element_located(locator))

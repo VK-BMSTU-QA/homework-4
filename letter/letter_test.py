@@ -7,17 +7,18 @@ from letter.page import LetterPage
 from utils.utils import Utils
 import utils.constants as constants
 
+from time import sleep
 
 class Letter(unittest.TestCase):
     def setUp(self):
-        # BROWSER = os.environ.get("BROWSER")
-        # if BROWSER not in constants.browsers_list.keys():
-        #     raise ValueError("Wrong browser set")
-        #
-        # self.driver = webdriver.Remote(command_executor="http://localhost:4444",
-        #                                options=constants.browsers_list[BROWSER])
+        BROWSER = os.environ.get("BROWSER")
+        if BROWSER not in constants.browsers_list.keys():
+            raise ValueError("Wrong browser set")
 
-        self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
+        self.driver = webdriver.Remote(command_executor="http://localhost:4444",
+                                       options=constants.browsers_list[BROWSER])
+
+        # self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
 
         self.driver.implicitly_wait(10)
 
@@ -30,6 +31,7 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_header()
         self.letterPage.fill_letter()
         self.letterPage.send_letter()
+        self.letterPage.close_sent_popup()
         # self.driver.refresh()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, 'SAMPLE TEXT')
@@ -49,7 +51,8 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_receiver()
         self.letterPage.fill_letter()
         self.letterPage.send_letter()
-        self.driver.refresh()
+        self.letterPage.close_sent_popup()
+        # self.driver.refresh()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, '<Без темы>')
         self.assertEqual(letter.text, 'SAMPLETEXT SAMPLETEXT SAMPLETEXT SAMPLETEXT\n  ')
@@ -62,7 +65,8 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_receiver()
         self.letterPage.send_letter()
         self.letterPage.confirm_empty_letter()
-        self.driver.refresh()
+        self.letterPage.close_sent_popup()
+        # self.driver.refresh()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, '<Без темы>')
         self.assertEqual(letter.text, '   ')
@@ -148,6 +152,7 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_letter()
         self.letterPage.toggle_importance()
         self.letterPage.send_letter()
+        self.letterPage.close_sent_popup()
         importance_badge = self.letterPage.get_importance_status()
         self.assertEqual(len(importance_badge), 1)
 
@@ -157,6 +162,7 @@ class Letter(unittest.TestCase):
         self.letterPage.fill_letter()
         self.letterPage.toggle_notification()
         self.letterPage.send_letter()
+        self.letterPage.close_sent_popup()
         self.letterPage.mark_letter_as_read()
         notification_topic = self.letterPage.get_read_status()
         self.assertEqual(notification_topic.text, 'Подтверждение прочтения')

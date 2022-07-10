@@ -34,8 +34,10 @@ class LetterPage(BasePage):
     def send_letter(self):
         send_button = self.get_element_by_class(send_button_locator)
         send_button.click()
+
+    def close_sent_popup(self):
         close_button = self.get_elements_by_class('button2_close')
-        print(len(close_button))
+        # print(len(close_button))
         close_button[0].click()
 
     def cancel_letter(self):
@@ -83,7 +85,9 @@ class LetterPage(BasePage):
         button2.click()
 
     def get_template(self):
-        self.driver.get('https://e.mail.ru/templates/')
+        # self.driver.get('https://e.mail.ru/templates/')
+        templates_button = self.get_elements_by_class('nav__item')[6]
+        templates_button.click()
         template = self.get_element_by_class(template_locator)
         template.click()
         topic = self.get_element_by_name(topic_mail_locator)
@@ -115,7 +119,10 @@ class LetterPage(BasePage):
         expand_button.click()
 
     def get_draft(self):
-        self.driver.get('https://e.mail.ru/drafts/')
+        # self.driver.get('https://e.mail.ru/drafts/')
+        drafts_button = self.get_elements_by_class('nav__item')[5]
+        self.wait_for_navigate_button_appear(drafts_button)
+        drafts_button.click()
         draft = self.get_element_by_class(draft_locator)
         draft.click()
         topic = self.get_element_by_name(topic_mail_locator)
@@ -134,7 +141,10 @@ class LetterPage(BasePage):
         toggle_importance_button.click()
 
     def get_importance_status(self):
-        self.driver.get('https://e.mail.ru/inbox/')
+        # self.driver.get('https://e.mail.ru/inbox/')
+        inbox_button = self.get_elements_by_class('nav__item')[0]
+        self.wait_for_navigate_button_appear(inbox_button)
+        inbox_button.click()
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         return self.get_elements_by_class(importance_indicator_locator)
@@ -144,14 +154,25 @@ class LetterPage(BasePage):
         toggle_notification_button.click()
 
     def mark_letter_as_read(self):
-        self.driver.get('https://e.mail.ru/inbox/')
+        # self.driver.get('https://e.mail.ru/inbox/')
+        inbox_button = self.get_elements_by_class('nav__item')[0]
+        self.wait_for_navigate_button_appear(inbox_button)
+        inbox_button.click()
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         mark_as_read_button = self.get_element_by_class(mark_letter_as_read_locator)
         mark_as_read_button.click()
 
     def get_read_status(self):
-        self.driver.get('https://e.mail.ru/inbox/')
+        # self.driver.get('https://e.mail.ru/inbox/')
+        inbox_button = self.get_elements_by_class('nav__item')[0]
+        self.wait_for_navigate_button_appear(inbox_button)
+
+        inbox_badge = self.get_elements_by_class('badge')[0]
+        self.wait_for_navigate_button_appear(inbox_badge)
+        # self.wait_for_element_to_appear('badge')
+        inbox_button.click()
+
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         return self.get_element_by_class(notification_topic_locator)
