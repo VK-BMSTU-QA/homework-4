@@ -1,6 +1,6 @@
 from base_page import BasePage
 from letter.static_locators import *
-from selenium.common.exceptions import UnexpectedAlertPresentException
+from selenium.common.exceptions import UnexpectedAlertPresentException, TimeoutException, ElementNotInteractableException
 
 import os
 
@@ -8,6 +8,25 @@ import os
 class LetterPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
+
+    def read_all(self):
+        try:
+            read_all_button = self.get_element_by_class('button2_status_read')
+            read_all_button.click()
+            accept_button = self.get_elements_by_class('button2__txt')[3]
+            accept_button.click()
+        except (TimeoutException, ElementNotInteractableException) as err:
+            # print("\n\nNo unread letters; ")
+            pass
+
+    def get_new_letters_status(self):
+        try:
+            inbox_badge = self.get_elements_by_class('badge')[0]
+            self.wait_for_navigate_button_appear(inbox_badge)
+        except TimeoutException:
+            self.driver.refresh()
+            return False
+        return True
 
     def click_on_new_letter_button(self):
         new_letter_button = self.get_element_by_class(new_letter_locator)
@@ -53,7 +72,10 @@ class LetterPage(BasePage):
         #     self.driver.get('https://e.mail.ru/inbox/')
         # except UnexpectedAlertPresentException:
         #     self.driver.get('https://e.mail.ru/inbox/')
+        # sent_button = self.get_elements_by_class('nav__item')[4]
+        # sent_button.click()
         inbox_button = self.get_elements_by_class('nav__item')[0]
+        self.wait_for_navigate_button_appear(inbox_button)
         inbox_button.click()
         letter = self.get_element_by_class(letter_locator)
         letter.click()
@@ -66,8 +88,9 @@ class LetterPage(BasePage):
         #     self.driver.get('https://e.mail.ru/sent/')
         # except UnexpectedAlertPresentException:
         #     self.driver.get('https://e.mail.ru/sent/')
-        inbox_button = self.get_elements_by_class('nav__item')[4]
-        inbox_button.click()
+        sent_button = self.get_elements_by_class('nav__item')[4]
+        self.wait_for_navigate_button_appear(sent_button)
+        sent_button.click()
         letter = self.get_element_by_class(letter_locator)
         letter.click()
         topic = self.get_element_by_class(check_topic_locator)
@@ -87,6 +110,7 @@ class LetterPage(BasePage):
     def get_template(self):
         # self.driver.get('https://e.mail.ru/templates/')
         templates_button = self.get_elements_by_class('nav__item')[6]
+        self.wait_for_navigate_button_appear(templates_button)
         templates_button.click()
         template = self.get_element_by_class(template_locator)
         template.click()
@@ -120,6 +144,7 @@ class LetterPage(BasePage):
 
     def get_draft(self):
         # self.driver.get('https://e.mail.ru/drafts/')
+        self.driver.refresh()
         drafts_button = self.get_elements_by_class('nav__item')[5]
         self.wait_for_navigate_button_appear(drafts_button)
         drafts_button.click()

@@ -25,6 +25,7 @@ class Letter(unittest.TestCase):
         self.utils = Utils(driver=self.driver)
         self.letterPage = LetterPage(self.driver)
         self.utils.login()
+        self.letterPage.read_all()
 
     def test_default_letter(self):
         self.letterPage.click_on_new_letter_button()
@@ -33,6 +34,8 @@ class Letter(unittest.TestCase):
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
         # self.driver.refresh()
+        while not self.letterPage.get_new_letters_status():
+            print('Something happened with website, trying to check again...')
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, 'SAMPLE TEXT')
         self.assertEqual(letter.text, 'SAMPLETEXT SAMPLETEXT SAMPLETEXT SAMPLETEXT\n  ')
@@ -53,6 +56,8 @@ class Letter(unittest.TestCase):
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
         # self.driver.refresh()
+        while not self.letterPage.get_new_letters_status():
+            print('Something happened with website, trying to check again...')
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, '<Без темы>')
         self.assertEqual(letter.text, 'SAMPLETEXT SAMPLETEXT SAMPLETEXT SAMPLETEXT\n  ')
@@ -67,6 +72,8 @@ class Letter(unittest.TestCase):
         self.letterPage.confirm_empty_letter()
         self.letterPage.close_sent_popup()
         # self.driver.refresh()
+        while not self.letterPage.get_new_letters_status():
+            print('Something happened with website, trying to check again...')
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, '<Без темы>')
         self.assertEqual(letter.text, '   ')
@@ -153,6 +160,8 @@ class Letter(unittest.TestCase):
         self.letterPage.toggle_importance()
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
+        while not self.letterPage.get_new_letters_status():
+            print('Something happened with website, trying to check again...')
         importance_badge = self.letterPage.get_importance_status()
         self.assertEqual(len(importance_badge), 1)
 
@@ -163,7 +172,11 @@ class Letter(unittest.TestCase):
         self.letterPage.toggle_notification()
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
+        while not self.letterPage.get_new_letters_status():
+            print('Something happened with website, trying to check again...')
         self.letterPage.mark_letter_as_read()
+        while not self.letterPage.get_new_letters_status():
+            print('Something happened with website, trying to check again...')
         notification_topic = self.letterPage.get_read_status()
         self.assertEqual(notification_topic.text, 'Подтверждение прочтения')
 
