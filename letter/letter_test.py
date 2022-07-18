@@ -20,7 +20,11 @@ class Letter(unittest.TestCase):
 
         # self.driver = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
 
+        # self.driver = webdriver.Chrome(executable_path=r'/home/lucifer/Downloads/chromedriver')
+
         self.driver.implicitly_wait(10)
+
+        self.driver.maximize_window()
 
         self.utils = Utils(driver=self.driver)
         self.letterPage = LetterPage(self.driver)
@@ -34,8 +38,9 @@ class Letter(unittest.TestCase):
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
         # self.driver.refresh()
-        while not self.letterPage.get_new_letters_status():
-            print('Something happened with website, trying to check again...')
+        # while not self.letterPage.get_new_letters_status():
+        #     print('Something happened with website, trying to check again...')
+        self.letterPage.get_new_letters_status()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, 'SAMPLE TEXT')
         self.assertEqual(letter.text, 'SAMPLETEXT SAMPLETEXT SAMPLETEXT SAMPLETEXT\n  ')
@@ -56,8 +61,9 @@ class Letter(unittest.TestCase):
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
         # self.driver.refresh()
-        while not self.letterPage.get_new_letters_status():
-            print('Something happened with website, trying to check again...')
+        # while not self.letterPage.get_new_letters_status():
+        #     print('Something happened with website, trying to check again...')
+        self.letterPage.get_new_letters_status()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, '<Без темы>')
         self.assertEqual(letter.text, 'SAMPLETEXT SAMPLETEXT SAMPLETEXT SAMPLETEXT\n  ')
@@ -72,8 +78,9 @@ class Letter(unittest.TestCase):
         self.letterPage.confirm_empty_letter()
         self.letterPage.close_sent_popup()
         # self.driver.refresh()
-        while not self.letterPage.get_new_letters_status():
-            print('Something happened with website, trying to check again...')
+        # while not self.letterPage.get_new_letters_status():
+        #     print('Something happened with website, trying to check again...')
+        self.letterPage.get_new_letters_status()
         topic, letter = self.letterPage.get_letter_by_inbox()
         self.assertEqual(topic.text, '<Без темы>')
         self.assertEqual(letter.text, '   ')
@@ -160,8 +167,9 @@ class Letter(unittest.TestCase):
         self.letterPage.toggle_importance()
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
-        while not self.letterPage.get_new_letters_status():
-            print('Something happened with website, trying to check again...')
+        # while not self.letterPage.get_new_letters_status():
+        #     print('Something happened with website, trying to check again...')
+        self.letterPage.get_new_letters_status()
         importance_badge = self.letterPage.get_importance_status()
         self.assertEqual(len(importance_badge), 1)
 
@@ -172,11 +180,13 @@ class Letter(unittest.TestCase):
         self.letterPage.toggle_notification()
         self.letterPage.send_letter()
         self.letterPage.close_sent_popup()
-        while not self.letterPage.get_new_letters_status():
-            print('Something happened with website, trying to check again...')
+        # while not self.letterPage.get_new_letters_status():
+        #     print('Something happened with website, trying to check again...')
+        self.letterPage.get_new_letters_status()
         self.letterPage.mark_letter_as_read()
-        while not self.letterPage.get_new_letters_status():
-            print('Something happened with website, trying to check again...')
+        # while not self.letterPage.get_new_letters_status():
+        #     print('Something happened with website, trying to check again...')
+        self.letterPage.get_new_letters_status()
         notification_topic = self.letterPage.get_read_status()
         self.assertEqual(notification_topic.text, 'Подтверждение прочтения')
 

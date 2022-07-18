@@ -13,7 +13,7 @@ class LetterPage(BasePage):
         try:
             read_all_button = self.get_element_by_class('button2_status_read')
             read_all_button.click()
-            accept_button = self.get_elements_by_class('button2__txt')[3]
+            accept_button = self.get_elements_by_class('button2__txt')[1]
             accept_button.click()
         except (TimeoutException, ElementNotInteractableException) as err:
             # print("\n\nNo unread letters; ")
@@ -25,8 +25,6 @@ class LetterPage(BasePage):
             self.wait_for_navigate_button_appear(inbox_badge)
         except TimeoutException:
             self.driver.refresh()
-            return False
-        return True
 
     def click_on_new_letter_button(self):
         new_letter_button = self.get_element_by_class(new_letter_locator)
@@ -144,7 +142,7 @@ class LetterPage(BasePage):
 
     def get_draft(self):
         # self.driver.get('https://e.mail.ru/drafts/')
-        self.driver.refresh()
+        # self.driver.refresh()
         drafts_button = self.get_elements_by_class('nav__item')[5]
         self.wait_for_navigate_button_appear(drafts_button)
         drafts_button.click()
